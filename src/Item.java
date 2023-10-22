@@ -1,5 +1,6 @@
-public abstract class  Item {
+public  class  Item {
     private int quantityorder;
+    private String itemname;
     Boolean pack;
     private double price;
 
@@ -37,10 +38,26 @@ public abstract class  Item {
         return price;
     }
 
+    public String getItemname() {
+        return itemname;
+    }
+
     public void total(Product p) {
-        if(pack)
-         price = p.get_Price_of_one_pack() * quantityorder;
-        else
-            price = p.getPrice() * quantityorder;
+
+        if(pack) {
+            if(p.updateStock(p.getQuantity_per_pack()*quantityorder))
+            {
+                price = p.get_Price_of_one_pack() * quantityorder;
+            }
+
+
+        }
+        else {
+            if (p.updateStock(quantityorder))
+            {
+                price = p.getPrice() * quantityorder;
+            }
+        }
+        itemname=p.getName();
     }
 }

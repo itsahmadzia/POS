@@ -71,9 +71,10 @@ public class Product {
 
 
     public Boolean updateStock(int quantity_ordered){
-        if(quantity_ordered-stock_quantity<0){
+        if(stock_quantity-quantity_ordered<0){
             return false;
         }
+
        stock_quantity  = stock_quantity-quantity_ordered;
         return true;
     }

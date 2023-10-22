@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Main {
@@ -8,11 +9,12 @@ public class Main {
         product1.setId(1);
         product1.setName("Iphone");
         product1.setPrice(4999.99);
+        product1.setQuantity_per_pack(5);
         product1.setStock_quantity(100);
 
         Product product2 = new Product();
         product2.setId(2);
-        product2.setName("Lenovo ThinkPad");
+        product2.setName("Lenovo ");
         product2.setPrice(99239.9);
         product2.setStock_quantity(10);
 
@@ -104,6 +106,34 @@ common.addCategory(mainCategory2);
         productList1=mainCategory1.products;
         List<Product> productList2= new ArrayList<>();
         productList2=mainCategory2.products;
+
+
+    Cart cart = new Cart();
+
+
+        Item item1 = new Item();
+        item1.setQuantityorder(1);
+        item1.setPack(true);
+        item1.total(product1);
+
+        Item item2 = new Item();
+        item2.setQuantityorder(2);
+        item2.setPack(false);
+        item2.total(product2);
+
+
+        cart.add(item1);
+        cart.add(item2);
+
+
+        Order order = cart.generateOrder();
+        order.setOrder_id(123);
+        order.setCustomerName("Ahmad zia");
+        order.setTimestamp(new Date());
+        String invoiceContent = order.generateInvoice();
+        System.out.println(invoiceContent);
+      System.out.println ( product1.getStock_quantity());
+   System.out.println(  product2.getStock_quantity());
 /*
         ItemContainer c=new ItemContainer();
         int i1=0;
