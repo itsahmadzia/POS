@@ -4,6 +4,37 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+
+        ArrayList<User> users = new ArrayList<>();
+
+        //admin user
+        Admin admin = new Admin(1, "admin", "admin123");
+        if (admin.authenticate("admin", "admin123")) {
+            admin.setLoggedIn(true);
+            System.out.println("Admin login sucessfull");
+        } else {
+            System.out.println("Admin login failed");
+        }
+        // View users ,other than admin:0 
+        admin.viewUsers(users);
+
+        Logout.logOutAdmin(admin);
+        
+        //manager 
+        User manager =  admin.addUser(users, "manager1", "1234","manager");
+
+        Login login = new Login(users);
+        if (login.authenticateUser("manager1", "1234")) {
+            System.out.println("Manager logged in");
+        } else {
+            System.out.println("Manager login failed");
+        }
+
+        // Log out manager 
+        Logout.logOut(manager);
+        System.out.println("Manager logged out");
+        
+/* 
         // Create Product objects
         Product product1 = new Product();
         product1.setId(1);
@@ -166,6 +197,8 @@ common.addCategory(mainCategory2);
         }
         System.out.println("YOUR BILL IS "+c.total_price());
 */
+
+
 
     }
 
