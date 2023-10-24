@@ -4,10 +4,10 @@ public class User {
     private int id;
     private String name;
     private String password;
-    private String role;
+    private Role role;
     protected boolean loggedIn = false;
 
-    public User(int id, String name, String password, String role) {
+    public User(int id, String name, String password,Role role) {
         this.id = id;
         this.name = name;
         this.password = password;
@@ -17,6 +17,7 @@ public class User {
     public boolean login(String inputName, String inputPassword) {
         return name.equals(inputName) && password.equals(inputPassword);
     }
+    
     public boolean isLoggedIn() {
         return loggedIn;
     }
@@ -29,11 +30,10 @@ public class User {
         return name;
     }
 
-    public String getRole() {
-        return role;
-    }
-
     void setLoggedIn(boolean b) {
         loggedIn = b;
+    }
+       public Role getRole() {
+        return role;
     }
 }

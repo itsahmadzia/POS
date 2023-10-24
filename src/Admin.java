@@ -12,8 +12,8 @@ public class Admin {
         this.password = password;
     }
 
-    public User addUser(ArrayList<User> users, String username, String password, String Role) {
-        User user = new User(users.size() + 1, username, password,Role);
+    public User addUser(ArrayList<User> users, String username, String password, Role role) {
+        User user = new User(users.size() + 1, username, password,role);
         users.add(user);
         return user;
     }
@@ -21,13 +21,12 @@ public class Admin {
     public void viewUsers(ArrayList<User> users) {
         if (users.size() > 0) {
             for (User user : users) {
-                System.out.println("Username: " + user.getName() + ", Role: " + user.getRole());
+                System.out.println("Username: " + user.getName() + ", Role: " + user.getRole().log);
             }
         } else {
             System.out.println("No users added");
         }
     }
-
     public boolean authenticate( String inputName, String inputPassword){
         return name.equals(inputName) && password.equals(inputPassword);
     }
@@ -39,6 +38,4 @@ public class Admin {
     public void setLoggedIn(boolean b) {
         LoggedIn = b;
     }
-
 }
-
