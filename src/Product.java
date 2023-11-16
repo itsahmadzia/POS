@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-
-public class Product {
+public class Product implements Composite{
     private int id;
     private double price;//price per tablet
 
@@ -10,16 +8,16 @@ public class Product {
     private int quantity_per_pack;//for a standard panadol we have 14 tablets
 
     private String description;
-    public ArrayList<Category>categories=new ArrayList<>();
+
 
     Product(){
 
     }
-
-    public void addCategory(Category category) {
-        categories.add(category);
-        category.getProducts().add(this);
+    @Override
+    public void display() {
+        System.out.println("Product: " + name);
     }
+
     public void setName(String name) {
         this.name = name;
     }

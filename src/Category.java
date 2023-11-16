@@ -1,18 +1,29 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Category {
+public class Category implements Composite {
     private int code;
     private String name;
+    private List<Composite> children;
     private String description;
-    public ArrayList<Product> products=new ArrayList<>();
 
-    public ArrayList<Category> sub_categories=new ArrayList<>();
-    public void addSubCategory(Category c){
-    sub_categories.add(c);
+    Category(int code, String name, String description) {
+        this.code = code;
+        this.name = name;
+        this.description = description;
+        this.children = new ArrayList<>();
     }
-    public void addProduct(Product c){
-        products.add(c);
+
+    public void addComponent(Composite component) {
+        children.add(component);
+    }
+
+    @Override
+    public void display() {
+        System.out.println("Category: " + name);
+        for (Composite child : children) {
+            child.display();
+        }
     }
 
     public void setDescription(String description) {
@@ -39,11 +50,7 @@ public class Category {
         return code;
     }
 
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public List<Category> getSubcategories() {
-        return sub_categories;
+    public List<Composite> getChildren() {
+        return children;
     }
 }

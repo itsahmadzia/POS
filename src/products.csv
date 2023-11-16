@@ -1,0 +1,4 @@
+id,name,description,price,stock_quantity,quantity_per_pack,category_code
+1001,Laptop,Powerful laptop,999.99,50,1,101
+2001,Shirt,Cotton shirt,29.99,100,5,102
+8001,randomcasual ,1,23,1,1,103

@@ -1,0 +1,3 @@
+interface Composite {
+    void display();
+}

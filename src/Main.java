@@ -1,10 +1,45 @@
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 public class Main {
     public static void main(String[] args) {
+        Product product1 = new Product();
+        product1.setId(1);
+        product1.setName("Iphone");
+        product1.setPrice(4999.99);
+        product1.setQuantity_per_pack(5);
+        product1.setStock_quantity(100);
 
+        Product product2 = new Product();
+        product2.setId(2);
+        product2.setName("Lenovo ");
+        product2.setPrice(99239.9);
+        product2.setStock_quantity(10);
+
+        Product product3 = new Product();
+        product3.setId(3);
+        product3.setName("frock ");
+        product3.setPrice(6000.2033);
+        product3.setStock_quantity(5);
+
+        Product product4 = new Product();
+        product4.setId(3);
+        product4.setName("black leather jacket");
+        product4.setPrice(10000.123);
+        product4.setStock_quantity(7);
+
+        Category root = new Category(1,"root","main");
+
+        Category cat1= new Category(2,"A","main");
+        Category cat2 = new Category(3,"B","main");
+
+        root.addComponent(product4);
+        root.addComponent(cat1);
+
+        root.addComponent(cat2);
+        cat1.addComponent(product1);
+        cat1.addComponent(product2);
+        cat2.addComponent(product3);
+
+        root.display();
+/*
         ArrayList<User> users = new ArrayList<>();
 
         //admin user
@@ -34,8 +69,7 @@ public class Main {
 
         Logout.logOut(manager);
         System.out.println("Manager logged out");
-        
-/* 
+
         // Create Product objects
         Product product1 = new Product();
         product1.setId(1);
@@ -110,7 +144,7 @@ public class Main {
        common.setPrice(49.99);
         common.setStock_quantity(60);
 common.addCategory(mainCategory2);
-        // Add products to categories
+        // Add products to categorize
         mainCategory1.addProduct(common);
         mainCategory1.addSubCategory(subCategory1);
         mainCategory1.addSubCategory(subCategory2);
@@ -203,7 +237,7 @@ common.addCategory(mainCategory2);
 
     }
 
-    public static void printCategory(Category category, int depth) {
+ /*   public static void printCategory(Category category, int depth) {
         StringBuilder indent = new StringBuilder();
         for (int i = 0; i < depth; i++) {
             indent.append("  ");
@@ -219,5 +253,5 @@ common.addCategory(mainCategory2);
         }
 
 
-    }
+    }*/
 }

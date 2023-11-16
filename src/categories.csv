@@ -1,0 +1,5 @@
+code,name,description,parent_code
+1,Root,Root category,
+101,Electronics,Electronics category,1
+102,Clothing,Clothing category,1
+103,Casula,Random dreses,102
