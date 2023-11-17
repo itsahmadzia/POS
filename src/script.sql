@@ -17,7 +17,8 @@ CREATE TABLE Product (
                          category_id INT,
                          FOREIGN KEY (category_id) REFERENCES Category(id)
 );
-
+ALTER TABLE Product
+    ADD COLUMN expiryDate DATE;
 CREATE TABLE order_t (
                          id INT PRIMARY KEY,
                          customer_name VARCHAR(255) NOT NULL,

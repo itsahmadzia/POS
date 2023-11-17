@@ -1141,8 +1141,8 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <schema id="293" parent="1" name="randomn">
-      <IntrospectionTimestamp>2023-11-18.05:58:43</IntrospectionTimestamp>
-      <LocalIntrospectionTimestamp>2023-11-17.19:58:43</LocalIntrospectionTimestamp>
+      <IntrospectionTimestamp>2023-11-18.06:37:02</IntrospectionTimestamp>
+      <LocalIntrospectionTimestamp>2023-11-17.20:37:02</LocalIntrospectionTimestamp>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <schema id="294" parent="1" name="sys">
@@ -1337,134 +1337,138 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <DasType>int|0s</DasType>
       <Position>7</Position>
     </column>
-    <foreign-key id="336" parent="306" name="Product_ibfk_1">
+    <column id="336" parent="306" name="expiryDate">
+      <DasType>date|0s</DasType>
+      <Position>8</Position>
+    </column>
+    <foreign-key id="337" parent="306" name="Product_ibfk_1">
       <ColNames>category_id</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>Category</RefTableName>
     </foreign-key>
-    <index id="337" parent="306" name="PRIMARY">
+    <index id="338" parent="306" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="338" parent="306" name="category_id">
+    <index id="339" parent="306" name="category_id">
       <ColNames>category_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="339" parent="306" name="PRIMARY">
+    <key id="340" parent="306" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="340" parent="307" name="username">
+    <column id="341" parent="307" name="username">
       <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="341" parent="307" name="name">
+    <column id="342" parent="307" name="name">
       <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="342" parent="307" name="password">
+    <column id="343" parent="307" name="password">
       <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <index id="343" parent="307" name="PRIMARY">
+    <index id="344" parent="307" name="PRIMARY">
       <ColNames>username</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <key id="344" parent="307" name="PRIMARY">
+    <key id="345" parent="307" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="345" parent="308" name="id">
+    <column id="346" parent="308" name="id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="346" parent="308" name="customer_name">
+    <column id="347" parent="308" name="customer_name">
       <DasType>varchar(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="347" parent="308" name="total">
+    <column id="348" parent="308" name="total">
       <DasType>decimal(10,2 digit)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="348" parent="308" name="order_date">
+    <column id="349" parent="308" name="order_date">
       <DasType>date|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="349" parent="308" name="operator_username">
+    <column id="350" parent="308" name="operator_username">
       <DasType>varchar(255)|0s</DasType>
       <Position>5</Position>
     </column>
-    <foreign-key id="350" parent="308" name="order_t_ibfk_1">
+    <foreign-key id="351" parent="308" name="order_t_ibfk_1">
       <ColNames>operator_username</ColNames>
       <RefColNames>username</RefColNames>
       <RefTableName>SalesAssistant</RefTableName>
     </foreign-key>
-    <index id="351" parent="308" name="PRIMARY">
+    <index id="352" parent="308" name="PRIMARY">
       <ColNames>id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="352" parent="308" name="operator_username">
+    <index id="353" parent="308" name="operator_username">
       <ColNames>operator_username</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="353" parent="308" name="PRIMARY">
+    <key id="354" parent="308" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
-    <column id="354" parent="309" name="order_id">
+    <column id="355" parent="309" name="order_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="355" parent="309" name="product_id">
+    <column id="356" parent="309" name="product_id">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="356" parent="309" name="quantity_ordered">
+    <column id="357" parent="309" name="quantity_ordered">
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="357" parent="309" name="price">
+    <column id="358" parent="309" name="price">
       <DasType>decimal(10,2 digit)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <foreign-key id="358" parent="309" name="order_t_Item_ibfk_1">
+    <foreign-key id="359" parent="309" name="order_t_Item_ibfk_1">
       <ColNames>order_id</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>order_t</RefTableName>
     </foreign-key>
-    <foreign-key id="359" parent="309" name="order_t_Item_ibfk_2">
+    <foreign-key id="360" parent="309" name="order_t_Item_ibfk_2">
       <ColNames>product_id</ColNames>
       <RefColNames>id</RefColNames>
       <RefTableName>Product</RefTableName>
     </foreign-key>
-    <index id="360" parent="309" name="PRIMARY">
+    <index id="361" parent="309" name="PRIMARY">
       <ColNames>order_id
 product_id</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="361" parent="309" name="product_id">
+    <index id="362" parent="309" name="product_id">
       <ColNames>product_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="362" parent="309" name="PRIMARY">
+    <key id="363" parent="309" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
