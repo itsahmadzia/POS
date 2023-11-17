@@ -1,5 +1,4 @@
 package BusinessLayer;
-
 import DBLayer.SalesAssistantDAO;
 
 public class SalesAssistant extends Role {
