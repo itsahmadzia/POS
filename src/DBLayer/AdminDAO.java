@@ -67,5 +67,6 @@ public static ArrayList<User> getUsersFromDB() {
 }
 
 
-
+    public static void saveUser(User user) {
+    }
 }

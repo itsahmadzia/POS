@@ -113,3 +113,4 @@ END //
 DELIMITER ;
 
 CALL GetAllProductsForCategory(1);
+ALTER TABLE  Operator RENAME TO SalesAssistant;

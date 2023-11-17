@@ -1,7 +1,8 @@
-import UILayer.LoginUI;
+import UILayer.ManagerDashboard;
+
 public class Main2 {
     public static void main(String[] args) {
-        LoginUI ui = new LoginUI();
+       ManagerDashboard ui = new ManagerDashboard();
         ui.setVisible(true);             
     }
 }
