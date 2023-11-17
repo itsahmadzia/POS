@@ -167,13 +167,13 @@ public class AdminUI extends javax.swing.JFrame {
 
         // Create an instance of Admin and call the addUser method
        // Admin adminInstance = new Admin();
-        Admin loggedInAdmin = LoginUI.getLoggedInAdmin();
-        User newUser = adminInstance.addUser(enteredUsername, enteredPassword, role);
+        //Admin loggedInAdmin = LoginUI.getLoggedInAdmin();
+      //  User newUser = adminInstance.addUser(enteredUsername, enteredPassword, role);
 
         // Update the table with the new user information
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        Object[] rowData = {newUser.getName(), newUser.getRole().getLog(), "Remove"};
-        model.addRow(rowData);
+        //Object[] rowData = {newUser.getName(), newUser.getRole().getLog(), "Remove"};
+        //model.addRow(rowData);
        
     }//GEN-LAST:event_addButtonActionPerformed
 
