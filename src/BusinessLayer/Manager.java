@@ -13,4 +13,7 @@ public class Manager extends Role {
     public void setLog(String log) {
         this.log = log;
     }
+    public boolean authenticateFromDB(String username, String password){
+        return ManagerDAO.authenticate(this, username, password);
+    }
 }
