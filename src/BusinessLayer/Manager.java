@@ -1,8 +1,17 @@
+package BusinessLayer;
+
+import DBLayer.ManagerDAO;
+
 public class Manager extends Role {
    
     public Manager(){
         log = "Manager";
     }
+
+    public Manager(String username, String password) {
+        super();
+    }
+
     @Override
     public void permissions() {
         System.out.println("Manager has access to manager specific functionality");
