@@ -1,5 +1,10 @@
+package BusinessLayer;
+
+import java.util.Date;
+
 public class Product implements Composite{
     private int id;
+    private Date exp;
     private double price;//price per tablet
 
     private String name;
@@ -16,6 +21,9 @@ public class Product implements Composite{
     @Override
     public void display() {
         System.out.println("Product: " + name);
+        System.out.println("Expiry "+exp);
+        System.out.println("Price   "+ price);
+
     }
 
     public void setName(String name) {
@@ -37,6 +45,14 @@ public class Product implements Composite{
     public void setStock_quantity(int stock_quantity) {
 
         this.stock_quantity = stock_quantity;
+    }
+
+    public void setExp(Date exp) {
+        this.exp = exp;
+    }
+
+    public Date getExp() {
+        return exp;
     }
 
     public String getName() {

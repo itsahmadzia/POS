@@ -1,6 +1,8 @@
+package BusinessLayer;
+
 import java.util.Date;
 
-public class Order extends ItemContainer{
+public class Order extends ItemContainer {
     private int order_id;
     private String customerName;
     private double total;

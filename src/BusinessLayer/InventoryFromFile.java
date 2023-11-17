@@ -1,10 +1,11 @@
+package BusinessLayer;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class InventoryFromFile {
 
@@ -96,6 +97,17 @@ public class InventoryFromFile {
                 int stockQuantity = Integer.parseInt(data[4].trim());
                 int quantityPerPack = Integer.parseInt(data[5].trim());
                 int categoryCode = Integer.parseInt(data[6].trim());
+                String expiryDateString = data[7].trim();
+                Date expiryDate = null;
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                try {
+                    expiryDate = dateFormat.parse(expiryDateString);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    // Handle the parsing exception as needed
+                }
+
 
                 Product product = new Product();
                 product.setId(id);
@@ -104,6 +116,7 @@ public class InventoryFromFile {
                 product.setPrice(price);
                 product.setStock_quantity(stockQuantity);
                 product.setQuantity_per_pack(quantityPerPack);
+                product.setExp(expiryDate);
 
                 Category category = findCategoryByCode(categories, categoryCode);
                 if (category != null) {
