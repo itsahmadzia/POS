@@ -1,12 +1,12 @@
 package UILayer;
-import BusinessLayer.*;
-import UILayer.*;
-import java.awt.Color;
+
+import BusinessLayer.Admin;
+import BusinessLayer.User;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableModel;
 
 public class AdminUI extends javax.swing.JFrame {
     Admin adminInstance;
@@ -15,7 +15,7 @@ public class AdminUI extends javax.swing.JFrame {
     private List<Integer> displayedIndexes;
 
 
-    public AdminUI(LoginUI loginUIInstance) {
+    public AdminUI() {
         initComponents();
         adminInstance = new Admin("Admin", "1234");
         tableModel = new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Username", "Role"});

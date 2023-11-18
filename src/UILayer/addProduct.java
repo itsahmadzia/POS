@@ -4,6 +4,25 @@
  */
 
 package UILayer;
+
+
+
+
+
+
+
+
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.text.SimpleDateFormat;
+
 /**
  *
  * @author malik
@@ -44,6 +63,8 @@ public class addProduct extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jtableproducts = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
+        expDate = new com.toedter.calendar.JDateChooser();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -115,11 +136,11 @@ public class addProduct extends javax.swing.JFrame {
 
                 },
                 new String [] {
-                        "ID", "Name", "Description", "Price", "Quantity/pack", "Stock"
+                        "ID", "Name", "Description", "Price", "Quantity/pack", "Exp", "Stock"
                 }
         ) {
             boolean[] canEdit = new boolean [] {
-                    false, false, false, false, false, false
+                    false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -131,7 +152,7 @@ public class addProduct extends javax.swing.JFrame {
             jtableproducts.getColumnModel().getColumn(0).setPreferredWidth(3);
             jtableproducts.getColumnModel().getColumn(3).setPreferredWidth(3);
             jtableproducts.getColumnModel().getColumn(4).setPreferredWidth(5);
-            jtableproducts.getColumnModel().getColumn(5).setPreferredWidth(3);
+            jtableproducts.getColumnModel().getColumn(6).setPreferredWidth(3);
         }
 
         jLabel7.setBackground(new java.awt.Color(204, 255, 204));
@@ -140,44 +161,48 @@ public class addProduct extends javax.swing.JFrame {
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("Product");
 
+        jLabel8.setText("ExpiryDate");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                .addGap(33, 33, 33)
+                                .addGap(33, 33, 33)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                                                        .addComponent(jLabel1)
+                                                        .addComponent(jLabel2)
+                                                        .addComponent(jLabel3))
+                                                .addGap(49, 49, 49)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(tfID, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+                                                        .addComponent(tfStock)
+                                                        .addComponent(tfQuantity))
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                         .addGroup(layout.createSequentialGroup()
-                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(jLabel1)
-                                                                        .addComponent(jLabel2)
-                                                                        .addComponent(jLabel3))
-                                                                .addGap(35, 35, 35)
-                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(tfID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(tfStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(tfQuantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                .addGap(95, 95, 95)
+                                                                .addGap(68, 68, 68)
                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                         .addComponent(jLabel4)
                                                                         .addComponent(jLabel5)
-                                                                        .addComponent(jLabel6))
+                                                                        .addComponent(jLabel6)
+                                                                        .addComponent(jLabel8))
                                                                 .addGap(45, 45, 45)
                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                         .addComponent(tfCategory)
                                                                         .addComponent(tfDesc)
-                                                                        .addComponent(tfName)))))
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addGap(247, 247, 247)
-                                                .addComponent(jBADD, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jbUpdate)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jbDelete)
-                                                .addGap(0, 0, 0)))
+                                                                        .addComponent(tfName)
+                                                                        .addComponent(expDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addGap(155, 155, 155)
+                                                                .addComponent(jBADD, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(jbUpdate)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                                .addComponent(jbDelete)))
+                                                .addGap(6, 6, 6)))
                                 .addGap(33, 33, 33))
                         .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -187,11 +212,12 @@ public class addProduct extends javax.swing.JFrame {
                                 .addGap(14, 14, 14)
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel1)
-                                        .addComponent(tfID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel4)
-                                        .addComponent(tfName, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(tfName, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(jLabel1)
+                                                .addComponent(tfID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addComponent(jLabel4)))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(jLabel2)
@@ -207,12 +233,16 @@ public class addProduct extends javax.swing.JFrame {
                                         .addComponent(jLabel6)
                                         .addComponent(tfCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(expDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel8))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jBADD)
                                         .addComponent(jbUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jbDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(29, 29, 29))
         );
 
@@ -233,7 +263,43 @@ public class addProduct extends javax.swing.JFrame {
 
     private void jBADDActionPerformed(java.awt.event.ActionEvent evt) {
 //add button code
+
+      addProductinTable();
         // TODO add your handling code here:
+    }
+
+    private void addProductinTable() {
+        //here
+        if (tfCategory.getText().isEmpty() || tfDesc.getText().isEmpty() || tfID.getText().isEmpty()
+                || tfName.getText().isEmpty() || tfStock.getText().isEmpty()
+                || expDate.getDate() == null) {
+            JOptionPane.showMessageDialog(null, "Please fill all the fields");
+            return;
+        }
+
+        String id = tfID.getText();
+        String name = tfName.getText();
+        String description = tfDesc.getText();
+        String stock = tfStock.getText();
+        String category = tfCategory.getText();
+
+        java.util.Date expirationDate = expDate.getDate();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedExpDate = dateFormat.format(expirationDate);
+
+        // Add data to the table model
+        tableModel.addRow(new Object[]{id, name, description, "", "", formattedExpDate, stock});
+clearallfields();
+
+    }
+    void clearallfields(){
+        tfID.setText("");
+        tfName.setText("");
+        tfDesc.setText("");
+        tfStock.setText("");
+        tfCategory.setText("");
+        expDate.setDate(null);
     }
 
     private void jbUpdateActionPerformed(java.awt.event.ActionEvent evt) {
@@ -289,6 +355,7 @@ public class addProduct extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify
+    private com.toedter.calendar.JDateChooser expDate;
     private javax.swing.JButton jBADD;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -297,7 +364,7 @@ public class addProduct extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton jbDelete;
     private javax.swing.JButton jbUpdate;
@@ -308,6 +375,7 @@ public class addProduct extends javax.swing.JFrame {
     private javax.swing.JTextField tfName;
     private javax.swing.JTextField tfQuantity;
     private javax.swing.JTextField tfStock;
+    private DefaultTableModel tableModel= new DefaultTableModel();
     // End of variables declaration
 
 

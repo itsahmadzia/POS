@@ -119,7 +119,7 @@ public class LoginUI extends javax.swing.JFrame {
             String selectedRole = (String) typeComboBox.getSelectedItem();
             
                 if ("Admin".equals(selectedRole)) {
-                Admin adminInstance = new Admin(1, enteredUsername, enteredPassword);
+                Admin adminInstance = new Admin( enteredUsername, enteredPassword);
                 if (adminInstance.authenticateFromDB(enteredUsername, enteredPassword)) {
                     openAdminUI();
                     }
