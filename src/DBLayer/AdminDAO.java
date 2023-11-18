@@ -7,9 +7,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AdminDAO {
-    public static boolean authenticate(Admin admin, String username, String password) {
+    
+    public  boolean authenticate(Admin admin, String username, String password) {
         try (Connection connection = DatabaseConnection.getConnection()) {
             String query = "SELECT * FROM Admin WHERE username=? AND password=?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -30,43 +32,102 @@ public class AdminDAO {
         }
     }
     
-public static ArrayList<User> getUsersFromDB() {
-    ArrayList<User> users = new ArrayList<>();
+    public  void insertManager(User manager) {
     try (Connection connection = DatabaseConnection.getConnection()) {
-        // Retrieve data from the Manager table
-        String managerQuery = "SELECT username, password FROM Manager";
-        try (PreparedStatement managerStatement = connection.prepareStatement(managerQuery)) {
-            ResultSet managerResultSet = managerStatement.executeQuery();
-
-            while (managerResultSet.next()) {
-                String username = managerResultSet.getString("username");
-                String password = managerResultSet.getString("password");
-                Role role = new Manager(username,password);
-                User user = new User(username, password, role);
-                users.add(user);
-            }
-        }
-
-        // Retrieve data from the SalesAssistant table
-        String assistantQuery = "SELECT username, password FROM SalesAssistant";
-        try (PreparedStatement assistantStatement = connection.prepareStatement(assistantQuery)) {
-            ResultSet assistantResultSet = assistantStatement.executeQuery();
-
-            while (assistantResultSet.next()) {
-                String username = assistantResultSet.getString("username");
-                String password = assistantResultSet.getString("password");
-                Role role = new SalesAssistant(username,password);
-                User user = new User(username, password, role);
-                users.add(user);
-            }
+        String query = "INSERT INTO Manager (username, name, password) VALUES (?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, manager.getUsername());
+            preparedStatement.setString(2, manager.getName());
+            preparedStatement.setString(3, manager.getPassword());
+            preparedStatement.executeUpdate();
         }
     } catch (SQLException e) {
         e.printStackTrace();
     }
-    return users;
 }
 
+    public  void insertSalesAssistant(User salesAssistant) {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String query = "INSERT INTO SalesAssistant (username, name, password) VALUES (?, ?, ?)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, salesAssistant.getUsername());
+                preparedStatement.setString(2, salesAssistant.getName());
+                preparedStatement.setString(3, salesAssistant.getPassword());
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public  List<User> getAllManagers() {
+        List<User> managers = new ArrayList<>();
 
-    public static void saveUser(User user) {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String query = "SELECT * FROM Manager";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+                 ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    String username = resultSet.getString("username");
+                    String name = resultSet.getString("name");
+                    String password = resultSet.getString("password");
+
+                    User manager = new User(name, username, password, "Manager");
+                    managers.add(manager);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return managers;
+    }
+
+    public  List<User> getAllSalesAssistants() {
+        List<User> salesAssistants = new ArrayList<>();
+
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String query = "SELECT * FROM SalesAssistant";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+                 ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    String username = resultSet.getString("username");
+                    String name = resultSet.getString("name");
+                    String password = resultSet.getString("password");
+
+                    User salesAssistant = new User(name, username, password, "Sales Assistant");
+                    salesAssistants.add(salesAssistant);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return salesAssistants;
+    }
+    
+    public boolean deleteUser(String username, String userType) {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String tableName = getUserTableName(userType);
+            String query = "DELETE FROM " + tableName + " WHERE username=?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, username);
+                int affectedRows = preparedStatement.executeUpdate();
+
+                return affectedRows > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    private String getUserTableName(String userType) {
+        if ("Manager".equals(userType)) {
+            return "Manager";
+        } else if ("Sales Assistant".equals(userType)) {
+            return "SalesAssistant";
+        }
+        return null;
     }
 }
