@@ -1,38 +1,32 @@
 package BusinessLayer;
 import DBLayer.AdminDAO;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Admin {
-    private int id;
     private String name;
     private String password;
     private boolean LoggedIn;
+    private AdminDAO AdminDAO;
 
-    public Admin(int id, String name, String password) {
-        this.id = id;
+    public Admin(String name, String password) {
         this.name = name;
         this.password = password;
+        this.AdminDAO = new AdminDAO();
     }
 
-      public ArrayList<User> loadUsersFromDB() {
-        return AdminDAO.getUsersFromDB(); 
-    }
-    public User addUser(String username, String password, Role role) {
-        User user = new User(username, password, role);
-
-        AdminDAO.saveUser(user);
-
-        return user;
-    }
-    public void viewUsers(ArrayList<User> users) {
-        if (users.size() > 0) {
-            for (User user : users) {
-                System.out.println("Username: " + ", Role: " + user.getRole().log);
-            }
-        } else {
-            System.out.println("No users added");
+    public void addUser(String name, String username, String password, String userType) {
+        
+        if ("Manager".equals(userType)) {
+            User manager = new User(name,username,password,userType);
+            AdminDAO.insertManager(manager);
+            
+        } else if ("Sales Assistant".equals(userType)) {
+            User salesAssistant = new User(name,username,password,userType);
+            AdminDAO.insertSalesAssistant(salesAssistant);
         }
     }
+    
     
     public boolean isLoggedIn() {
         return LoggedIn;
@@ -44,5 +38,24 @@ public class Admin {
 
     public boolean authenticateFromDB(String inputName, String inputPassword) {
         return AdminDAO.authenticate(this, inputName, inputPassword);
+    }
+    
+    public List<User> getUserManagersFromDB() {
+        return AdminDAO.getAllManagers();
+    }
+    public List<User> getUserSalesAssistantFromDB() {
+        return AdminDAO.getAllSalesAssistants();
+    }
+    
+    public boolean deleteUser(String username, String userType) {
+        boolean deleted = AdminDAO.deleteUser(username, userType);
+        /*
+        if (deleted) {
+            System.out.println(" deleted from the database: " + username);
+           // updateTableFromDatabase(); 
+        } else {
+            System.out.println("Failed to delete user " + username);
+        }*/
+        return deleted;
     }
 }
