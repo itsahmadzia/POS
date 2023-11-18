@@ -5,23 +5,14 @@
 
 package UILayer;
 
-
-
-
-
-
-
-
-
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
+import BusinessLayer.Product;
+import DBLayer.ProductDAO;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.sql.SQLDataException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 /**
  *
@@ -33,7 +24,12 @@ public class addProduct extends javax.swing.JFrame {
      * Creates new form addProduct
      */
     public addProduct() {
+
+
+
         initComponents();
+        jtableproducts.setModel(defaultTableModel);
+        loadProductsIntoTable();
     }
 
     /**
@@ -65,6 +61,8 @@ public class addProduct extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         expDate = new com.toedter.calendar.JDateChooser();
         jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        tfPrice = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -131,16 +129,16 @@ public class addProduct extends javax.swing.JFrame {
             }
         });
 
-        jtableproducts.setModel(new javax.swing.table.DefaultTableModel(
+        jtableproducts.setModel(defaultTableModel=new javax.swing.table.DefaultTableModel(
                 new Object [][] {
 
                 },
                 new String [] {
-                        "ID", "Name", "Description", "Price", "Quantity/pack", "Exp", "Stock"
+                        "ID", "Name", "Description", "Price", "Quantity/pack", "Exp", "Stock", "Category"
                 }
         ) {
             boolean[] canEdit = new boolean [] {
-                    false, false, false, false, false, false, false
+                    false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -163,6 +161,15 @@ public class addProduct extends javax.swing.JFrame {
 
         jLabel8.setText("ExpiryDate");
 
+        jLabel9.setText("Price");
+
+        tfPrice.setColumns(5);
+        tfPrice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfPriceActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -175,12 +182,15 @@ public class addProduct extends javax.swing.JFrame {
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(jLabel1)
                                                         .addComponent(jLabel2)
-                                                        .addComponent(jLabel3))
+                                                        .addComponent(jLabel3)
+                                                        .addComponent(jLabel9))
                                                 .addGap(49, 49, 49)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(tfID, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
-                                                        .addComponent(tfStock)
-                                                        .addComponent(tfQuantity))
+                                                        .addComponent(tfPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                                .addComponent(tfID, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+                                                                .addComponent(tfStock)
+                                                                .addComponent(tfQuantity)))
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                         .addGroup(layout.createSequentialGroup()
                                                                 .addGap(68, 68, 68)
@@ -235,7 +245,10 @@ public class addProduct extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(expDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel8))
+                                        .addComponent(jLabel8)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                .addComponent(jLabel9)
+                                                .addComponent(tfPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jBADD)
@@ -263,43 +276,134 @@ public class addProduct extends javax.swing.JFrame {
 
     private void jBADDActionPerformed(java.awt.event.ActionEvent evt) {
 //add button code
+//
 
-      addProductinTable();
+if(addDatainDB()) {
+    addDatainGUI();
+    clearallfields();
+}
+
+
         // TODO add your handling code here:
     }
 
-    private void addProductinTable() {
-        //here
-        if (tfCategory.getText().isEmpty() || tfDesc.getText().isEmpty() || tfID.getText().isEmpty()
-                || tfName.getText().isEmpty() || tfStock.getText().isEmpty()
-                || expDate.getDate() == null) {
-            JOptionPane.showMessageDialog(null, "Please fill all the fields");
-            return;
+    private void addDatainGUI() {
+        try {
+
+            int id = Integer.parseInt(tfID.getText());
+            String name = tfName.getText();
+            String description = tfDesc.getText();
+            String price = tfPrice.getText();
+            String quantity = tfQuantity.getText();
+            String stock = tfStock.getText();
+            int category = Integer.parseInt(tfCategory.getText());
+            java.util.Date expirationDate = expDate.getDate();
+
+            double parsedPrice = Double.parseDouble(price);
+            int parsedQuantity = Integer.parseInt(quantity);
+            int parsedStock = Integer.parseInt(stock);
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String formattedExpDate = dateFormat.format(expirationDate);
+               defaultTableModel.addRow(new Object[]{id, name, description, parsedPrice, parsedQuantity, formattedExpDate, parsedStock, category});
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Please enter valid numeric values for ID, Price, Quantity, Stock, and Category.");
         }
 
-        String id = tfID.getText();
-        String name = tfName.getText();
-        String description = tfDesc.getText();
-        String stock = tfStock.getText();
-        String category = tfCategory.getText();
-
-        java.util.Date expirationDate = expDate.getDate();
-
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String formattedExpDate = dateFormat.format(expirationDate);
-
-        // Add data to the table model
-        tableModel.addRow(new Object[]{id, name, description, "", "", formattedExpDate, stock});
-clearallfields();
-
     }
-    void clearallfields(){
-        tfID.setText("");
-        tfName.setText("");
-        tfDesc.setText("");
-        tfStock.setText("");
-        tfCategory.setText("");
-        expDate.setDate(null);
+
+private void clearallfields(){
+    tfID.setText("");
+    tfName.setText("");
+    tfDesc.setText("");
+    tfPrice.setText("");
+    tfQuantity.setText("");
+    tfStock.setText("");
+    tfCategory.setText("");
+    expDate.setDate(null);
+
+}
+    private void loadProductsIntoTable() {
+        // Assuming that ProductDAO.getAllProducts() returns a List<Product>
+        List<Product> productList = new ProductDAO().getAllProducts();
+
+        // Clear existing data in the table
+        defaultTableModel.setRowCount(0);
+
+        // Iterate through the productList and add each product to the table model
+        for (Product product : productList) {
+            Object[] rowData = {
+                    product.getId(),
+                    product.getName(),
+                    product.getDescription(),
+                    product.getPrice(),
+                    product.getQuantity_per_pack(),
+                    product.getExp(),
+                    product.getStock_quantity(),
+                    product.getCategory_code()
+            };
+            defaultTableModel.addRow(rowData);
+        }
+    }
+
+    private Boolean addDatainDB() {
+        try {
+
+            int id = Integer.parseInt(tfID.getText());
+            String name = tfName.getText();
+            String description = tfDesc.getText();
+            String price = tfPrice.getText();
+            String quantity = tfQuantity.getText();
+            String stock = tfStock.getText();
+            int category = Integer.parseInt(tfCategory.getText());
+            java.util.Date expirationDate = expDate.getDate();
+
+            double parsedPrice = Double.parseDouble(price);
+            int parsedQuantity = Integer.parseInt(quantity);
+            int parsedStock = Integer.parseInt(stock);
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String formattedExpDate = dateFormat.format(expirationDate);
+
+            if(!(new ProductDAO().productExists(id))){
+                Product p = new Product();
+                p.setExp(expirationDate);
+                p.setId(id);
+                p.setDescription(description);
+                p.setName(name);
+                p.setPrice(parsedPrice);
+                p.setCategory_code(category);
+                p.setQuantity_per_pack(parsedQuantity);
+                p.setStock_quantity(parsedStock);
+                new ProductDAO().insertProduct(p);
+
+            }
+            else {
+                throw new SQLDataException();
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Please enter valid numeric values for ID, Price, Quantity, Stock, and Category.");
+            return false;
+        }
+        catch (SQLDataException e) {
+            JOptionPane.showMessageDialog(null, "Product already exists ");
+            return false;
+        }
+return true;
+    }
+
+    private void removeSelectedRow() {
+        int selectedRowIndex = jtableproducts.getSelectedRow();
+
+        if (selectedRowIndex != -1) {
+            String productId = jtableproducts.getValueAt(selectedRowIndex, 0).toString();
+   defaultTableModel.removeRow(selectedRowIndex);
+            new ProductDAO().deleteProduct(Integer.parseInt(productId));
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select a row to delete.");
+        }
     }
 
     private void jbUpdateActionPerformed(java.awt.event.ActionEvent evt) {
@@ -309,6 +413,11 @@ clearallfields();
 
     private void jbDeleteActionPerformed(java.awt.event.ActionEvent evt) {
 ///delete button event
+        removeSelectedRow();
+        // TODO add your handling code here:
+    }
+
+    private void tfPriceActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
 
@@ -365,6 +474,7 @@ clearallfields();
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton jbDelete;
     private javax.swing.JButton jbUpdate;
@@ -373,9 +483,11 @@ clearallfields();
     private javax.swing.JTextField tfDesc;
     private javax.swing.JTextField tfID;
     private javax.swing.JTextField tfName;
+    private javax.swing.JTextField tfPrice;
     private javax.swing.JTextField tfQuantity;
     private javax.swing.JTextField tfStock;
-    private DefaultTableModel tableModel= new DefaultTableModel();
+    private DefaultTableModel defaultTableModel=new DefaultTableModel();
+
     // End of variables declaration
 
 

@@ -127,3 +127,6 @@ VALUES ('operator1', 'Operator One', 'operatorpassword1');
 
 ALTER TABLE Admin
 DROP COLUMN name;
+
+
+select *from Product;
