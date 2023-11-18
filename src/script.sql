@@ -124,3 +124,6 @@ VALUES ('manager1', 'Manager One', 'managerpassword1');
 
 INSERT INTO Operator (username, name, password)
 VALUES ('operator1', 'Operator One', 'operatorpassword1');
+
+ALTER TABLE Admin
+DROP COLUMN name;
