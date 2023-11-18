@@ -19,8 +19,9 @@ public class InventoryFromFile {
         List<Category> categories = loadCategoriesFromCsv(categoriesCsvFilePath);
         List<Product> products = loadProductsFromCsv(productsCsvFilePath, categories);
 
-        displayData(categories, products);
-        int categoryCodeToSearch = 102;
+
+
+             int categoryCodeToSearch = 101;
         List<Product> productsInCategory = listProductsInCategoryCode(categories, categoryCodeToSearch);
 
         System.out.println("\nProducts in Category with Code " + categoryCodeToSearch + ":");

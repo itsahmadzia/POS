@@ -1,14 +1,16 @@
 package DBLayer;
+
+import BusinessLayer.SalesAssistant;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import BusinessLayer.*;
 
 public class SalesAssistantDAO {
     public static boolean authenticate(SalesAssistant salesAssistant, String username, String password) {
         try (Connection connection = DatabaseConnection.getConnection()) {
-            String query = "SELECT * FROM SalesAssistant WHERE username=? AND password=?";
+            String query = "SELECT * FROM Operator WHERE username=? AND password=?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
                 statement.setString(1, username);
                 statement.setString(2, password);

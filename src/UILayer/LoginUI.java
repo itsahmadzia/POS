@@ -162,7 +162,7 @@ public class LoginUI extends javax.swing.JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new ManagerDashboard().setVisible(true);
+                new addProduct().setVisible(true);
             }
         });
     }

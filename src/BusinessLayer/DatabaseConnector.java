@@ -11,7 +11,7 @@ public class DatabaseConnector {
     private String password;
 
     public DatabaseConnector() {
-        this.url ="jdbc:mysql://localhost:3306/assignment3";
+        this.url ="jdbc:mysql://localhost:3306/randomn";
         this.username = "ostechnix";
         this.password = "Password123#@!";
     }

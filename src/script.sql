@@ -114,4 +114,13 @@ END //
 DELIMITER ;
 
 CALL GetAllProductsForCategory(1);
-ALTER TABLE  Operator RENAME TO SalesAssistant;
+select *from Admin;
+
+INSERT INTO Admin (username, name, password)
+VALUES ('admin1', 'Admin One', 'adminpassword1');
+
+INSERT INTO Manager (username, name, password)
+VALUES ('manager1', 'Manager One', 'managerpassword1');
+
+INSERT INTO Operator (username, name, password)
+VALUES ('operator1', 'Operator One', 'operatorpassword1');

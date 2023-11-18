@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Product implements Composite{
     private int id;
+    private int category_code;
     private Date exp;
     private double price;//price per tablet
 
@@ -15,7 +16,7 @@ public class Product implements Composite{
     private String description;
 
 
-    Product(){
+    public Product(){
 
     }
     @Override
@@ -24,6 +25,14 @@ public class Product implements Composite{
         System.out.println("Expiry "+exp);
         System.out.println("Price   "+ price);
 
+    }
+
+    public void setCategory_code(int category_code) {
+        this.category_code = category_code;
+    }
+
+    public int getCategory_code() {
+        return category_code;
     }
 
     public void setName(String name) {
