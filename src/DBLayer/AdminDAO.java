@@ -48,7 +48,7 @@ public class AdminDAO {
 
     public  void insertSalesAssistant(User salesAssistant) {
         try (Connection connection = DatabaseConnection.getConnection()) {
-            String query = "INSERT INTO SalesAssistant (username, name, password) VALUES (?, ?, ?)";
+            String query = "INSERT INTO Operator (username, name, password) VALUES (?, ?, ?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, salesAssistant.getUsername());
                 preparedStatement.setString(2, salesAssistant.getName());
@@ -87,7 +87,7 @@ public class AdminDAO {
         List<User> salesAssistants = new ArrayList<>();
 
         try (Connection connection = DatabaseConnection.getConnection()) {
-            String query = "SELECT * FROM SalesAssistant";
+            String query = "SELECT * FROM Operator";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query);
                  ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
