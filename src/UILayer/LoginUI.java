@@ -157,6 +157,7 @@ public class LoginUI extends javax.swing.JFrame {
                 new AdminUI().setVisible(true);
             }
         });
+        this.setVisible(false);
     }
     private void openManagerUI() {
         SwingUtilities.invokeLater(new Runnable() {
@@ -165,6 +166,7 @@ public class LoginUI extends javax.swing.JFrame {
                 new addProduct().setVisible(true);
             }
         });
+        this.setVisible(false);
     }
     private void openSalesAssistantUI() {
         SwingUtilities.invokeLater(new Runnable() {
@@ -173,6 +175,7 @@ public class LoginUI extends javax.swing.JFrame {
                 new SalesAssistantUI().setVisible(true);
             }
         });
+        this.setVisible(false);
     }
 
     public static void main(String args[]) {

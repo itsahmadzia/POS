@@ -130,3 +130,6 @@ DROP COLUMN name;
 
 
 select *from Product;
+select *from Operator;
+select *from Manager;
+select *from Admin;

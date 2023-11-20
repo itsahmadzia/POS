@@ -388,7 +388,7 @@ private void clearallfields(){
             return false;
         }
         catch (SQLDataException e) {
-            JOptionPane.showMessageDialog(null, "Product already exists ");
+            JOptionPane.showMessageDialog(null, "Product ID already exists ");
             return false;
         }
 return true;
