@@ -17,7 +17,7 @@ public class LoginUI extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         usernameTextField = new javax.swing.JTextField();
-        passwordField = new javax.swing.JTextField();
+        passwordField = new javax.swing.JPasswordField();
         typeComboBox = new javax.swing.JComboBox<>();
         loginButton = new javax.swing.JButton();
 
@@ -115,9 +115,10 @@ public class LoginUI extends javax.swing.JFrame {
             }
         private void performLogin() {
             String enteredUsername = usernameTextField.getText();
-            String enteredPassword = passwordField.getText();
+            char[] enteredPasswordChars = passwordField.getPassword();
+            String enteredPassword = new String(enteredPasswordChars);
             String selectedRole = (String) typeComboBox.getSelectedItem();
-            
+    
                 if ("Admin".equals(selectedRole)) {
                 Admin adminInstance = new Admin( enteredUsername, enteredPassword);
                 if (adminInstance.authenticateFromDB(enteredUsername, enteredPassword)) {
@@ -194,7 +195,7 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JButton loginButton;
-    private javax.swing.JTextField passwordField;
+    private javax.swing.JPasswordField passwordField;
     private javax.swing.JComboBox<String> typeComboBox;
     private javax.swing.JTextField usernameTextField;
     // End of variables declaration                   
