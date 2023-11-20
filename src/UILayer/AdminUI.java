@@ -310,6 +310,7 @@ public class AdminUI extends javax.swing.JFrame {
         if (dialogResult == JOptionPane.YES_OPTION) {
             setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
             this.dispose();
+
         }
     }                                             
 
