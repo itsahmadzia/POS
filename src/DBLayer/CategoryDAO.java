@@ -186,4 +186,21 @@ public class CategoryDAO {
         }
         return categoryList;
     }
+
+    public Integer getCategoryCodebyName(String categoryName) {
+        try {
+            String query = "SELECT id FROM Category WHERE name=?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, categoryName);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getInt("id");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.SQLDataException;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -206,19 +207,43 @@ public class addCategory extends javax.swing.JFrame {
         // TODO add your handling code here:
 
 
+        String name = null;
         try {
+            Boolean isroot=false;
             int id = Integer.parseInt(tfID.getText());
-            String name = tfCatName.getText();
-            if(new CategoryDAO().categoryExists(id)||new CategoryDAO().categoryNameExists(name)){
+            name = tfCatName.getText();
+            if (new CategoryDAO().categoryExists(id) || new CategoryDAO().categoryNameExists(name)) {
                 throw new SQLDataException();
             }
+            if (Objects.equals(comboCategories.getSelectedItem(), name)) {
+
+                throw new SQLDataException();
+            }
+            Category a = new Category();
+            a.setName(name);
+            a.setCode(id);
+            if(comboCategories.getSelectedItem().equals("<Null>")){
+                isroot=true;
+            }
+            else{
+                a.setParentCategoryName((String) comboCategories.getSelectedItem());
+            }
+            if(isroot){
+                new CategoryDAO().insertParentCategory(a.getCode(),a.getName());
+            }
+            else{
+                new CategoryDAO().insertCategory(a.getCode(),a.getName(),new CategoryDAO().getCategoryCodebyName(a.getParentCategoryName()));
         }
-        catch (NumberFormatException e){
-            JOptionPane.showMessageDialog(null,"PLEASE ENTER A NUMBER IN ID","ERROR",JOptionPane.ERROR_MESSAGE);
+
+            updatecomboBox();
+            loadCategoriesIntoTable();
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "PLEASE ENTER A NUMBER IN ID", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLDataException r) {
+            JOptionPane.showMessageDialog(null, "CATEGORY ALREADY EXISTS", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        catch (SQLDataException r){
-            JOptionPane.showMessageDialog(null,"CATEGORY ALREADY EXISTS","ERROR",JOptionPane.ERROR_MESSAGE);
-        }
+
 
     }
 
@@ -244,6 +269,15 @@ public class addCategory extends javax.swing.JFrame {
                   p.getParentCategoryName()
             };
             defaultTableModel.addRow(rowData);
+        }
+    }
+    void updatecomboBox(){
+        List<String> allcat= new CategoryDAO().getAllCategoriesName();
+       String f= comboCategories.getItemAt(0);
+        comboCategories.removeAllItems();;
+        comboCategories.addItem(f);
+        for(String t : allcat){
+            comboCategories.addItem(t);
         }
     }
 
