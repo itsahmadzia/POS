@@ -408,6 +408,13 @@ return true;
 
     private void jbUpdateActionPerformed(java.awt.event.ActionEvent evt) {
 //update button event
+        if(jtableproducts.getSelectedRow()!=-1) {
+            updateProduct up = new updateProduct(this);
+            up.setVisible(true);
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"PLEASE SELECT A PRODUCT TO EDIT");
+        }
         // TODO add your handling code here:
     }
 
@@ -462,6 +469,18 @@ return true;
             }
         });
     }
+
+  public String getDataatrow(){
+        int selected=jtableproducts.getSelectedRow();
+        StringBuilder s = new StringBuilder();
+        for(int i = 0 ; i < jtableproducts.getColumnCount();i++){
+            s.append(defaultTableModel.getValueAt(selected,i));
+            s.append(" ");
+        }
+
+        return s.toString();
+  }
+
 
     // Variables declaration - do not modify
     private com.toedter.calendar.JDateChooser expDate;

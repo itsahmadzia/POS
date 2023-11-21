@@ -5,6 +5,14 @@ package UILayer;
  */
 
 
+import BusinessLayer.Category;
+import DBLayer.CategoryDAO;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.sql.SQLDataException;
+import java.util.List;
+
 /**
  *
  * @author malik_sb
@@ -15,7 +23,14 @@ public class addCategory extends javax.swing.JFrame {
      * Creates new form addCategory
      */
     public addCategory() {
+
         initComponents();
+
+        List<String> allcats= new CategoryDAO().getAllCategoriesName();
+        for(String p:allcats){
+            comboCategories.addItem(p);
+        }
+        loadCategoriesIntoTable();
     }
 
     /**
@@ -88,7 +103,7 @@ public class addCategory extends javax.swing.JFrame {
             }
         });
 
-        jtableCategories.setModel(new javax.swing.table.DefaultTableModel(
+        jtableCategories.setModel(defaultTableModel=new javax.swing.table.DefaultTableModel(
                 new Object [][] {
 
                 },
@@ -104,6 +119,7 @@ public class addCategory extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+
         jScrollPane2.setViewportView(jtableCategories);
         if (jtableCategories.getColumnModel().getColumnCount() > 0) {
             jtableCategories.getColumnModel().getColumn(0).setResizable(false);
@@ -188,7 +204,22 @@ public class addCategory extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-        //add button here
+
+
+        try {
+            int id = Integer.parseInt(tfID.getText());
+            String name = tfCatName.getText();
+            if(new CategoryDAO().categoryExists(id)||new CategoryDAO().categoryNameExists(name)){
+                throw new SQLDataException();
+            }
+        }
+        catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(null,"PLEASE ENTER A NUMBER IN ID","ERROR",JOptionPane.ERROR_MESSAGE);
+        }
+        catch (SQLDataException r){
+            JOptionPane.showMessageDialog(null,"CATEGORY ALREADY EXISTS","ERROR",JOptionPane.ERROR_MESSAGE);
+        }
+
     }
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {
@@ -199,6 +230,21 @@ public class addCategory extends javax.swing.JFrame {
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {
 //delete
         // TODO add your handling code here:
+    }
+    private void loadCategoriesIntoTable() {
+       List<Category> catlist = new CategoryDAO().getAllCategories();
+
+
+        defaultTableModel.setRowCount(0);
+
+       for (Category p : catlist) {
+            Object[] rowData = {
+                    p.getCode(),
+                    p.getName(),
+                  p.getParentCategoryName()
+            };
+            defaultTableModel.addRow(rowData);
+        }
     }
 
     /**
@@ -250,5 +296,6 @@ public class addCategory extends javax.swing.JFrame {
     private javax.swing.JTable jtableCategories;
     private javax.swing.JTextField tfCatName;
     private javax.swing.JTextField tfID;
+    DefaultTableModel defaultTableModel=new DefaultTableModel();
     // End of variables declaration
 }

@@ -9,11 +9,15 @@ public class Category implements Composite {
     private List<Composite> children;
     private String description;
 
-    Category(int code, String name, String description) {
+    public Category(int code, String name, String description) {
         this.code = code;
         this.name = name;
         this.description = description;
         this.children = new ArrayList<>();
+    }
+
+    public Category() {
+
     }
 
     public void addComponent(Composite component) {
@@ -54,5 +58,13 @@ public class Category implements Composite {
 
     public List<Composite> getChildren() {
         return children;
+    }
+String parentCategoryName;
+    public void setParentCategoryName(String pparentCategoryName) {
+        parentCategoryName=pparentCategoryName;
+    }
+
+    public String getParentCategoryName() {
+        return parentCategoryName;
     }
 }

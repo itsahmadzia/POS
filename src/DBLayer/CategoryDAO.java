@@ -1,5 +1,7 @@
 package DBLayer;
 
+import BusinessLayer.Category;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +58,41 @@ public class CategoryDAO {
     public void insertParentCategory(int categoryId, String categoryName) {
         insertCategory(categoryId, categoryName, null);
     }
+    public boolean categoryExists(int categoryId) {
+        try {
+            String query = "SELECT COUNT(*) FROM Category WHERE id=?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, categoryId);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        int count = resultSet.getInt(1);
+                        return count > 0;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
-
+    public boolean categoryNameExists(String  categoryId) {
+        try {
+            String query = "SELECT COUNT(*) FROM Category WHERE name=?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, categoryId);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        int count = resultSet.getInt(1);
+                        return count > 0;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     public void deleteCategory(int categoryId) {
         try {
             String query = "DELETE FROM Category WHERE id = ?";
@@ -88,8 +123,55 @@ public class CategoryDAO {
         }
     }
 
+    public List<Category> getAllCategories() {
+        List<Category> categoryList = new ArrayList<>();
+        try {
+            String query = "SELECT id, name, parent_category_id FROM Category";
+            try (Statement statement = connection.createStatement();
+                 ResultSet resultSet = statement.executeQuery(query)) {
+                while (resultSet.next()) {
+                    Category category = new Category();
+                    category.setCode(resultSet.getInt("id"));
+                    category.setName(resultSet.getString("name"));
 
-    public List<String> getAllCategories() {
+
+                    int parentCategoryId = resultSet.getInt("parent_category_id");
+                    if (!resultSet.wasNull()) {
+                       Category parentCategoryName =getCategoryById(parentCategoryId);
+                        category.setParentCategoryName(parentCategoryName.getName());
+                    }
+
+                    categoryList.add(category);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return categoryList;
+    }
+
+    private Category getCategoryById(int categoryId) {
+        Category category = null;
+        try {
+            String query = "SELECT * FROM Category WHERE id = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, categoryId);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        category = new Category();
+                        category.setCode(resultSet.getInt("id"));
+                        category.setName(resultSet.getString("name"));
+
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return category;
+    }
+
+    public List<String> getAllCategoriesName() {
         List<String> categoryList = new ArrayList<>();
         try {
             String query = "SELECT name FROM Category";

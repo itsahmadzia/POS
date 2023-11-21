@@ -14,10 +14,42 @@ public class updateProduct extends javax.swing.JFrame {
     /**
      * Creates new form updateProduct
      */
+    private int id;
     public updateProduct() {
         initComponents();
     }
     public updateProduct(addProduct p){
+        initComponents();
+        String selectedrow = p.getDataatrow();
+        String []sp=selectedrow.split(" ");
+        for(String s : sp){
+            System.out.println(s);
+        }
+
+        id= Integer.parseInt(sp[0]);
+            String name = sp[1];
+            String description = sp[2];
+            String price = sp[3];
+            String quantity = sp[4];
+
+        String stock = sp[6];
+        int category = Integer.parseInt(sp[7]);
+
+
+          double parsedPrice = Double.parseDouble(price);
+            int parsedQuantity = Integer.parseInt(quantity);
+            int parsedStock = Integer.parseInt(stock);
+        tfName.setText(name);
+        tfDesc.setText(description);
+        tfPrice.setText(price);
+        tfQuantity.setText(quantity);
+        tfStock.setText(stock);
+
+
+
+
+
+
 
     }
 
