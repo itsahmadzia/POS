@@ -114,6 +114,7 @@ END //
 DELIMITER ;
 
 CALL GetAllProductsForCategory(1);
+select *from Category;
 select *from Admin;
 
 INSERT INTO Admin (username, name, password)

@@ -203,4 +203,21 @@ public class CategoryDAO {
         }
         return null;
     }
+
+    public Object getNamebyID(int category) {
+        try {
+            String query = "SELECT name FROM Category WHERE id=?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, category);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getString("name");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

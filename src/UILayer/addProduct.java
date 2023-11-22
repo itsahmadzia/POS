@@ -6,6 +6,7 @@
 package UILayer;
 
 import BusinessLayer.Product;
+import DBLayer.CategoryDAO;
 import DBLayer.ProductDAO;
 
 import javax.swing.*;
@@ -305,7 +306,7 @@ if(addDatainDB()) {
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String formattedExpDate = dateFormat.format(expirationDate);
-               defaultTableModel.addRow(new Object[]{id, name, description, parsedPrice, parsedQuantity, formattedExpDate, parsedStock, category});
+               defaultTableModel.addRow(new Object[]{id, name, description, parsedPrice, parsedQuantity, formattedExpDate, parsedStock, new CategoryDAO().getNamebyID(category)});
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Please enter valid numeric values for ID, Price, Quantity, Stock, and Category.");
@@ -341,7 +342,7 @@ private void clearallfields(){
                     product.getQuantity_per_pack(),
                     product.getExp(),
                     product.getStock_quantity(),
-                    product.getCategory_code()
+                    new CategoryDAO().getNamebyID(product.getCategory_code())
             };
             defaultTableModel.addRow(rowData);
         }
