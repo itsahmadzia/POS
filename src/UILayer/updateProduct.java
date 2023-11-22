@@ -38,10 +38,19 @@ public class updateProduct extends javax.swing.JFrame {
         updateCombo();
         previous_screen =p;
         String selectedrow = p.getDataatrow();
-        String []sp=selectedrow.split(" ");
+        String []sp=selectedrow.split("\n");
         for(String s : sp){
             System.out.println(s);
         }
+        int idx =0 ;
+        for(int L=0;L< combCat.getItemCount();L++){
+            if(combCat.getItemAt(L).equals(sp[7])){
+                idx=L;
+                break ;
+
+            }
+        }
+        combCat.setSelectedIndex(idx);
 
         id= Integer.parseInt(sp[0]);
             String name = sp[1];

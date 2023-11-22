@@ -486,7 +486,7 @@ return true;
         StringBuilder s = new StringBuilder();
         for(int i = 0 ; i < jtableproducts.getColumnCount();i++){
             s.append(defaultTableModel.getValueAt(selected,i));
-            s.append(" ");
+            s.append("\n");
         }
 
         return s.toString();
