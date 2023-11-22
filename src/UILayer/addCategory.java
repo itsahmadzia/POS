@@ -253,9 +253,24 @@ public class addCategory extends javax.swing.JFrame {
     }
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {
-//delete
         // TODO add your handling code here:
+        int selectedRowIndex = jtableCategories.getSelectedRow();
+
+        if (selectedRowIndex != -1) {
+            int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this category?", "Confirmation", JOptionPane.YES_NO_OPTION);
+
+            if (response == JOptionPane.YES_OPTION) {
+                String productId = jtableCategories.getValueAt(selectedRowIndex, 0).toString();
+                defaultTableModel.removeRow(selectedRowIndex);
+                new CategoryDAO().deleteCategory(Integer.parseInt(productId));
+                loadCategoriesIntoTable();
+                updatecomboBox();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select a row to delete.");
+        }
     }
+
     private void loadCategoriesIntoTable() {
        List<Category> catlist = new CategoryDAO().getAllCategories();
 

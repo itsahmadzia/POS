@@ -286,6 +286,10 @@ public class addProduct extends javax.swing.JFrame {
     private void jBADDActionPerformed(java.awt.event.ActionEvent evt) {
 //add button code
 //
+        if(tfCategory.getItemCount()==0){
+            JOptionPane.showMessageDialog(null,"No categories exists to add product Add category first","ERROR",JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
 if(addDatainDB()) {
     addDatainGUI();

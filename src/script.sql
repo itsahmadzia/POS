@@ -6,6 +6,22 @@ CREATE TABLE Category (
                           parent_category_id INT,
                           FOREIGN KEY (parent_category_id) REFERENCES Category(id)
 );
+select *from Category;
+
+
+DELETE FROM Category WHERE parent_category_id IS NOT NULL AND parent_category_id NOT IN (SELECT id FROM Category);
+update Category set parent_category_id=null where parent_category_id is not null;
+
+ALTER TABLE Category
+    ADD CONSTRAINT fk_parent_category
+        FOREIGN KEY (parent_category_id)
+            REFERENCES Category(id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE;
+
+
+
+
 
 CREATE TABLE Product (
                          id INT PRIMARY KEY,
@@ -17,6 +33,19 @@ CREATE TABLE Product (
                          category_id INT,
                          FOREIGN KEY (category_id) REFERENCES Category(id)
 );
+ALTER TABLE Product
+    ADD CONSTRAINT fk_product_category
+        FOREIGN KEY (category_id)
+            REFERENCES Category(id)
+            ON UPDATE CASCADE
+            ON DELETE CASCADE;
+
+ALTER TABLE Product DROP FOREIGN KEY Product_ibfk_1;
+ALTER TABLE Category DROP FOREIGN KEY Category_ibfk_1;
+SHOW CREATE TABLE Product;
+SHOW CREATE TABLE Category;
+
+
 ALTER TABLE Product
     ADD COLUMN expiryDate DATE;
 CREATE TABLE order_t (
