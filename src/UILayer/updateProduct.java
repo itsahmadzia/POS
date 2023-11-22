@@ -5,6 +5,13 @@ package UILayer;
  */
 
 
+import BusinessLayer.Product;
+import DBLayer.CategoryDAO;
+import DBLayer.ProductDAO;
+
+import javax.swing.*;
+import java.util.List;
+
 /**
  *
  * @author malik
@@ -18,8 +25,18 @@ public class updateProduct extends javax.swing.JFrame {
     public updateProduct() {
         initComponents();
     }
+    void updateCombo(){
+        combCat.removeAllItems();
+        List<String> categories = new CategoryDAO().getAllCategoriesName(); // Assuming you have a method in CategoryDAO to get category names
+        for (String category : categories) {
+            combCat.addItem(category);
+        }
+    }
+    addProduct previous_screen;
     public updateProduct(addProduct p){
         initComponents();
+        updateCombo();
+        previous_screen =p;
         String selectedrow = p.getDataatrow();
         String []sp=selectedrow.split(" ");
         for(String s : sp){
@@ -33,7 +50,6 @@ public class updateProduct extends javax.swing.JFrame {
             String quantity = sp[4];
 
         String stock = sp[6];
-        int category = Integer.parseInt(sp[7]);
 
 
           double parsedPrice = Double.parseDouble(price);
@@ -77,7 +93,7 @@ public class updateProduct extends javax.swing.JFrame {
         btnCancel = new javax.swing.JButton();
         combCat = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel6.setText("Category");
 
@@ -108,7 +124,7 @@ public class updateProduct extends javax.swing.JFrame {
         jLabel9.setText("Price");
 
         btnUpdate.setForeground(new java.awt.Color(0, 153, 0));
-        btnUpdate.setText("Update");
+        btnUpdate.setText("Save");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
@@ -116,7 +132,7 @@ public class updateProduct extends javax.swing.JFrame {
         });
 
         btnCancel.setForeground(new java.awt.Color(204, 0, 0));
-        btnCancel.setText("Delete");
+        btnCancel.setText("Cancel");
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);
@@ -200,13 +216,50 @@ public class updateProduct extends javax.swing.JFrame {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-        //   dispose the current one
-        //  update and close but before that save it in DB
+        try {
+            ProductDAO productDAO = new ProductDAO();
+            List <Product> all = productDAO.getAllProducts();
+            Product previous = null;
+            for(Product itr : all){
+                if(itr.getId()==id){
+                    previous=itr;
+                    break;
+                }
+            }
+            Product n=previous;
+if(n==null){
+    return ;
+}
+
+            n.setCategory_code(new CategoryDAO().getCategoryCodebyName((String) combCat.getSelectedItem()));
+            n.setName(tfName.getText());
+            n.setDescription(tfDesc.getText());
+            n.setQuantity_per_pack(Integer.parseInt(tfQuantity.getText()));
+            n.setStock_quantity(Integer.parseInt(tfStock.getText()));
+            n.setPrice(Double.parseDouble(tfPrice.getText()));
+            productDAO.updateProduct(n,id);
+            previous_screen.loadProductsIntoTable();
+            this.dispose();
+
+
+
+        }
+        catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(null,"Please enter valid values ","ERROR",JOptionPane.ERROR_MESSAGE);
+            e.getCause();
+        }
+
+
+
+
+
+
     }
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         //go back to previous screen
+        this.dispose();
     }
 
     /**

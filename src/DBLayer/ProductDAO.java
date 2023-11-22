@@ -70,7 +70,7 @@ public class ProductDAO {
     public void updateProduct(Product product,int iid ) {
         try {
             String query = "UPDATE Product SET name=?, price=?, stock_quantity=?, " +
-                    "quantity_per_pack=?, description=?, category_id=?, expiryDate=? WHERE id=?";
+                    "quantity_per_pack=?, description=?, category_id=? WHERE id=?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, product.getName());
                 preparedStatement.setDouble(2, product.getPrice());
@@ -79,10 +79,7 @@ public class ProductDAO {
                 preparedStatement.setString(5, product.getDescription());
                 preparedStatement.setInt(6, product.getCategory_code());
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                String formattedDate = dateFormat.format(product.getExp());
-
-                preparedStatement.setDate(7, java.sql.Date.valueOf(formattedDate));
-                preparedStatement.setInt(8,iid);
+                 preparedStatement.setInt(7,iid);
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {

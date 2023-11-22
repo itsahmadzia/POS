@@ -116,6 +116,7 @@ DELIMITER ;
 CALL GetAllProductsForCategory(1);
 select *from Category;
 select *from Admin;
+select *from Product;
 
 INSERT INTO Admin (username, name, password)
 VALUES ('admin1', 'Admin One', 'adminpassword1');

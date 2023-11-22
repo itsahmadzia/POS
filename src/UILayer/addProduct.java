@@ -40,7 +40,15 @@ public class addProduct extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
+    void updateCombo(){
+        tfCategory.removeAllItems();
+        List<String> categories = new CategoryDAO().getAllCategoriesName(); // Assuming you have a method in CategoryDAO to get category names
+        for (String category : categories) {
+            tfCategory.addItem(category);
+        }
+    }
     private void initComponents() {
+
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -53,7 +61,7 @@ public class addProduct extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         tfName = new javax.swing.JTextField();
         tfDesc = new javax.swing.JTextField();
-        tfCategory = new javax.swing.JTextField();
+        tfCategory = new JComboBox<>();
         jBADD = new javax.swing.JButton();
         jbUpdate = new javax.swing.JButton();
         jbDelete = new javax.swing.JButton();
@@ -64,7 +72,7 @@ public class addProduct extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         tfPrice = new javax.swing.JTextField();
-
+        updateCombo();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(1000, 1000));
@@ -288,7 +296,7 @@ if(addDatainDB()) {
         // TODO add your handling code here:
     }
 
-    private void addDatainGUI() {
+    public void addDatainGUI() {
         try {
 
             int id = Integer.parseInt(tfID.getText());
@@ -297,7 +305,7 @@ if(addDatainDB()) {
             String price = tfPrice.getText();
             String quantity = tfQuantity.getText();
             String stock = tfStock.getText();
-            int category = Integer.parseInt(tfCategory.getText());
+           String category = (String) tfCategory.getSelectedItem();
             java.util.Date expirationDate = expDate.getDate();
 
             double parsedPrice = Double.parseDouble(price);
@@ -306,7 +314,7 @@ if(addDatainDB()) {
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String formattedExpDate = dateFormat.format(expirationDate);
-               defaultTableModel.addRow(new Object[]{id, name, description, parsedPrice, parsedQuantity, formattedExpDate, parsedStock, new CategoryDAO().getNamebyID(category)});
+               defaultTableModel.addRow(new Object[]{id, name, description, parsedPrice, parsedQuantity, formattedExpDate, parsedStock, category});
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Please enter valid numeric values for ID, Price, Quantity, Stock, and Category.");
@@ -321,11 +329,11 @@ private void clearallfields(){
     tfPrice.setText("");
     tfQuantity.setText("");
     tfStock.setText("");
-    tfCategory.setText("");
+
     expDate.setDate(null);
 
 }
-    private void loadProductsIntoTable() {
+    public void loadProductsIntoTable() {
         // Assuming that ProductDAO.getAllProducts() returns a List<Product>
         List<Product> productList = new ProductDAO().getAllProducts();
 
@@ -357,7 +365,8 @@ private void clearallfields(){
             String price = tfPrice.getText();
             String quantity = tfQuantity.getText();
             String stock = tfStock.getText();
-            int category = Integer.parseInt(tfCategory.getText());
+            String  categoryname = ((String) tfCategory.getSelectedItem());
+            int category = new CategoryDAO().getCategoryCodebyName(categoryname);
             java.util.Date expirationDate = expDate.getDate();
 
             double parsedPrice = Double.parseDouble(price);
@@ -412,6 +421,7 @@ return true;
         if(jtableproducts.getSelectedRow()!=-1) {
             updateProduct up = new updateProduct(this);
             up.setVisible(true);
+
         }
         else{
             JOptionPane.showMessageDialog(null,"PLEASE SELECT A PRODUCT TO EDIT");
@@ -499,7 +509,7 @@ return true;
     private javax.swing.JButton jbDelete;
     private javax.swing.JButton jbUpdate;
     private javax.swing.JTable jtableproducts;
-    private javax.swing.JTextField tfCategory;
+    private JComboBox<String> tfCategory;
     private javax.swing.JTextField tfDesc;
     private javax.swing.JTextField tfID;
     private javax.swing.JTextField tfName;
