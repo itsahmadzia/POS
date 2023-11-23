@@ -1,6 +1,8 @@
 package BusinessLayer;
+
 import DBLayer.AdminDAO;
-import java.util.ArrayList;
+
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 public class Admin {
@@ -15,7 +17,7 @@ public class Admin {
         this.AdminDAO = new AdminDAO();
     }
 
-    public void addUser(String name, String username, String password, String userType) {
+    public void addUser(String name, String username, String password, String userType) throws SQLIntegrityConstraintViolationException {
 
         if ("Manager".equals(userType)) {
             User managerUser = new User(name, username, password);

@@ -26,6 +26,7 @@ public class Main {
         product4.setPrice(10000.123);
         product4.setStock_quantity(7);
 
+
         Category root = new Category(1,"root","main");
 
         Category cat1= new Category(2,"A","main");

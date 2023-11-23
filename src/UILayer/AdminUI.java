@@ -1,11 +1,11 @@
 package UILayer;
 
 import BusinessLayer.Admin;
-import BusinessLayer.Role;
 import BusinessLayer.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -322,20 +322,36 @@ public class AdminUI extends javax.swing.JFrame {
     }                                      
 
     private void addButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                           
-          String username = usernameTextField.getText();
-          String name = nameTextField.getText();
-          String password = passwordTextField.getText();
-          String userType = jComboBox.getSelectedItem().toString();
+       try{
+           String username = usernameTextField.getText();
+           String name = nameTextField.getText();
+           String password = passwordTextField.getText();
+           String userType = jComboBox.getSelectedItem().toString();
+           if(username.isEmpty()||name.isEmpty()||password.isEmpty()){
+               JOptionPane.showMessageDialog(null, "Please enter all values","ERROR",JOptionPane.ERROR_MESSAGE);
 
-          adminInstance.addUser(name, username, password, userType);
-          updateTableFromDatabase();
-          
-          usernameTextField.setText("");
-          nameTextField.setText("");
-          passwordTextField.setText("");
-          jComboBox.setSelectedIndex(0); 
+               return ;
+
+           }
+
+           adminInstance.addUser(name, username, password, userType);
+           updateTableFromDatabase();
+
+           clearFields();
+           jComboBox.setSelectedIndex(0);
+       }
+       catch (SQLIntegrityConstraintViolationException e){
+           JOptionPane.showMessageDialog(null, "Duplicate entry found","ERROR",JOptionPane.ERROR_MESSAGE);
+            clearFields();
+       }
+
        
-    }                                          
+    }
+    void clearFields(){
+        usernameTextField.setText("");
+        nameTextField.setText("");
+        passwordTextField.setText("");
+    }
    
     public void updateTableFromDatabase() {
 
@@ -373,7 +389,7 @@ public class AdminUI extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                LoginUI loginUI = new LoginUI();
+                AdminUI loginUI = new AdminUI();
                 loginUI.setVisible(true); 
             }
         });

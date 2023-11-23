@@ -2,10 +2,8 @@ package DBLayer;
 
 import BusinessLayer.Admin;
 import BusinessLayer.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +30,7 @@ public class AdminDAO {
         }
     }
     
-    public  void insertManager(User manager) {
+    public  void insertManager(User manager) throws SQLIntegrityConstraintViolationException {
         try (Connection connection = DatabaseConnection.getConnection()) {
             String query = "INSERT INTO Manager (username, name, password) VALUES (?, ?, ?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -42,11 +40,12 @@ public class AdminDAO {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLIntegrityConstraintViolationException();
+
         }
     }
 
-    public  void insertSalesAssistant(User salesAssistant) {
+    public  void insertSalesAssistant(User salesAssistant) throws SQLIntegrityConstraintViolationException{
         try (Connection connection = DatabaseConnection.getConnection()) {
             String query = "INSERT INTO Operator (username, name, password) VALUES (?, ?, ?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -56,7 +55,7 @@ public class AdminDAO {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLIntegrityConstraintViolationException();
         }
     }
     
