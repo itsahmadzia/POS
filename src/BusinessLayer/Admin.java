@@ -16,17 +16,20 @@ public class Admin {
     }
 
     public void addUser(String name, String username, String password, String userType) {
-        
+
         if ("Manager".equals(userType)) {
-            User manager = new User(name,username,password,userType);
-            AdminDAO.insertManager(manager);
+            User managerUser = new User(name, username, password);
+            Role managerRole = new Manager();
+            managerUser.setRole(managerRole);
+            AdminDAO.insertManager(managerUser);
             
         } else if ("Sales Assistant".equals(userType)) {
-            User salesAssistant = new User(name,username,password,userType);
-            AdminDAO.insertSalesAssistant(salesAssistant);
+            User salesAssistantUser = new User(name, username, password);
+            Role salesAssistantRole = new SalesAssistant();
+            salesAssistantUser.setRole(salesAssistantRole);
+            AdminDAO.insertSalesAssistant(salesAssistantUser);
         }
     }
-    
     
     public boolean isLoggedIn() {
         return LoggedIn;
@@ -47,8 +50,8 @@ public class Admin {
         return AdminDAO.getAllSalesAssistants();
     }
     
-    public boolean deleteUser(String username, String userType) {
-        boolean deleted = AdminDAO.deleteUser(username, userType);
+    public boolean deleteUser(String username ,String roleType) {
+        boolean deleted = AdminDAO.deleteUser(username,roleType);
         /*
         if (deleted) {
             System.out.println(" deleted from the database: " + username);
