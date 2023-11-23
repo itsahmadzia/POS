@@ -113,40 +113,63 @@ public class LoginUI extends javax.swing.JFrame {
     private void typeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {                                             
 
             }
-        private void performLogin() {
-            String enteredUsername = usernameTextField.getText();
-            char[] enteredPasswordChars = passwordField.getPassword();
-            String enteredPassword = new String(enteredPasswordChars);
-            String selectedRole = (String) typeComboBox.getSelectedItem();
     
-                if ("Admin".equals(selectedRole)) {
-                Admin adminInstance = new Admin( enteredUsername, enteredPassword);
-                if (adminInstance.authenticateFromDB(enteredUsername, enteredPassword)) {
-                    openAdminUI();
-                    }
-                else {
-                    JOptionPane.showMessageDialog(this, "Invalid username or password", "Login Failed", JOptionPane.ERROR_MESSAGE);
-                }
-                }else if ("Manager".equals(selectedRole)) {
-                     Manager managerInstance = new Manager(enteredUsername, enteredPassword);
-                     if (managerInstance.authenticateFromDB(enteredUsername, enteredPassword)) {
-                            openManagerUI();
-                     }
-                     else {
-                    JOptionPane.showMessageDialog(this, "Invalid username or password", "Login Failed", JOptionPane.ERROR_MESSAGE);
-                    }
-                   
-                } else if ("Sales Assistant".equals(selectedRole)) {
-                    SalesAssistant salesAssistantInstance = new SalesAssistant(enteredUsername, enteredPassword);
-                    if (salesAssistantInstance.authenticateFromDB(enteredUsername, enteredPassword)){
+    private void performLogin() {
+        String enteredUsername = usernameTextField.getText();
+        char[] enteredPasswordChars = passwordField.getPassword();
+        String enteredPassword = new String(enteredPasswordChars);
+        String selectedRole = (String) typeComboBox.getSelectedItem();
+
+        if ("Admin".equals(selectedRole)) {
+            Admin adminInstance = new Admin(enteredUsername, enteredPassword);
+
+            if (adminInstance.authenticateFromDB(enteredUsername, enteredPassword)) {
+                usernameTextField.setText("");
+                passwordField.setText("");
+                openAdminUI();
+            } else {
+                showError("Invalid credentials. Please try again.");
+            }
+        } else {
+            Role roleInstance = null;
+
+            if ("Manager".equals(selectedRole)) {
+                roleInstance = new Manager();
+            } else if ("Sales Assistant".equals(selectedRole)) {
+                roleInstance = new SalesAssistant();
+            }
+
+            if (roleInstance != null) {
+                User currentUser = new User(enteredUsername, enteredPassword, roleInstance);
+                boolean isAuthenticated = currentUser.authenticate(roleInstance, enteredUsername, enteredPassword, roleInstance.getRoleType());
+
+                if (isAuthenticated) {
+                    if (roleInstance instanceof Manager) {
+                         usernameTextField.setText("");
+                         passwordField.setText("");
+                        openManagerUI();
+                        
+                    } else if (roleInstance instanceof SalesAssistant) {
+                         usernameTextField.setText("");
+                         passwordField.setText("");
                         openSalesAssistantUI();
+                        
+                    } else {
+                        showError("Unknown role: " + roleInstance.getRoleType());
                     }
-                    else {
-                    JOptionPane.showMessageDialog(this, "Invalid username or password", "Login Failed", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    showError("Invalid credentials. Please try again.");
                 }
-                }
+            } else {
+                showError("Unknown role: " + selectedRole);
+            }
+        }
     }
-   
+
+    private void showError(String message) {
+        JOptionPane.showMessageDialog(this, message, "Login Failed", JOptionPane.ERROR_MESSAGE);
+    }
+
     public Admin getLoggedInAdmin() {
         return adminInstance;
     }
@@ -158,8 +181,8 @@ public class LoginUI extends javax.swing.JFrame {
                 new AdminUI().setVisible(true);
             }
         });
-        this.dispose();
     }
+    
     private void openManagerUI() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -167,8 +190,8 @@ public class LoginUI extends javax.swing.JFrame {
                 new addProduct().setVisible(true);
             }
         });
-        this.dispose();
     }
+    
     private void openSalesAssistantUI() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -176,7 +199,6 @@ public class LoginUI extends javax.swing.JFrame {
                 new SalesAssistantUI().setVisible(true);
             }
         });
-        this.dispose();
     }
 
     public static void main(String args[]) {
