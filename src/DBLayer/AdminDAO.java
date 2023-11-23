@@ -33,18 +33,18 @@ public class AdminDAO {
     }
     
     public  void insertManager(User manager) {
-    try (Connection connection = DatabaseConnection.getConnection()) {
-        String query = "INSERT INTO Manager (username, name, password) VALUES (?, ?, ?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, manager.getUsername());
-            preparedStatement.setString(2, manager.getName());
-            preparedStatement.setString(3, manager.getPassword());
-            preparedStatement.executeUpdate();
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            String query = "INSERT INTO Manager (username, name, password) VALUES (?, ?, ?)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, manager.getUsername());
+                preparedStatement.setString(2, manager.getName());
+                preparedStatement.setString(3, manager.getPassword());
+                preparedStatement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
     }
-}
 
     public  void insertSalesAssistant(User salesAssistant) {
         try (Connection connection = DatabaseConnection.getConnection()) {
@@ -60,7 +60,7 @@ public class AdminDAO {
         }
     }
     
-    public  List<User> getAllManagers() {
+    public List<User> getAllManagers() {
         List<User> managers = new ArrayList<>();
 
         try (Connection connection = DatabaseConnection.getConnection()) {
@@ -72,8 +72,11 @@ public class AdminDAO {
                     String name = resultSet.getString("name");
                     String password = resultSet.getString("password");
 
-                    User manager = new User(name, username, password, "Manager");
-                    managers.add(manager);
+                    User managerUser = new User(name, username, password);
+                    Role managerRole = new Manager();
+                    managerUser.setRole(managerRole);
+
+                    managers.add(managerUser);
                 }
             }
         } catch (SQLException e) {
@@ -82,8 +85,8 @@ public class AdminDAO {
 
         return managers;
     }
-
-    public  List<User> getAllSalesAssistants() {
+    
+    public List<User> getAllSalesAssistants() {
         List<User> salesAssistants = new ArrayList<>();
 
         try (Connection connection = DatabaseConnection.getConnection()) {
@@ -95,8 +98,11 @@ public class AdminDAO {
                     String name = resultSet.getString("name");
                     String password = resultSet.getString("password");
 
-                    User salesAssistant = new User(name, username, password, "Sales Assistant");
-                    salesAssistants.add(salesAssistant);
+                    User salesAssistantUser = new User(name, username, password);
+                    Role salesAssistantRole = new SalesAssistant();
+                    salesAssistantUser.setRole(salesAssistantRole);
+
+                    salesAssistants.add(salesAssistantUser);
                 }
             }
         } catch (SQLException e) {
@@ -105,10 +111,11 @@ public class AdminDAO {
 
         return salesAssistants;
     }
+
     
-    public boolean deleteUser(String username, String userType) {
+    public boolean deleteUser(String username, String roleType) {
         try (Connection connection = DatabaseConnection.getConnection()) {
-            String tableName = getUserTableName(userType);
+            String tableName = getUserTableName(roleType);
             String query = "DELETE FROM " + tableName + " WHERE username=?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, username);
@@ -121,13 +128,16 @@ public class AdminDAO {
             return false;
         }
     }
-    
-    private String getUserTableName(String userType) {
-        if ("Manager".equals(userType)) {
-            return "Manager";
-        } else if ("Sales Assistant".equals(userType)) {
-            return "SalesAssistant";
+
+    public String getUserTableName(String roleType) {
+        switch (roleType) {
+            case "Manager":
+                return "Manager";
+            case "Operator":
+                return "Operator";
+            default:
+                throw new IllegalArgumentException("Invalid role type");
         }
-        return null;
     }
+
 }
