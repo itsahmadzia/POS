@@ -276,8 +276,6 @@ public class AdminUI extends javax.swing.JFrame {
         int selectedRow = jTable1.getSelectedRow();
     if (selectedRow != -1) {
         User selectedUser = displayedUsers.get(selectedRow);
-
-        // Assuming the role is in the third column (index 2)
         String roleType = (String) jTable1.getValueAt(selectedRow, 2);
 
         displayedUsers.remove(selectedRow);
