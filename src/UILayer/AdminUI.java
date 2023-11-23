@@ -1,6 +1,7 @@
 package UILayer;
 
 import BusinessLayer.Admin;
+import BusinessLayer.Role;
 import BusinessLayer.User;
 
 import javax.swing.*;
@@ -184,6 +185,7 @@ public class AdminUI extends javax.swing.JFrame {
 
         logoutButton1.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
         logoutButton1.setText("Logout");
+        
         logoutButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 logoutButton1ActionPerformed(evt);
@@ -268,26 +270,27 @@ public class AdminUI extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>                        
-
-    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
-
+    }// </editor-fold>    
+    
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {
         int selectedRow = jTable1.getSelectedRow();
-        if (selectedRow != -1) {
-            int selectedIndex = displayedIndexes.get(selectedRow);
-            User selectedUser = displayedUsers.get(selectedIndex);
-            
-            displayedUsers.remove(selectedIndex);
-            displayedIndexes.remove(selectedRow);
-            tableModel.removeRow(selectedRow);
-            
-            adminInstance.deleteUser(selectedUser.getUsername(),selectedUser.getRole());
-        } else {
-            JOptionPane.showMessageDialog(this, "Please select a row to delete");
-        }
-        
-    }                                            
+    if (selectedRow != -1) {
+        User selectedUser = displayedUsers.get(selectedRow);
 
+        // Assuming the role is in the third column (index 2)
+        String roleType = (String) jTable1.getValueAt(selectedRow, 2);
+
+        displayedUsers.remove(selectedRow);
+        tableModel.removeRow(selectedRow);
+
+        adminInstance.deleteUser(selectedUser.getUsername(), roleType);
+    } else {
+        JOptionPane.showMessageDialog(this, "Please select a row to delete");
+    }
+
+}
+    
+    
     private void usernameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                                  
         // TODO add your handling code here:
     }                                                 
@@ -318,7 +321,7 @@ public class AdminUI extends javax.swing.JFrame {
             });
 
         }
-    }                                             
+    }                                      
 
     private void addButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                           
           String username = usernameTextField.getText();
@@ -336,33 +339,35 @@ public class AdminUI extends javax.swing.JFrame {
        
     }                                          
    
-public void updateTableFromDatabase() {
-    System.out.println("Updating table from database");
+    public void updateTableFromDatabase() {
 
-    List<User> users = adminInstance.getUserManagersFromDB();
-    List<User> users2 = adminInstance.getUserSalesAssistantFromDB();
+        List<User> users = adminInstance.getUserManagersFromDB();
+        List<User> users2 = adminInstance.getUserSalesAssistantFromDB();
 
-    jTable1.setModel(tableModel);
-    tableModel.setRowCount(0);
+        jTable1.setModel(tableModel);
+        tableModel.setRowCount(0);
 
-    displayedUsers.clear(); 
-    displayedIndexes.clear();
+        displayedUsers.clear(); 
+        displayedIndexes.clear();
 
     for (int i = 0; i < users.size(); i++) {
         User user = users.get(i);
-        System.out.println("Adding user to table: " + user.getName());
+        //System.out.println("Adding user to table: " + user.getName());
         displayedUsers.add(user);
         displayedIndexes.add(i);
-        tableModel.addRow(new Object[]{user.getName(), user.getUsername(), user.getRole()});
+
+        tableModel.addRow(new Object[]{user.getName(), user.getUsername(), user.getRole().getRoleType()});
     }
 
     for (int i = 0; i < users2.size(); i++) {
         User user = users2.get(i);
-        System.out.println("Adding user to table: " + user.getName());
+        //System.out.println("Adding user to table: " + user.getName());
         displayedUsers.add(user);
         displayedIndexes.add(i);
-        tableModel.addRow(new Object[]{user.getName(), user.getUsername(), user.getRole()});
+
+        tableModel.addRow(new Object[]{user.getName(), user.getUsername(), user.getRole().getRoleType()});
     }
+
 
     tableModel.fireTableDataChanged();
 }
@@ -371,7 +376,7 @@ public void updateTableFromDatabase() {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 LoginUI loginUI = new LoginUI();
-                loginUI.setVisible(true);
+                loginUI.setVisible(true); 
             }
         });
     }
