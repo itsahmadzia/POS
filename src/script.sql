@@ -45,9 +45,9 @@ ALTER TABLE Category DROP FOREIGN KEY Category_ibfk_1;
 SHOW CREATE TABLE Product;
 SHOW CREATE TABLE Category;
 select *from Admin;
+ALTER TABLE Category add column Description varchar(500);
 
-
-ALTER TABLE Product
+    ALTER TABLE Product
     ADD COLUMN expiryDate DATE;
 CREATE TABLE order_t (
                          id INT PRIMARY KEY,

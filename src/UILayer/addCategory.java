@@ -41,7 +41,7 @@ public class addCategory extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
-    private void initComponents() {
+    private void initComponents(){
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -55,6 +55,9 @@ public class addCategory extends javax.swing.JFrame {
         btnAdd = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jtableCategories = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        tfDescription = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -109,67 +112,79 @@ public class addCategory extends javax.swing.JFrame {
 
                 },
                 new String [] {
-                        "ID", "Name", "Parent Name"
+                        "ID", "Name", "Description", "Parent Name"
                 }
         ) {
             boolean[] canEdit = new boolean [] {
-                    false, false, false
+                    false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-
         jScrollPane2.setViewportView(jtableCategories);
-        if (jtableCategories.getColumnModel().getColumnCount() > 0) {
-            jtableCategories.getColumnModel().getColumn(0).setResizable(false);
-        }
+
+        jLabel4.setText("Description");
+
+        jLabel7.setBackground(new java.awt.Color(204, 255, 204));
+        jLabel7.setFont(new java.awt.Font("DejaVu Sans Mono", 1, 24)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(0, 0, 102));
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Add Category");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(27, 27, 27)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                                .addComponent(btnBack)
-                                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(jScrollPane2)
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addComponent(jLabel1)
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(tfID)
+                                                                .addGap(66, 66, 66)
+                                                                .addComponent(jLabel2)
+                                                                .addGap(32, 32, 32))
                                                         .addGroup(layout.createSequentialGroup()
                                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addGroup(layout.createSequentialGroup()
-                                                                                .addComponent(jLabel1)
-                                                                                .addGap(18, 18, 18)
-                                                                                .addComponent(tfID)
-                                                                                .addGap(66, 66, 66)
-                                                                                .addComponent(jLabel2)
-                                                                                .addGap(32, 32, 32))
-                                                                        .addGroup(layout.createSequentialGroup()
-                                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                        .addComponent(jLabel3)
-                                                                                        .addComponent(comboCategories, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                                .addGap(36, 36, 36)))
-                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addGroup(layout.createSequentialGroup()
-                                                                                .addGap(123, 123, 123)
-                                                                                .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                                .addGap(18, 18, 18)
-                                                                                .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                                .addGap(18, 18, 18)
-                                                                                .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                                                        .addComponent(tfCatName))))
-                                                .addGap(27, 27, 27))))
+                                                                        .addComponent(jLabel3)
+                                                                        .addComponent(comboCategories, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                .addGap(36, 36, 36)))
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                                .addGap(123, 123, 123)
+                                                                .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(btnUpdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                        .addComponent(tfCatName)))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel4)
+                                                .addGap(89, 89, 89)
+                                                .addComponent(tfDescription))
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addComponent(btnBack)
+                                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(27, 27, 27))
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
+                                .addGap(27, 27, 27)
                                 .addComponent(btnBack)
-                                .addGap(28, 28, 28)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(21, 21, 21)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel1)
                                         .addComponent(tfID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -177,18 +192,22 @@ public class addCategory extends javax.swing.JFrame {
                                         .addComponent(tfCatName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(layout.createSequentialGroup()
-                                                .addGap(30, 30, 30)
+                                                .addGap(120, 120, 120)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                         .addComponent(btnUpdate)
                                                         .addComponent(btnDelete)
                                                         .addComponent(btnAdd)))
                                         .addGroup(layout.createSequentialGroup()
-                                                .addGap(18, 18, 18)
+                                                .addGap(29, 29, 29)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jLabel4)
+                                                        .addComponent(tfDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(47, 47, 47)
                                                 .addComponent(jLabel3)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(comboCategories, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 30, Short.MAX_VALUE)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 225, Short.MAX_VALUE)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(29, 29, 29))
         );
 
@@ -201,6 +220,17 @@ public class addCategory extends javax.swing.JFrame {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+    }
+    public String getDataatrow(){
+        int selected=jtableCategories.getSelectedRow();
+
+        StringBuilder s = new StringBuilder();
+        for(int i = 0 ; i < jtableCategories.getColumnCount();i++){
+            s.append(defaultTableModel.getValueAt(selected,i));
+            s.append("\n");
+        }
+
+        return s.toString();
     }
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {
@@ -215,6 +245,7 @@ public class addCategory extends javax.swing.JFrame {
             if (new CategoryDAO().categoryExists(id) || new CategoryDAO().categoryNameExists(name)) {
                 throw new SQLDataException();
             }
+            String description = tfDescription.getText();
             if (Objects.equals(comboCategories.getSelectedItem(), name)) {
 
                 throw new SQLDataException();
@@ -222,6 +253,7 @@ public class addCategory extends javax.swing.JFrame {
             Category a = new Category();
             a.setName(name);
             a.setCode(id);
+            a.setDescription(description);
             if(comboCategories.getSelectedItem().equals("<Null>")){
                 isroot=true;
             }
@@ -229,14 +261,15 @@ public class addCategory extends javax.swing.JFrame {
                 a.setParentCategoryName((String) comboCategories.getSelectedItem());
             }
             if(isroot){
-                new CategoryDAO().insertParentCategory(a.getCode(),a.getName());
+                new CategoryDAO().insertParentCategory(a.getCode(),a.getName(),a.getDescription());
             }
             else{
-                new CategoryDAO().insertCategory(a.getCode(),a.getName(),new CategoryDAO().getCategoryCodebyName(a.getParentCategoryName()));
+                new CategoryDAO().insertCategory(a.getCode(),a.getName(),new CategoryDAO().getCategoryCodebyName(a.getParentCategoryName()),a.getDescription());
         }
 
             updatecomboBox();
             loadCategoriesIntoTable();
+            clearfields();
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "PLEASE ENTER A NUMBER IN ID", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -248,7 +281,17 @@ public class addCategory extends javax.swing.JFrame {
     }
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {
-//add btn here
+//Update btn here
+
+   if(jtableCategories.getSelectedRow()!=-1){
+ if(getDataatrow().length()==4) {
+     updateCategory ui = new updateCategory(getDataatrow());
+     ui.setVisible(true);
+ }
+ else{
+     System.out.println("Cannot edit root node");
+ }
+   }
         // TODO add your handling code here:
     }
 
@@ -265,10 +308,16 @@ public class addCategory extends javax.swing.JFrame {
                 new CategoryDAO().deleteCategory(Integer.parseInt(productId));
                 loadCategoriesIntoTable();
                 updatecomboBox();
+                clearfields();
             }
         } else {
             JOptionPane.showMessageDialog(null, "Please select a row to delete.");
         }
+    }
+    void clearfields(){
+        tfCatName.setText("");
+        tfID.setText("");
+        tfDescription.setText("");
     }
 
     private void loadCategoriesIntoTable() {
@@ -281,6 +330,7 @@ public class addCategory extends javax.swing.JFrame {
             Object[] rowData = {
                     p.getCode(),
                     p.getName(),
+                    p.getDescription(),
                   p.getParentCategoryName()
             };
             defaultTableModel.addRow(rowData);
@@ -340,10 +390,12 @@ public class addCategory extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jtableCategories;
     private javax.swing.JTextField tfCatName;
+    private javax.swing.JTextField tfDescription;
     private javax.swing.JTextField tfID;
     DefaultTableModel defaultTableModel=new DefaultTableModel();
     // End of variables declaration
