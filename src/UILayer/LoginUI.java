@@ -117,7 +117,12 @@ public class LoginUI extends javax.swing.JFrame {
     private void performLogin() {
         String enteredUsername = usernameTextField.getText();
         char[] enteredPasswordChars = passwordField.getPassword();
+
         String enteredPassword = new String(enteredPasswordChars);
+        if(enteredPassword.isEmpty()||enteredUsername.isEmpty()){
+            showError("Please enter username or password.");
+            return ;
+        }
         String selectedRole = (String) typeComboBox.getSelectedItem();
 
         if ("Admin".equals(selectedRole)) {
@@ -127,8 +132,10 @@ public class LoginUI extends javax.swing.JFrame {
                 usernameTextField.setText("");
                 passwordField.setText("");
                 openAdminUI();
+                this.dispose();
             } else {
                 showError("Invalid credentials. Please try again.");
+
             }
         } else {
             Role roleInstance = null;
@@ -148,11 +155,13 @@ public class LoginUI extends javax.swing.JFrame {
                          usernameTextField.setText("");
                          passwordField.setText("");
                         openManagerUI();
+                        this.dispose();
                         
                     } else if (roleInstance instanceof SalesAssistant) {
                          usernameTextField.setText("");
                          passwordField.setText("");
                         openSalesAssistantUI();
+                        this.dispose();
                         
                     } else {
                         showError("Unknown role: " + roleInstance.getRoleType());
@@ -168,6 +177,7 @@ public class LoginUI extends javax.swing.JFrame {
 
     private void showError(String message) {
         JOptionPane.showMessageDialog(this, message, "Login Failed", JOptionPane.ERROR_MESSAGE);
+
     }
 
     public Admin getLoggedInAdmin() {

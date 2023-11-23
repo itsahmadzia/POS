@@ -44,6 +44,7 @@ ALTER TABLE Product DROP FOREIGN KEY Product_ibfk_1;
 ALTER TABLE Category DROP FOREIGN KEY Category_ibfk_1;
 SHOW CREATE TABLE Product;
 SHOW CREATE TABLE Category;
+select *from Admin;
 
 
 ALTER TABLE Product
