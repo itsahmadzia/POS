@@ -175,8 +175,12 @@ CALL GetAllProductsForCategory(4);
 select *from Admin;
 select *from Product;
 select *from Category;
-INSERT INTO Admin (username, name, password)
-VALUES ('admin1', 'Admin One', 'adminpassword1');
+
+ALTER TABLE Admin
+DROP COLUMN name;
+
+INSERT INTO Admin (username, password)
+VALUES ('admin1', 'adminpassword1');
 
 INSERT INTO Manager (username, name, password)
 VALUES ('manager1', 'Manager One', 'managerpassword1');
@@ -184,8 +188,7 @@ VALUES ('manager1', 'Manager One', 'managerpassword1');
 INSERT INTO Operator (username, name, password)
 VALUES ('operator1', 'Operator One', 'operatorpassword1');
 
-ALTER TABLE Admin
-DROP COLUMN name;
+
 
 
 select *from Product;
