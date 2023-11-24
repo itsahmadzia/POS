@@ -1,5 +1,5 @@
-create database randomn;
-use randomn;
+create database randomn2;
+use randomn2;
 CREATE TABLE Category (
                           id INT PRIMARY KEY,
                           name VARCHAR(255) NOT NULL,
@@ -70,10 +70,33 @@ CREATE TABLE order_t_Item (
                               FOREIGN KEY (product_id) REFERENCES Product(id)
 );
 
+SELECT * FROM order_t_Item;
+SHOW CREATE TABLE order_t_Item;
 
+CREATE INDEX idx_product_price ON Product (price);
 
+ALTER TABLE order_t_Item DROP FOREIGN KEY order_t_Item_ibfk_2;
+ALTER TABLE order_t_Item DROP COLUMN product_id;
 
+CREATE INDEX idx_price ON Product (price);
 
+ALTER TABLE order_t_Item
+ADD COLUMN product_price DECIMAL(10, 2),
+ADD CONSTRAINT fk_order_item_product
+    FOREIGN KEY (price)
+    REFERENCES Product(price)
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION;
+
+CREATE INDEX idx_product_name ON Product (name);
+
+ALTER TABLE order_t_Item
+ADD COLUMN product_name VARCHAR(255),
+ADD CONSTRAINT fk_order_item_product_name
+    FOREIGN KEY (product_name)
+    REFERENCES Product(name)
+    ON UPDATE CASCADE
+    ON DELETE NO ACTION;
 
 
 SELECT * FROM Category;
