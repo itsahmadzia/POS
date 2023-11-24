@@ -20,6 +20,50 @@ public class ProductDAO {
             throw new RuntimeException(e);
         }
     }
+    public int getIDbyName(String name) {
+        try {
+            String query = "SELECT id FROM Product WHERE name=?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, name);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        return resultSet.getInt("id");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+         return -1;
+    }
+    public Product getProductByID(int productId) {
+        try {
+            String query = "SELECT * FROM Product WHERE id=?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, productId);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        Product product = new Product();
+                        product.setId(resultSet.getInt("id"));
+                        product.setName(resultSet.getString("name"));
+                        product.setPrice(resultSet.getDouble("price"));
+                        product.setStock_quantity(resultSet.getInt("stock_quantity"));
+                        product.setQuantity_per_pack(resultSet.getInt("quantity_per_pack"));
+                        product.setDescription(resultSet.getString("description"));
+                        product.setCategory_code(resultSet.getInt("category_id"));
+                        product.setExp(resultSet.getDate("expiryDate"));
+                        return product;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        // Return null or throw an exception based on your application's logic
+        return null;
+    }
+
+
 
     public void insertProduct(Product product) {
         try {

@@ -10,6 +10,7 @@ import DBLayer.CategoryDAO;
 import DBLayer.ProductDAO;
 
 import javax.swing.*;
+import java.sql.SQLDataException;
 import java.util.List;
 
 /**
@@ -22,6 +23,7 @@ public class updateProduct extends javax.swing.JFrame {
      * Creates new form updateProduct
      */
     private int id;
+
     public updateProduct() {
         initComponents();
     }
@@ -228,14 +230,8 @@ public class updateProduct extends javax.swing.JFrame {
         try {
             ProductDAO productDAO = new ProductDAO();
             List <Product> all = productDAO.getAllProducts();
-            Product previous = null;
-            for(Product itr : all){
-                if(itr.getId()==id){
-                    previous=itr;
-                    break;
-                }
-            }
-            Product n=previous;
+
+            Product n=productDAO.getProductByID(id);
 if(n==null){
     return ;
 }
@@ -246,7 +242,16 @@ if(n==null){
             n.setQuantity_per_pack(Integer.parseInt(tfQuantity.getText()));
             n.setStock_quantity(Integer.parseInt(tfStock.getText()));
             n.setPrice(Double.parseDouble(tfPrice.getText()));
-            productDAO.updateProduct(n,id);
+            //checking if the name is changed
+            String row =previous_screen.getDataatrow();
+            String []p=row.split("\n");
+            if(!(p[1].equals(n.getName()))) {
+               int id = productDAO.getIDbyName(n.getName());
+               if(id!=-1){
+                   throw new SQLDataException();
+               }
+            }
+            productDAO.updateProduct(n, id);
             previous_screen.loadProductsIntoTable();
             this.dispose();
 
@@ -256,11 +261,11 @@ if(n==null){
         catch (NumberFormatException e){
             JOptionPane.showMessageDialog(null,"Please enter valid values ","ERROR",JOptionPane.ERROR_MESSAGE);
             e.getCause();
+        } catch (SQLDataException e) {
+            JOptionPane.showMessageDialog(null,"Product already exist ","ERROR",JOptionPane.ERROR_MESSAGE);
+            e.getCause();
+            throw new RuntimeException(e);
         }
-
-
-
-
 
 
     }

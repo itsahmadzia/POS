@@ -364,7 +364,12 @@ private void clearallfields(){
         try {
 
             int id = Integer.parseInt(tfID.getText());
+            ProductDAO d = new ProductDAO();
+
             String name = tfName.getText();
+            if(d.productExists(id)||d.getIDbyName(name)!=-1){
+throw new SQLDataException();
+            }
             String description = tfDesc.getText();
             String price = tfPrice.getText();
             String quantity = tfQuantity.getText();
@@ -402,7 +407,7 @@ private void clearallfields(){
             return false;
         }
         catch (SQLDataException e) {
-            JOptionPane.showMessageDialog(null, "Product ID already exists ");
+            JOptionPane.showMessageDialog(null, "Product already exists ");
             return false;
         }
 return true;

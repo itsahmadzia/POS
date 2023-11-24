@@ -19,6 +19,8 @@ public class CategoryDAO {
         }
     }
 
+
+
     public List<String> getProductsInCategory(int categoryId) {
         List<String> productList = new ArrayList<>();
         try {
@@ -28,6 +30,23 @@ public class CategoryDAO {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     while (resultSet.next()) {
                         productList.add(resultSet.getString("name"));
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return productList;
+    }
+    public List<String> getProductsInCategorytillleaf(int categoryId) {
+        List<String> productList = new ArrayList<>();
+        try {
+            String query = "CALL GetAllProductsForCategory(?)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, categoryId);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        productList.add(resultSet.getString("product_name"));
                     }
                 }
             }
