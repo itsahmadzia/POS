@@ -1,5 +1,5 @@
-create database randomn2;
-use randomn2;
+create database randomn;
+use randomn;
 CREATE TABLE Category (
                           id INT PRIMARY KEY,
                           name VARCHAR(255) NOT NULL,
