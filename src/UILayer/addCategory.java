@@ -284,13 +284,16 @@ public class addCategory extends javax.swing.JFrame {
 //Update btn here
 
    if(jtableCategories.getSelectedRow()!=-1){
- if(getDataatrow().length()==4) {
-     updateCategory ui = new updateCategory(getDataatrow());
+       String []s=getDataatrow().split("\n");
+
+ if(s.length<=4) {
+     updateCategory ui = new updateCategory(getDataatrow(),this);
      ui.setVisible(true);
  }
- else{
-     System.out.println("Cannot edit root node");
- }
+
+   }
+   else{
+       JOptionPane.showMessageDialog(null,"Please select a row to edit","ERROR",JOptionPane.ERROR_MESSAGE);
    }
         // TODO add your handling code here:
     }
@@ -320,7 +323,7 @@ public class addCategory extends javax.swing.JFrame {
         tfDescription.setText("");
     }
 
-    private void loadCategoriesIntoTable() {
+    public void loadCategoriesIntoTable() {
        List<Category> catlist = new CategoryDAO().getAllCategories();
 
 

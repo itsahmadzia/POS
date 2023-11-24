@@ -17,7 +17,7 @@ public class Category implements Composite {
     }
 
     public Category() {
-parentCategoryName="";
+
     }
 
     public void addComponent(Composite component) {

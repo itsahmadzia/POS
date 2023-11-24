@@ -39,6 +39,10 @@ ALTER TABLE Product
             REFERENCES Category(id)
             ON UPDATE CASCADE
             ON DELETE CASCADE;
+select *from Category;
+ALTER TABLE Category
+    ADD CONSTRAINT unique_category_name UNIQUE (name);
+
 
 ALTER TABLE Product DROP FOREIGN KEY Product_ibfk_1;
 ALTER TABLE Category DROP FOREIGN KEY Category_ibfk_1;
@@ -143,11 +147,11 @@ BEGIN
 END //
 DELIMITER ;
 
-CALL GetAllProductsForCategory(1);
-select *from Category;
+CALL GetAllProductsForCategory(4);
+
 select *from Admin;
 select *from Product;
-
+select *from Category;
 INSERT INTO Admin (username, name, password)
 VALUES ('admin1', 'Admin One', 'adminpassword1');
 

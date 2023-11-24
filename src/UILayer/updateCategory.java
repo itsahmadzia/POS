@@ -4,9 +4,13 @@
  */
 package UILayer;
 
+import BusinessLayer.Category;
 import DBLayer.CategoryDAO;
 
+import javax.swing.*;
+import java.sql.SQLDataException;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -19,16 +23,24 @@ private int categorycode;
      * Creates new form updateCategory
      */
     String rowdata="";
+    addCategory previous;
     public updateCategory() {
         initComponents();
     }
-    public updateCategory(String getRowData) {
+    public updateCategory(String getRowData,addCategory u) {
         initComponents();
+        previous=u;
         this.rowdata=getRowData;
 updatecomboBox();
         String []s = getRowData.split("\n");
+        if(s.length==3){
+            comboCategories.setVisible(true);
+            comboCategories.removeAllItems();
+            comboCategories.addItem("<Null>");
+        }
         tfCatName.setText(s[1]);
         tfDescription.setText(s[2]);
+        categorycode= Integer.parseInt(s[0]);
         if(s.length==4){
             System.out.println("true");
             String parentname=s[3];
@@ -163,6 +175,50 @@ updatecomboBox();
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
+        String name = null;
+        String []p=rowdata.split("\n");
+
+        try {
+            Boolean isroot=false;
+            name = tfCatName.getText();
+
+            String description = tfDescription.getText();
+            if (Objects.equals(comboCategories.getSelectedItem(), name)) {
+
+                throw new SQLDataException();
+            }
+            Category a = new Category();
+            a.setName(name);
+            a.setCode(categorycode);
+            a.setDescription(description);
+            //if name changes
+            boolean namechange = false;
+            namechange= !name.equals(p[1]);
+            if(new CategoryDAO().categoryNameExists(name)&&namechange){
+                throw new SQLDataException();
+            }
+            if(comboCategories.getSelectedItem().equals("<Null>")){
+                isroot=true;
+            }
+            else{
+                a.setParentCategoryName((String) comboCategories.getSelectedItem());
+            }
+
+            if(isroot){
+                new CategoryDAO().updateCategory(a.getCode(),a.getName(),null,description);
+            }
+            else{
+                new CategoryDAO().updateCategory(a.getCode(),a.getName(),new CategoryDAO().getCategoryCodebyName(a.getParentCategoryName()),a.getDescription());
+            }
+            this.dispose();
+            previous.loadCategoriesIntoTable();
+
+
+
+        }  catch (SQLDataException r) {
+            JOptionPane.showMessageDialog(null, "CATEGORY ALREADY EXISTS", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+
 
     }//GEN-LAST:event_btnUpdateActionPerformed
 

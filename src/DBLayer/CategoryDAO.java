@@ -116,7 +116,7 @@ public class CategoryDAO {
                 } else {
                     preparedStatement.setInt(2, newParentCategoryId);
                 }
-                preparedStatement.setString(2,description);
+                preparedStatement.setString(3,description);
                 preparedStatement.setInt(4, categoryId);
                 preparedStatement.executeUpdate();
             }
