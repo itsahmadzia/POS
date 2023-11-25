@@ -36,6 +36,7 @@ public class ProductDAO {
         }
          return -1;
     }
+  
     public Product getProductByID(int productId) {
         try {
             String query = "SELECT * FROM Product WHERE id=?";
@@ -159,4 +160,76 @@ public class ProductDAO {
         }
         return false;
     }
+
+    public double getProductPriceFromDB(int productId) {
+        double price = 0.0;
+        try {
+            String sql = "SELECT price FROM Product WHERE id = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setInt(1, productId);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        price = resultSet.getDouble("price");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return price;
+    }
+    //
+    public boolean getPackFromDB(int productId, int orderedQuantity) {
+        try {
+            String sql = "SELECT stock_quantity, quantity_per_pack FROM Product WHERE id = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setInt(1, productId);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        int stockQuantity = resultSet.getInt("stock_quantity");
+                        int quantityPerPack = resultSet.getInt("quantity_per_pack");
+
+                        if (orderedQuantity <= stockQuantity) {
+                            return orderedQuantity % quantityPerPack == 0;
+                        }
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); 
+        }
+        return false;
+    }
+    
+ public Product getProductFromDatabase(int productId) {
+    try {
+        String query = "SELECT * FROM Product WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, productId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    int categoryCode = resultSet.getInt("category_id");
+                    Date expiryDate = resultSet.getDate("expiryDate");
+                    double price = resultSet.getDouble("price");
+                    String name = resultSet.getString("name");
+                    int stockQuantity = resultSet.getInt("stock_quantity");
+                    int quantityPerPack = resultSet.getInt("quantity_per_pack");
+                    String description = resultSet.getString("description");
+
+                    return new Product(id, categoryCode, expiryDate, price, name, stockQuantity, quantityPerPack, description);
+                } else {
+                    return null; 
+                }
+            }
+        }
+    } catch (SQLException e) {
+ 
+        return null;
+    }
+}
+   
 }
