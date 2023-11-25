@@ -1,16 +1,21 @@
 package BusinessLayer;
-
 public  class  Item {
-
     private int quantityorder;
     private String itemname;
     Boolean pack;
     private double price;
+    private Product product;
+    
+      public Item(Product product, int quantityOrdered) {
+        this.product = product;
+        this.quantityorder = quantityOrdered;
+        this.pack = false; 
+    }
 
     public void setPack(Boolean pack) {
         this.pack = pack;
     }
-    Item(){}
+    public Item(){}
 
     public int getQuantityorder() {
         return quantityorder;
@@ -45,22 +50,22 @@ public  class  Item {
         return itemname;
     }
 
-    public void total(Product p) {
-
-        if(pack) {
-            if(p.updateStock(p.getQuantity_per_pack()*quantityorder))
-            {
+    public double total(Product p) {
+        if (pack) {
+            if (p.updateStock(p.getQuantity_per_pack() * quantityorder)) {
                 price = p.get_Price_of_one_pack() * quantityorder;
+                itemname = p.getName();
             }
-
-
-        }
-        else {
-            if (p.updateStock(quantityorder))
-            {
+        } else {
+            if (p.updateStock(quantityorder)) {
                 price = p.getPrice() * quantityorder;
+                itemname = p.getName();
             }
         }
-        itemname=p.getName();
+        return price;
     }
+     public Product getProduct() {
+        return product;
+    }
+     
 }
