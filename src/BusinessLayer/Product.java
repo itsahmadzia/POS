@@ -1,5 +1,6 @@
 package BusinessLayer;
 
+import DBLayer.ProductDAO;
 import java.util.Date;
 
 public class Product implements Composite{
@@ -10,14 +11,30 @@ public class Product implements Composite{
 
     private String name;
     private int stock_quantity;//total tablets available
-
     private int quantity_per_pack;//for a standard panadol we have 14 tablets
-
     private String description;
+    
+    ProductDAO ProductDAO;
+    
+    public Product(int id, int category_code, Date exp, double price, String name,int stock_quantity,int quantity_per_pack,String description){
+        this.id = id;
+        this.category_code = category_code;
+        this.exp = exp;
+        this.price = price;
+        this.name = name;
+        this.stock_quantity = stock_quantity;
+        this.quantity_per_pack = quantity_per_pack;
+        this.description = description;
+        this.ProductDAO = new ProductDAO();
+    
+    }
+    public Product(int id) {
+        this.id = id;
+    }
 
 
     public Product(){
-
+        this.ProductDAO = new ProductDAO();
     }
     @Override
     public void display() {
@@ -109,5 +126,24 @@ public class Product implements Composite{
         return (double) (price*quantity_per_pack);
     }
 
+    public double getProductPriceFromDB(int productId) {
+        return price;
+    }
+    //
+    public boolean getPackFromDB(int productId, int orderedQuantity) {
+        return getPackFromDB(productId, orderedQuantity);
+    }
+    
+    public boolean productExists(int productId) {
+        return ProductDAO.productExists(productId);
+    }
+    public Product getProductFromDB(int productId) {
+        return ProductDAO.getProductFromDatabase(productId);
+    }
+    public int getProductbyNameFromDB(String productName) {
+        return ProductDAO.getIDbyName(productName);
+    }
 
+
+    
 }
