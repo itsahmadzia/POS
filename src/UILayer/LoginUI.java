@@ -9,6 +9,7 @@ public class LoginUI extends javax.swing.JFrame {
         initComponents();
     }
     Admin adminInstance; 
+    User userInstance;
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
@@ -148,19 +149,24 @@ public class LoginUI extends javax.swing.JFrame {
 
             if (roleInstance != null) {
                 User currentUser = new User(enteredUsername, enteredPassword, roleInstance);
-                boolean isAuthenticated = currentUser.authenticate(roleInstance, enteredUsername, enteredPassword, roleInstance.getRoleType());
+                boolean isAuthenticated = currentUser.authenticate(enteredUsername, enteredPassword, roleInstance.getRoleType());
+                currentUser.setName(currentUser.getName(enteredUsername,roleInstance.getRoleType()) );
 
                 if (isAuthenticated) {
                     if (roleInstance instanceof Manager) {
                          usernameTextField.setText("");
                          passwordField.setText("");
+                         userInstance = currentUser;
                         openManagerUI();
                         this.dispose();
                         
                     } else if (roleInstance instanceof SalesAssistant) {
                          usernameTextField.setText("");
                          passwordField.setText("");
-                        openSalesAssistantUI();
+                         //openSalesAssistantUI();
+                         userInstance = currentUser;
+                          //System.out.println("currentUser "+currentUser.getName()+" \n");
+                           openSalesAssistantUI(userInstance);
                         this.dispose();
                         
                     } else {
@@ -202,11 +208,12 @@ public class LoginUI extends javax.swing.JFrame {
         });
     }
     
-    private void openSalesAssistantUI() {
+    private void openSalesAssistantUI(User user) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new SalesAssistantUI().setVisible(true);
+               // new SalesAssistantUI().setVisible(true);
+                new SalesAssistantUI(userInstance).setVisible(true);
             }
         });
     }
@@ -221,6 +228,9 @@ public class LoginUI extends javax.swing.JFrame {
     }                                            
 
 
+    public User getUserInstance(User user){
+        return userInstance;
+    }
 
     // Variables declaration - do not modify                     
     private javax.swing.JLabel jLabel1;
