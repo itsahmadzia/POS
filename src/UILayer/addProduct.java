@@ -338,13 +338,8 @@ private void clearallfields(){
 
 }
     public void loadProductsIntoTable() {
-        // Assuming that ProductDAO.getAllProducts() returns a List<Product>
-        List<Product> productList = new ProductDAO().getAllProducts();
-
-        // Clear existing data in the table
-        defaultTableModel.setRowCount(0);
-
-        // Iterate through the productList and add each product to the table model
+         List<Product> productList = new ProductDAO().getAllProducts();
+   defaultTableModel.setRowCount(0);
         for (Product product : productList) {
             Object[] rowData = {
                     product.getId(),

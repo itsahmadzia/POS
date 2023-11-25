@@ -7,6 +7,7 @@ import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ProductDAO {
 
@@ -60,7 +61,6 @@ public class ProductDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        // Return null or throw an exception based on your application's logic
         return null;
     }
 
@@ -231,5 +231,84 @@ public class ProductDAO {
         return null;
     }
 }
-   
+    public List<Product> searchProductsById(int searchId) {
+        List<Product> matchingProducts = new ArrayList<>();
+        try {
+            String query = "SELECT * FROM Product WHERE id LIKE ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, searchId);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        Product product = new Product();
+                        product.setId(resultSet.getInt("id"));
+                        product.setName(resultSet.getString("name"));
+                        product.setPrice(resultSet.getDouble("price"));
+                        product.setStock_quantity(resultSet.getInt("stock_quantity"));
+                        product.setQuantity_per_pack(resultSet.getInt("quantity_per_pack"));
+                        product.setDescription(resultSet.getString("description"));
+                        product.setCategory_code(resultSet.getInt("category_id"));
+                        product.setExp(resultSet.getDate("expiryDate"));
+                        matchingProducts.add(product);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return matchingProducts;
+    }
+    public List<Product> searchProductsByName(String searchName) {
+        List<Product> matchingProducts = new ArrayList<>();
+        try {
+            if(Objects.equals(searchName, "")){
+                return null;
+            }
+            String query = "SELECT * FROM Product WHERE name LIKE ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, "%"+searchName+"%");
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        Product product = new Product();
+                        product.setId(resultSet.getInt("id"));
+                        product.setName(resultSet.getString("name"));
+                        product.setPrice(resultSet.getDouble("price"));
+                        product.setStock_quantity(resultSet.getInt("stock_quantity"));
+                        product.setQuantity_per_pack(resultSet.getInt("quantity_per_pack"));
+                        product.setDescription(resultSet.getString("description"));
+                        product.setCategory_code(resultSet.getInt("category_id"));
+                        product.setExp(resultSet.getDate("expiryDate"));
+                        matchingProducts.add(product);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return matchingProducts;
+    }
+
+    /***
+     *
+     *     public void loadProductsIntoTable() {
+     *         List<Product> productList = new ProductDAO().getAllProducts();
+     *         defaultTableModel.setRowCount(0);
+     *         for (Product product : productList) {
+     *             Object[] rowData = {
+     *                     product.getId(),
+     *                     product.getName(),
+     *                     product.getDescription(),
+     *                     product.getPrice(),
+     *                     product.getQuantity_per_pack(),
+     *                     product.getExp(),
+     *                     product.getStock_quantity(),
+     *                     new CategoryDAO().getNamebyID(product.getCategory_code())
+     *             };
+     *             defaultTableModel.addRow(rowData);
+     *         }
+     *     }
+      */
+
+
+
+
 }
