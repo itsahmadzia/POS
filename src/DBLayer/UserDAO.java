@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import BusinessLayer.*;
 
 public class UserDAO {
-    //CHANGEDDD
+
     public boolean authenticate(String username, String password, String tableName) {
     try (Connection connection = DatabaseConnection.getConnection()) {
         String query = "SELECT * FROM " + tableName + " WHERE username=? AND password=?";
