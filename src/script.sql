@@ -98,6 +98,9 @@ ADD CONSTRAINT fk_order_item_product_name
     ON UPDATE CASCADE
     ON DELETE NO ACTION;
 
+ALTER TABLE order_t_Item
+CHANGE COLUMN product_price item_price DECIMAL(10,2) DEFAULT NULL;
+-- price is product price, price_item is ordered item price
 
 SELECT * FROM Category;
 SELECT * FROM Product;
