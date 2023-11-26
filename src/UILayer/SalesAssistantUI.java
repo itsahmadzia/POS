@@ -18,7 +18,8 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDTrueTypeFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import javax.swing.SwingWorker;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 
 public class SalesAssistantUI extends javax.swing.JFrame {
@@ -41,6 +42,23 @@ public class SalesAssistantUI extends javax.swing.JFrame {
             product = new Product();
         }
         //double overallTotal = 0.0;
+        
+        jTable2.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            if (!e.getValueIsAdjusting()) {
+                int row = jTable2.getSelectedRow();
+                if (row != -1) {
+                    String productName = jTable2.getValueAt(row, 1).toString();
+                    String productId = jTable2.getValueAt(row, 0).toString();
+     
+                    nameTextField.setText(productName);
+                    idTextField.setText(productId);
+                }
+            }
+        }
+    });
+
     }
     public SalesAssistantUI() {
         initComponents();
@@ -78,9 +96,14 @@ public class SalesAssistantUI extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jSpinner1 = new javax.swing.JSpinner();
+        packCheckBox = new javax.swing.JCheckBox();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -156,6 +179,14 @@ public class SalesAssistantUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(checkoutButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(totalTextField))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(logoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
@@ -164,19 +195,8 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                             .addComponent(addToCartButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cancelButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(removeButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(updateButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(updateButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE))))
                 .addGap(24, 24, 24))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(totalTextField))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(checkoutButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,13 +215,13 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(totalTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
+                .addGap(54, 54, 54)
                 .addComponent(checkoutButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 22)); // NOI18N
-        jLabel1.setText("Order");
+        jLabel1.setText("Cart");
 
         jLabel2.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
         jLabel2.setText("ID");
@@ -232,6 +252,14 @@ public class SalesAssistantUI extends javax.swing.JFrame {
             }
         });
 
+        packCheckBox.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
+        packCheckBox.setText("Pack");
+        packCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                packCheckBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -239,32 +267,35 @@ public class SalesAssistantUI extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(idTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(125, 125, 125))
+                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(packCheckBox)
+                .addGap(53, 53, 53))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(packCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jSpinner1)
-                        .addGap(2, 2, 2))
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2)
-                        .addComponent(idTextField)
-                        .addComponent(jLabel3)
-                        .addComponent(nameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
-                        .addComponent(jLabel4)))
+                        .addContainerGap()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(idTextField)
+                                .addComponent(jLabel3)
+                                .addComponent(nameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel2))
+                            .addComponent(jSpinner1))))
                 .addContainerGap())
         );
 
@@ -285,6 +316,34 @@ public class SalesAssistantUI extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(2).setHeaderValue("Quantity");
+            jTable1.getColumnModel().getColumn(4).setHeaderValue("Total");
+        }
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Name", "Price", "Stock Quantity", "Quantity per pack"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(jTable2);
+
+        jLabel6.setFont(new java.awt.Font("Helvetica Neue", 1, 16)); // NOI18N
+        jLabel6.setText("Search products by entering product name or id");
+
+        jLabel7.setFont(new java.awt.Font("Helvetica Neue", 1, 22)); // NOI18N
+        jLabel7.setText("Order");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -293,31 +352,47 @@ public class SalesAssistantUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
+                        .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 746, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 746, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jScrollPane1)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 731, Short.MAX_VALUE)
+                                .addComponent(jLabel6)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(31, 31, 31)
+                    .addComponent(jLabel7)
+                    .addContainerGap(882, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 629, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(60, 60, 60)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(36, 36, 36)
+                    .addComponent(jLabel7)
+                    .addContainerGap(565, Short.MAX_VALUE)))
         );
 
         pack();
@@ -326,11 +401,12 @@ public class SalesAssistantUI extends javax.swing.JFrame {
     private void totalTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                               
         totalTextField.setEditable(false);
         totalTextField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                roundTotalTextField();
-            }
-        });
+            
+        @Override
+        public void focusLost(FocusEvent e) {
+            roundTotalTextField();
+        }
+    });
     }                                              
     
     private void roundTotalTextField() {
@@ -345,66 +421,57 @@ public class SalesAssistantUI extends javax.swing.JFrame {
     }
     
     private void idTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                            
-       String enteredIdText = idTextField.getText().trim();
-    if (!enteredIdText.isEmpty()) {
-        try {
-            int productId = Integer.parseInt(enteredIdText);
+        String enteredIdText = idTextField.getText().trim();
+          if (!enteredIdText.isEmpty()) {
+              try {
+                  int productId = Integer.parseInt(enteredIdText);
+                  List<Product> matchingProducts = product.searchProductsByIdFromDB(productId);
 
-            SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-                @Override
-                protected Void doInBackground() {
-                    try {
-                        int productId = Integer.parseInt(enteredIdText);
-                        Product tempProduct = product.getProductFromDB(productId);
+                  if (matchingProducts != null && !matchingProducts.isEmpty()) {
+                      DefaultTableModel model = new DefaultTableModel();
+                      model.addColumn("ID");
+                      model.addColumn("Name");
+                      model.addColumn("Price");
+                      model.addColumn("Stock Quantity");
+                      model.addColumn("Quantity per pack");
 
-                        if (tempProduct != null) {
-                            final String productName = tempProduct.getName();
+                      for (Product product : matchingProducts) {
+                          model.addRow(new Object[]{
+                                  product.getId(),
+                                  product.getName(),
+                                  product.getPrice(),
+                                  product.getStock_quantity(),
+                                  product.getQuantity_per_pack()
+                          });
+                      }
 
-                            SwingUtilities.invokeLater(() -> {
-                                nameTextField.setText(productName);
-                            });
-                        } else {
-                            SwingUtilities.invokeLater(() -> {
-                                JOptionPane.showMessageDialog(null, "Product not found", "Error", JOptionPane.ERROR_MESSAGE);
-                            });
-                        }
-                    } catch (NullPointerException e) {
-                        SwingUtilities.invokeLater(() -> {
-                            JOptionPane.showMessageDialog(null, "Error: Product data is missing or corrupted.", "Error", JOptionPane.ERROR_MESSAGE);
-                        });
-                    } catch (NumberFormatException ex) {
-                        SwingUtilities.invokeLater(() -> {
-                            JOptionPane.showMessageDialog(null, "Please enter a valid product ID", "Error", JOptionPane.ERROR_MESSAGE);
-                        });
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                        SwingUtilities.invokeLater(() -> {
-                            JOptionPane.showMessageDialog(null, "Error retrieving product: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                        });
-                    }
-                    return null;
-                }
-            };
-
-            worker.execute();
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(null, "Please enter a valid product ID", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    } else {
-        JOptionPane.showMessageDialog(null, "Please enter a product ID", "Error", JOptionPane.ERROR_MESSAGE);
-    }
+                      jTable2.setModel(model);
+                  } else {
+                      JOptionPane.showMessageDialog(null, "No matching products found", "Error", JOptionPane.ERROR_MESSAGE);
+                  }
+              } catch (NumberFormatException ex) {
+                  ex.printStackTrace();
+                  JOptionPane.showMessageDialog(null, "Please enter a valid product ID", "Error", JOptionPane.ERROR_MESSAGE);
+              } catch (Exception ex) {
+                  ex.printStackTrace();
+                  JOptionPane.showMessageDialog(null, "Error retrieving products: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+              }
+          } else {
+              JOptionPane.showMessageDialog(null, "Please enter a product ID", "Error", JOptionPane.ERROR_MESSAGE);
+          }
     }                                           
 
     private void addToCartButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                                 
         try {
-             int productId = Integer.parseInt(idTextField.getText());
+            int productId = Integer.parseInt(idTextField.getText());
 
-             if (product.productExists(productId)) {
-                 Product retrievedProduct = product.getProductFromDB(productId);
-                 
-                 int quantity = (int) jSpinner1.getValue();
+            if (product.productExists(productId)) {
+                Product retrievedProduct = product.getProductFromDB(productId);
 
-                if (quantity == 0) {
+                int quantity = (int) jSpinner1.getValue();
+                boolean isPack = packCheckBox.isSelected();
+
+                if (quantity <= 0) {
                     JOptionPane.showMessageDialog(this, "Quantity should be at least 1.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
@@ -422,55 +489,54 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-               int quantityPerPack = retrievedProduct.getQuantity_per_pack();
-               int packs = quantity / quantityPerPack;
-               int individualItems = quantity % quantityPerPack;
 
-                 
-               
-                 Item existingItem = findItemInCart(productId);
+                Item existingItem = findItemInCart(productId);
 
-                 if (existingItem != null) {
-                     double originalTotal = existingItem.total(existingItem.getProduct());
-                     int updatedQuantity = existingItem.getQuantityorder() + quantity;
-                     existingItem.setQuantityorder(updatedQuantity);
+                if (existingItem != null) {
+                    existingItem.setPack(isPack);
 
-                     double updatedTotal = existingItem.total(existingItem.getProduct());
-                     double totalDifference = updatedTotal - originalTotal;
-                     overallTotal += totalDifference;
-                 } else {
-                     
-                     double productPrice = retrievedProduct.getPrice();
-                
-                     Product newProduct = new Product(
-                             retrievedProduct.getId(),
-                             retrievedProduct.getCategory_code(),
-                             retrievedProduct.getExp(),
-                             productPrice,
-                             retrievedProduct.getName(),
-                             retrievedProduct.getStock_quantity(),
-                             retrievedProduct.getQuantity_per_pack(),
-                             retrievedProduct.getDescription()
-                     );
-                     Item item = new Item(newProduct, quantity);
+                    double originalTotal = existingItem.total(existingItem.getProduct());
+                    int updatedQuantity = existingItem.getQuantityorder() + quantity;
+                    existingItem.setQuantityorder(updatedQuantity);
 
-                     cart.add(item);
-                     overallTotal += item.total(newProduct);
-                 }
-                 updateTable();
-                 idTextField.setText("");
+                    double updatedTotal = existingItem.total(existingItem.getProduct());
+                    double totalDifference = updatedTotal - originalTotal;
+                    overallTotal += totalDifference;
+                } else {
+                    double productPrice = retrievedProduct.getPrice();
+
+                    Product newProduct = new Product(
+                            retrievedProduct.getId(),
+                            retrievedProduct.getCategory_code(),
+                            retrievedProduct.getExp(),
+                            productPrice,
+                            retrievedProduct.getName(),
+                            retrievedProduct.getStock_quantity(),
+                            retrievedProduct.getQuantity_per_pack(),
+                            retrievedProduct.getDescription()
+                    );
+
+                    Item item = new Item(newProduct, quantity);
+                    item.setPack(isPack);
+
+                    cart.add(item);
+                    overallTotal += item.total(newProduct);
+                }
+
+                updateTable();
+                idTextField.setText("");
                 nameTextField.setText("");
                 jSpinner1.setValue(1);
-                 
-                 String formattedTotal = String.format("%.2f", overallTotal);
-                 totalTextField.setText(formattedTotal);
-                 
-             } else {
-                 JOptionPane.showMessageDialog(this, "Product not found in the database", "Error", JOptionPane.ERROR_MESSAGE);
-             }
-         } catch (NumberFormatException e) {
-             JOptionPane.showMessageDialog(this, "Invalid product ID", "Error", JOptionPane.ERROR_MESSAGE);
-         }
+
+                String formattedTotal = String.format("%.2f", overallTotal);
+                totalTextField.setText(formattedTotal);
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Product not found in the database", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid product ID", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }                                                
     
     private Item findItemInCart(int productId) {
@@ -483,42 +549,36 @@ public class SalesAssistantUI extends javax.swing.JFrame {
     }
 
     private void nameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                              
-        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-        @Override
-        protected Void doInBackground() throws Exception {
-            try {
+        try {
                 String enteredProductName = nameTextField.getText().trim();
-                int productId = product.getProductbyNameFromDB(enteredProductName);
+                List<Product> matchingProducts = product.searchProductsByNameFromDB(enteredProductName);
 
-                if (productId != -1) {
-                    SwingUtilities.invokeLater(() -> {
-                        idTextField.setText(String.valueOf(productId));
-                    });
+                if (matchingProducts != null && !matchingProducts.isEmpty()) {
+                    DefaultTableModel model = new DefaultTableModel();
+                    model.addColumn("ID");
+                    model.addColumn("Name");
+                    model.addColumn("Price");
+                    model.addColumn("Stock Quantity");
+                    model.addColumn("Quantity per pack");
+
+                    for (Product product : matchingProducts) {
+                        model.addRow(new Object[]{
+                                product.getId(),
+                                product.getName(),
+                                product.getPrice(),
+                                product.getStock_quantity(),
+                                product.getQuantity_per_pack()
+                        });
+                    }
+
+                    jTable2.setModel(model);
                 } else {
-                    SwingUtilities.invokeLater(() -> {
-                        JOptionPane.showMessageDialog(null, "Product not found", "Error", JOptionPane.ERROR_MESSAGE);
-                    });
+                    JOptionPane.showMessageDialog(null, "No matching products found", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-            } catch (Exception ex) {
+        } catch (Exception ex) {
                 ex.printStackTrace();
-                SwingUtilities.invokeLater(() -> {
-                    JOptionPane.showMessageDialog(null, "Error retrieving product: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                });
-            }
-            return null;
+                JOptionPane.showMessageDialog(null, "Error retrieving products: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-        @Override
-        protected void done() {
-            try {
-                get();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-    };
-
-    worker.execute();
     }                                             
 
     private void checkoutButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                                
@@ -565,7 +625,7 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Please enter a valid amount paid.", "Invalid Input", JOptionPane.WARNING_MESSAGE);
                 }
             }
-
+           
             order = cart.generateOrder(customerName, totalAmountDue, amountPaid, user.getUsername());
             order.saveOrder(order);
 
@@ -580,6 +640,9 @@ public class SalesAssistantUI extends javax.swing.JFrame {
             overallTotal = 0.0;
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             model.setRowCount(0);
+            
+            DefaultTableModel model2 = (DefaultTableModel) jTable2.getModel();
+            model2.setRowCount(0);
 
             idTextField.setText("");
             nameTextField.setText("");
@@ -788,47 +851,51 @@ public class SalesAssistantUI extends javax.swing.JFrame {
     }                                            
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
-       try {
-            int selectedRowIndex = jTable1.getSelectedRow();
-            if (selectedRowIndex != -1) {
-                int productIdToRemove = (int) jTable1.getValueAt(selectedRowIndex, 0);
+      try {
+        int selectedRowIndex = jTable1.getSelectedRow();
+        if (selectedRowIndex != -1) {
+            int productIdToRemove = (int) jTable1.getValueAt(selectedRowIndex, 0);
 
-                Item itemToRemove = null;
-                for (Item item : cart.getItems()) {
-                    if (item.getProduct().getId() == productIdToRemove) {
-                        itemToRemove = item;
-                        break;
-                    }
+            Item itemToRemove = null;
+            for (Item item : cart.getItems()) {
+                if (item.getProduct().getId() == productIdToRemove) {
+                    itemToRemove = item;
+                    break;
                 }
-
-                if (itemToRemove != null) {
-                    BigDecimal itemTotal = BigDecimal.valueOf(itemToRemove.total(itemToRemove.getProduct()));
-                    BigDecimal totalTextFieldData = new BigDecimal(totalTextField.getText());
-
-                    cart.remove(itemToRemove);
-
-                    totalTextFieldData = totalTextFieldData.subtract(itemTotal);
-                    overallTotal -= itemTotal.doubleValue();
-                    if (totalTextFieldData.compareTo(BigDecimal.ZERO) < 0) {
-                        totalTextFieldData = BigDecimal.ZERO;
-                    }
-                    if (overallTotal < 0) {
-                        overallTotal = 0;
-                    }
-
-                    totalTextField.setText(totalTextFieldData.toString());
-
-                    updateTable();
-                    idTextField.setText("");
-                    nameTextField.setText("");
-                    jSpinner1.setValue(1);
-                } else {
-                    throw new RuntimeException("Item not found in cart.");
-                }
-            } else {
-                throw new RuntimeException("No row selected.");
             }
-        } catch (Exception e) {
+
+            if (itemToRemove != null) {
+                BigDecimal itemTotal = BigDecimal.valueOf(itemToRemove.total(itemToRemove.getProduct()));
+                BigDecimal totalTextFieldData = new BigDecimal(totalTextField.getText());
+
+                cart.remove(itemToRemove);
+
+                totalTextFieldData = totalTextFieldData.subtract(itemTotal);
+                overallTotal -= itemTotal.doubleValue();
+
+                DecimalFormat decimalFormat = new DecimalFormat("#.##");
+                totalTextFieldData = new BigDecimal(decimalFormat.format(totalTextFieldData));
+
+                if (totalTextFieldData.compareTo(BigDecimal.ZERO) < 0) {
+                    totalTextFieldData = BigDecimal.ZERO;
+                }
+                if (overallTotal < 0) {
+                    overallTotal = 0;
+                }
+
+                totalTextField.setText(totalTextFieldData.toString());
+
+                updateTable();
+                idTextField.setText("");
+                nameTextField.setText("");
+                jSpinner1.setValue(1);
+            } else {
+                throw new RuntimeException("Item not found in cart.");
+            }
+        } else {
+            throw new RuntimeException("No row selected.");
+        }
+    } catch (Exception e) {
         e.printStackTrace();
     }
 
@@ -852,13 +919,17 @@ public class SalesAssistantUI extends javax.swing.JFrame {
         }
     }
 
-
     private void jSpinner1StateChanged(javax.swing.event.ChangeEvent evt) {                                       
         int currentValue = (int) jSpinner1.getValue();
         if (currentValue <= 0) {
             jSpinner1.setValue(1);
         }
     }                                      
+
+    private void packCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {                                             
+        
+        
+    }                                            
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -900,14 +971,19 @@ public class SalesAssistantUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSpinner jSpinner1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JButton logoutButton;
     private javax.swing.JTextField nameTextField;
+    private javax.swing.JCheckBox packCheckBox;
     private javax.swing.JButton removeButton;
     private javax.swing.JTextField totalTextField;
     private javax.swing.JButton updateButton;
