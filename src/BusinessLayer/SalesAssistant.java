@@ -1,17 +1,12 @@
 package BusinessLayer;
 
-public class SalesAssistant extends Role {
-     
-    @Override
-    public void permissions() {
-        System.out.println("Sales Assistant granted access to sales assistant-specific functionality");
-    }
+import DBLayer.OrderDAO;
+import DBLayer.ProductDAO;
 
-    public void processOrder() {
-       
-    }
+public class SalesAssistant extends Role {
     @Override
     public String getRoleType() {
         return "Operator"; //since table in db is operator
     }
+    
 }
