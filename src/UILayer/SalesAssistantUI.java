@@ -803,6 +803,8 @@ public class SalesAssistantUI extends javax.swing.JFrame {
        int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to log out?", "Confirmation", JOptionPane.YES_NO_OPTION);
         
         if (dialogResult == JOptionPane.YES_OPTION) {
+            User currentUser = user;
+            Logout.logOut(currentUser);
             setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
             this.dispose();
             SwingUtilities.invokeLater(new Runnable() {
