@@ -2,6 +2,7 @@ package BusinessLayer;
 
 import DBLayer.ProductDAO;
 import java.util.Date;
+import java.util.List;
 
 public class Product implements Composite{
     private int id;
@@ -129,10 +130,10 @@ public class Product implements Composite{
     public double getProductPriceFromDB(int productId) {
         return price;
     }
-    //
+    
     public boolean getPackFromDB(int productId, int orderedQuantity) {
         return getPackFromDB(productId, orderedQuantity);
-    }
+    }//!!!!!!!!!!!!!!
     
     public boolean productExists(int productId) {
         return ProductDAO.productExists(productId);
@@ -143,7 +144,14 @@ public class Product implements Composite{
     public int getProductbyNameFromDB(String productName) {
         return ProductDAO.getIDbyName(productName);
     }
-
-
+    
+    public List<Product> searchProductsByNameFromDB(String searchName){
+        return ProductDAO.searchProductsByName(searchName);
+  
+    }
+    public List<Product> searchProductsByIdFromDB(int searchId){
+        return ProductDAO.searchProductsById(searchId);
+    
+    }
     
 }
