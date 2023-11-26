@@ -60,7 +60,14 @@ public class User {
         this.role = role;
     }
     
-    public boolean authenticate(Role role, String username, String password, String tableName) {
-        return UserDAO.authenticate(role,  username,  password,  tableName);
+    public boolean authenticate(String username, String password, String tableName) {
+        return UserDAO.authenticate(username,  password,  tableName);
+    }
+    
+    public void setName(String name){
+        this.name = name;
+    }
+    public String getName(String username, String tablename){
+        return UserDAO.getNameFromDB(username,tablename);
     }
 }
