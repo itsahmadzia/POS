@@ -524,6 +524,8 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                 }
 
                 updateTable();
+                DefaultTableModel model2 = (DefaultTableModel) jTable2.getModel();
+                model2.setRowCount(0);
                 idTextField.setText("");
                 nameTextField.setText("");
                 jSpinner1.setValue(1);
