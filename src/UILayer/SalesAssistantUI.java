@@ -1,25 +1,28 @@
 package UILayer;
 
 import BusinessLayer.*;
-import java.awt.event.*;
-import java.io.*;
-import java.math.BigDecimal;
-import java.sql.*;
-import java.text.DecimalFormat;
-import java.util.*;
-import java.util.Date;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-
+import DBLayer.ProductDAO;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.font.PDTrueTypeFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.Date;
+import java.util.List;
 
 
 public class SalesAssistantUI extends javax.swing.JFrame {
@@ -28,11 +31,9 @@ public class SalesAssistantUI extends javax.swing.JFrame {
     private User user;
     Product product;
     double overallTotal;
-    private Map<Integer, Integer> cartQuantities; //temp cart record
     
     public SalesAssistantUI(User currentUser) {
         initComponents();
-        setLocationRelativeTo(null);
         user = currentUser;
         if (cart == null) {
             cart = new Cart();
@@ -42,8 +43,6 @@ public class SalesAssistantUI extends javax.swing.JFrame {
         }
         if (product == null) {
             product = new Product();
-            
-        cartQuantities = new HashMap<>();
         }
         //double overallTotal = 0.0;
         
@@ -55,7 +54,7 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                 if (row != -1) {
                     String productName = jTable2.getValueAt(row, 1).toString();
                     String productId = jTable2.getValueAt(row, 0).toString();
-     
+
                     nameTextField.setText(productName);
                     idTextField.setText(productId);
                 }
@@ -65,7 +64,24 @@ public class SalesAssistantUI extends javax.swing.JFrame {
 
     }
     public SalesAssistantUI() {
+
         initComponents();
+        jTable2.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int row = jTable2.getSelectedRow();
+                    if (row != -1) {
+                        String productName = jTable2.getValueAt(row, 1).toString();
+                        String productId = jTable2.getValueAt(row, 0).toString();
+
+                        nameTextField.setText(productName);
+                        idTextField.setText(productId);
+                    }
+                }
+            }
+
+        });
         if (cart == null) {
             cart = new Cart();
         }
@@ -76,6 +92,53 @@ public class SalesAssistantUI extends javax.swing.JFrame {
             product = new Product();
         }
         double overallTotal = 0.0;
+  nameTextField.addKeyListener(new KeyListener() {
+      @Override
+      public void keyTyped(KeyEvent e) {
+
+      }
+
+      @Override
+      public void keyPressed(KeyEvent e) {
+
+      }
+
+      @Override
+      public void keyReleased(KeyEvent e) {
+////here herehere
+
+          try {
+              String enteredProductName = nameTextField.getText().trim();
+              List<Product> matchingProducts = product.searchProductsByNameFromDB(enteredProductName);
+
+              if (matchingProducts != null && !matchingProducts.isEmpty()) {
+                  DefaultTableModel model = new DefaultTableModel();
+                  model.addColumn("ID");
+                  model.addColumn("Name");
+                  model.addColumn("Price");
+                  model.addColumn("Stock Quantity");
+                  model.addColumn("Quantity per pack");
+
+                  for (Product product : matchingProducts) {
+                      model.addRow(new Object[]{
+                              product.getId(),
+                              product.getName(),
+                              product.getPrice(),
+                              product.getStock_quantity(),
+                              product.getQuantity_per_pack()
+                      });
+                  }
+
+                  jTable2.setModel(model);
+              }
+          } catch (Exception ex) {
+              ex.printStackTrace();
+              JOptionPane.showMessageDialog(null, "Error retrieving products: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          }
+
+
+      }
+  });
     }
 
   
@@ -425,91 +488,87 @@ public class SalesAssistantUI extends javax.swing.JFrame {
     }
     
     private void idTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                            
-       String enteredIdText = idTextField.getText().trim();
-    if (!enteredIdText.isEmpty()) {
-        try {
-            int productId = Integer.parseInt(enteredIdText);
-            List<Product> matchingProducts = product.searchProductsByIdFromDB(productId);
+        String enteredIdText = idTextField.getText().trim();
+          if (!enteredIdText.isEmpty()) {
+              try {
+                  int productId = Integer.parseInt(enteredIdText);
+                  List<Product> matchingProducts = product.searchProductsByIdFromDB(productId);
 
-            if (matchingProducts != null && !matchingProducts.isEmpty()) {
-                DefaultTableModel model = new DefaultTableModel();
-                model.addColumn("ID");
-                model.addColumn("Name");
-                model.addColumn("Price");
-                model.addColumn("Stock Quantity");
-                model.addColumn("Quantity per pack");
+                  if (matchingProducts != null && !matchingProducts.isEmpty()) {
+                      DefaultTableModel model = new DefaultTableModel();
+                      model.addColumn("ID");
+                      model.addColumn("Name");
+                      model.addColumn("Price");
+                      model.addColumn("Stock Quantity");
+                      model.addColumn("Quantity per pack");
 
-                for (Product product : matchingProducts) {
-                    int cartQuantity = cartQuantities.getOrDefault(productId, 0);
-                    int availableStock = Math.max(product.getStock_quantity() - cartQuantity, 0);
+                      for (Product product : matchingProducts) {
+                          model.addRow(new Object[]{
+                                  product.getId(),
+                                  product.getName(),
+                                  product.getPrice(),
+                                  product.getStock_quantity(),
+                                  product.getQuantity_per_pack()
+                          });
+                      }
 
-                    model.addRow(new Object[]{
-                            product.getId(),
-                            product.getName(),
-                            product.getPrice(),
-                            availableStock,
-                            product.getQuantity_per_pack()
-                    });
-                }
-
-                jTable2.setModel(model);
-            } else {
-                JOptionPane.showMessageDialog(null, "No matching products found", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (NumberFormatException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Please enter a valid product ID", "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error retrieving products: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    } else {
-        JOptionPane.showMessageDialog(null, "Please enter a product ID", "Error", JOptionPane.ERROR_MESSAGE);
-    }
-        
+                      jTable2.setModel(model);
+                  } else {
+                      JOptionPane.showMessageDialog(null, "No matching products found", "Error", JOptionPane.ERROR_MESSAGE);
+                  }
+              } catch (NumberFormatException ex) {
+                  ex.printStackTrace();
+                  JOptionPane.showMessageDialog(null, "Please enter a valid product ID", "Error", JOptionPane.ERROR_MESSAGE);
+              } catch (Exception ex) {
+                  ex.printStackTrace();
+                  JOptionPane.showMessageDialog(null, "Error retrieving products: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+              }
+          } else {
+              JOptionPane.showMessageDialog(null, "Please enter a product ID", "Error", JOptionPane.ERROR_MESSAGE);
+          }
     }                                           
 
     private void addToCartButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                                 
         try {
-            int productId = Integer.parseInt(idTextField.getText());
+            ProductDAO productDAO = new ProductDAO();
 
+            int productId = Integer.parseInt(idTextField.getText());
+            product=productDAO.getProductByID(productId);
             if (product.productExists(productId)) {
-                Product retrievedProduct = product.getProductFromDB(productId);
 
                 int quantity = (int) jSpinner1.getValue();
+                System.out.println(quantity);
                 boolean isPack = packCheckBox.isSelected();
+
+                if(isPack){
+                    quantity=product.getQuantity_per_pack()*quantity;
+                    System.out.println(quantity);
+                }
 
                 if (quantity <= 0) {
                     JOptionPane.showMessageDialog(this, "Quantity should be at least 1.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-               
-                int currentCartQuantity = cartQuantities.getOrDefault(productId, 0);
-                int availableStock = Math.max(retrievedProduct.getStock_quantity() - currentCartQuantity, 0);
-                
-                //--
-                int quantityToDeduct;
-                if (isPack) {
-                    quantityToDeduct = quantity * retrievedProduct.getQuantity_per_pack();
-                } else {
-                    quantityToDeduct = quantity;
-                }
+//error block
+                if (quantity > product.getStock_quantity()) {
+                    int remainingStock = product.getStock_quantity();
+                    String errorMessage;
 
-                if (quantityToDeduct > availableStock) {
-                    String errorMessage = "Not enough stock available for the selected product. Only " + availableStock + " left in stock!";
+                    if (remainingStock == 0) {
+                        errorMessage = "The selected product is out of stock!";
+                    } else {
+                        errorMessage = "Not enough stock available for the selected product. Only " + remainingStock + " left in stock!";
+                    }
+
                     JOptionPane.showMessageDialog(this, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
-                retrievedProduct.setStock_quantity(retrievedProduct.getStock_quantity() - quantityToDeduct);
-                
-                //already in cart
                 Item existingItem = findItemInCart(productId);
+
+             //if it is already in cart
                 if (existingItem != null) {
-                    existingItem.setPack(isPack);
-
-                    cartQuantities.put(productId, existingItem.getQuantityorder() + quantity);
-
+            //        existingItem.setPack(isPack);
                     double originalTotal = existingItem.total(existingItem.getProduct());
                     int updatedQuantity = existingItem.getQuantityorder() + quantity;
                     existingItem.setQuantityorder(updatedQuantity);
@@ -517,24 +576,34 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                     double updatedTotal = existingItem.total(existingItem.getProduct());
                     double totalDifference = updatedTotal - originalTotal;
                     overallTotal += totalDifference;
-                } else {
-                    double productPrice = retrievedProduct.getPrice();
-                    
+                    Product updatedProduct = product;
+                    updatedProduct.setStock_quantity(updatedProduct.getStock_quantity()-quantity);
+                    productDAO.updateProduct(updatedProduct,updatedProduct.getId());
+                    updateTable();
+                }
+                else {
+
+                    double productPrice = product.getPrice();
+
                     Product newProduct = new Product(
-                            retrievedProduct.getId(),
-                            retrievedProduct.getCategory_code(),
-                            retrievedProduct.getExp(),
+                           product.getId(),
+                         product.getCategory_code(),
+                            product.getExp(),
                             productPrice,
-                            retrievedProduct.getName(),
-                            retrievedProduct.getStock_quantity(),
-                            retrievedProduct.getQuantity_per_pack(),
-                            retrievedProduct.getDescription()
+                            product.getName(),
+                            product.getStock_quantity()-quantity,
+                            product.getQuantity_per_pack(),
+                            product.getDescription()
                     );
+                    newProduct.display();
+                    System.out.println("Stock"+newProduct.getStock_quantity());
 
-                    Item item = new Item(newProduct, quantity);
-                    item.setPack(isPack);
 
-                    cartQuantities.put(productId, quantity);
+                    Product updatedProduct = product;
+                    updatedProduct.setStock_quantity(updatedProduct.getStock_quantity()-quantity);
+                    productDAO.updateProduct(updatedProduct,updatedProduct.getId());
+                    updateTable();
+                    Item item = new Item(updatedProduct, quantity);
                     cart.add(item);
                     overallTotal += item.total(newProduct);
                 }
@@ -549,14 +618,15 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                 String formattedTotal = String.format("%.2f", overallTotal);
                 totalTextField.setText(formattedTotal);
 
-            } else {
+            }
+            else {
                 JOptionPane.showMessageDialog(this, "Product not found in the database", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Invalid product ID", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }                                                
-    
+    }
+
     private Item findItemInCart(int productId) {
         for (Item item : cart.getItems()) {
             if (item.getProduct().getId() == productId) {
@@ -568,39 +638,34 @@ public class SalesAssistantUI extends javax.swing.JFrame {
 
     private void nameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                              
         try {
-            String enteredProductName = nameTextField.getText().trim();
-            List<Product> matchingProducts = product.searchProductsByNameFromDB(enteredProductName);
+                String enteredProductName = nameTextField.getText().trim();
+                List<Product> matchingProducts = product.searchProductsByNameFromDB(enteredProductName);
 
-            if (matchingProducts != null && !matchingProducts.isEmpty()) {
-                DefaultTableModel model = new DefaultTableModel();
-                model.addColumn("ID");
-                model.addColumn("Name");
-                model.addColumn("Price");
-                model.addColumn("Stock Quantity");
-                model.addColumn("Quantity per pack");
+                if (matchingProducts != null && !matchingProducts.isEmpty()) {
+                    DefaultTableModel model = new DefaultTableModel();
+                    model.addColumn("ID");
+                    model.addColumn("Name");
+                    model.addColumn("Price");
+                    model.addColumn("Stock Quantity");
+                    model.addColumn("Quantity per pack");
 
-                for (Product product : matchingProducts) {
-                    int productId = product.getId();
+                    for (Product product : matchingProducts) {
+                        model.addRow(new Object[]{
+                                product.getId(),
+                                product.getName(),
+                                product.getPrice(),
+                                product.getStock_quantity(),
+                                product.getQuantity_per_pack()
+                        });
+                    }
 
-                    int cartQuantity = cartQuantities.getOrDefault(productId, 0);
-                    int availableStock = Math.max(product.getStock_quantity() - cartQuantity, 0);
-
-                    model.addRow(new Object[]{
-                            product.getId(),
-                            product.getName(),
-                            product.getPrice(),
-                            availableStock,
-                            product.getQuantity_per_pack()
-                    });
+                    jTable2.setModel(model);
+                } else {
+                    JOptionPane.showMessageDialog(null, "No matching products found", "Error", JOptionPane.ERROR_MESSAGE);
                 }
-
-                jTable2.setModel(model);
-            } else {
-                JOptionPane.showMessageDialog(null, "No matching products found", "Error", JOptionPane.ERROR_MESSAGE);
-            }
         } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error retrieving products: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Error retrieving products: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }                                             
 
@@ -648,6 +713,7 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Please enter a valid amount paid.", "Invalid Input", JOptionPane.WARNING_MESSAGE);
                 }
             }
+            //// use DAO here to populate each product of cart i.e item  for quantity use the tables
            
             order = cart.generateOrder(customerName, totalAmountDue, amountPaid, user.getUsername());
             order.saveOrder(order);
@@ -805,30 +871,23 @@ public class SalesAssistantUI extends javax.swing.JFrame {
 
     private void cancelButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                              
         int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure you want to cancel the order?", "Confirm Cancel", JOptionPane.YES_NO_OPTION);
-        
         if (dialogResult == JOptionPane.YES_OPTION) {
             cart.clear();
-            updateTable();
-
-            cartQuantities.clear();
-
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             model.setRowCount(0);
-            DefaultTableModel model2 = (DefaultTableModel) jTable2.getModel();
-            model2.setRowCount(0);
 
             idTextField.setText("");
             nameTextField.setText("");
             jSpinner1.setValue(1);
             totalTextField.setText("");
             overallTotal = 0;
-
             JOptionPane.showMessageDialog(this, "Order successfully canceled!", "Cancellation Successful", JOptionPane.INFORMATION_MESSAGE);
+ 
         }
     }                                             
 
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
-        int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to log out?", "Confirmation", JOptionPane.YES_NO_OPTION);
+       int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to log out?", "Confirmation", JOptionPane.YES_NO_OPTION);
         
         if (dialogResult == JOptionPane.YES_OPTION) {
             User currentUser = user;
@@ -846,49 +905,58 @@ public class SalesAssistantUI extends javax.swing.JFrame {
 
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
         try {
-           int selectedRow = jTable1.getSelectedRow();
-           if (selectedRow == -1) {
-               JOptionPane.showMessageDialog(this, "Please select a row to update", "Error", JOptionPane.ERROR_MESSAGE);
-               return;
-           }
+              int selectedRow = jTable1.getSelectedRow();
+                if (selectedRow == -1) {
+                    JOptionPane.showMessageDialog(this, "Please select a row to update", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+              }
 
-           int productId = (int) jTable1.getValueAt(selectedRow, 0);
-           String productName = (String) jTable1.getValueAt(selectedRow, 1);
-           int currentQuantity = (int) jTable1.getValueAt(selectedRow, 2);
-           double productPrice = (double) jTable1.getValueAt(selectedRow, 3);
+              int productId = (int) jTable1.getValueAt(selectedRow, 0);
+              String productName = (String) jTable1.getValueAt(selectedRow, 1);
+              int currentQuantity = (int) jTable1.getValueAt(selectedRow, 2);
+              double productPrice = (double) jTable1.getValueAt(selectedRow, 3);
+              //current stock
+            Product selectedProduct = new ProductDAO().getProductByID(productId);
+            ProductDAO productDAO=new ProductDAO();
+            //add it in stock
+            Product updated=selectedProduct;
+            updated.setStock_quantity(updated.getStock_quantity()+currentQuantity);
 
-           String userInput = JOptionPane.showInputDialog(this, "Enter new quantity for " + productName, currentQuantity);
 
-           if (userInput == null || userInput.trim().isEmpty()) {
-               return;
-           }
+              String userInput = JOptionPane.showInputDialog(this, "Enter new quantity for " + productName, currentQuantity);
 
-           int newQuantity = Integer.parseInt(userInput);
-           Item selectedItem = findItemInCart(productId);
+              if (userInput == null || userInput.trim().isEmpty()) {
+                  return;
+              }
+              int newQuantity = Integer.parseInt(userInput);
+              if(newQuantity>updated.getStock_quantity()){
+                  throw new RuntimeException();
+              }
+              else{
+                  updated.setStock_quantity(updated.getStock_quantity()-newQuantity);
+                  productDAO.updateProduct(updated, updated.getId());
+              }
+              Item selectedItem = findItemInCart(productId);
+              selectedItem.setProduct(updated);
 
-           if (selectedItem != null) {
-               int availableStock = selectedItem.getProduct().getStock_quantity();
+              if (selectedItem != null) {
+                  double originalTotal = selectedItem.total(selectedItem.getProduct());
+                  selectedItem.setQuantityorder(newQuantity);
 
-               if (newQuantity > availableStock) {
-                   String errorMessage = "Not enough stock available for the selected product. Only " + availableStock + " left in stock!";
-                   JOptionPane.showMessageDialog(this, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
-                   return;
-               }
+                  double updatedTotal = selectedItem.total(selectedItem.getProduct());
+                  double totalDifference = updatedTotal - originalTotal;
 
-               double originalTotal = selectedItem.total(selectedItem.getProduct());
-               selectedItem.setQuantityorder(newQuantity);
-
-               double updatedTotal = selectedItem.total(selectedItem.getProduct());
-               double totalDifference = updatedTotal - originalTotal;
-
-               overallTotal += totalDifference;
-               updateTable();
-               String formattedTotal = String.format("%.2f", overallTotal);
-               totalTextField.setText(formattedTotal);
-           }
-       } catch (NumberFormatException e) {
-           JOptionPane.showMessageDialog(this, "Invalid quantity entered", "Error", JOptionPane.ERROR_MESSAGE);
-       }
+                  overallTotal += totalDifference;
+                  updateTable();
+                  String formattedTotal = String.format("%.2f", overallTotal);
+                  totalTextField.setText(formattedTotal);
+              }
+          } catch (NumberFormatException e) {
+              JOptionPane.showMessageDialog(this, "Invalid quantity entered", "Error", JOptionPane.ERROR_MESSAGE);
+          }
+        catch (RuntimeException e){
+            JOptionPane.showMessageDialog(this, "this much stock not available", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }                                            
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
@@ -896,21 +964,20 @@ public class SalesAssistantUI extends javax.swing.JFrame {
         int selectedRowIndex = jTable1.getSelectedRow();
         if (selectedRowIndex != -1) {
             int productIdToRemove = (int) jTable1.getValueAt(selectedRowIndex, 0);
-
+            int quantitytoadd = (int) jTable1.getValueAt(selectedRowIndex, 2);
             Item itemToRemove = null;
             for (Item item : cart.getItems()) {
                 if (item.getProduct().getId() == productIdToRemove) {
                     itemToRemove = item;
+
                     break;
                 }
             }
+            itemToRemove.setProduct(new ProductDAO().getProductByID(productIdToRemove));
 
             if (itemToRemove != null) {
                 BigDecimal itemTotal = BigDecimal.valueOf(itemToRemove.total(itemToRemove.getProduct()));
                 BigDecimal totalTextFieldData = new BigDecimal(totalTextField.getText());
-
-                int currentCartQuantity = cartQuantities.getOrDefault(productIdToRemove, 0);
-                cartQuantities.put(productIdToRemove, currentCartQuantity - itemToRemove.getQuantityorder());
 
                 cart.remove(itemToRemove);
 
@@ -928,22 +995,29 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                 }
 
                 totalTextField.setText(totalTextFieldData.toString());
+             Product p=  new ProductDAO().getProductByID(productIdToRemove);
 
+                System.out.println(p.getName());
+
+                System.out.println(p.getStock_quantity()+ "cart wali here");
+                System.out.println(quantitytoadd);
+           p.setStock_quantity(p.getStock_quantity()+quantitytoadd);
+           new ProductDAO().updateProduct(p,p.getId());
+//check here
                 updateTable();
                 idTextField.setText("");
                 nameTextField.setText("");
                 jSpinner1.setValue(1);
-                DefaultTableModel model2 = (DefaultTableModel) jTable2.getModel();
-                model2.setRowCount(0);
             } else {
-                JOptionPane.showMessageDialog(this, "Item not found in cart.", "Error", JOptionPane.ERROR_MESSAGE);
+                throw new RuntimeException("Item not found in cart.");
             }
         } else {
-            JOptionPane.showMessageDialog(this, "No row selected.", "Error", JOptionPane.ERROR_MESSAGE);
+            throw new RuntimeException("No row selected.");
         }
     } catch (Exception e) {
-        e.printStackTrace(); 
+        e.printStackTrace();
     }
+
     }                                            
     
     private void updateTable() {
