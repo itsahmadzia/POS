@@ -1,25 +1,28 @@
 package UILayer;
 
 import BusinessLayer.*;
-import java.awt.event.*;
-import java.io.*;
-import java.math.BigDecimal;
-import java.sql.*;
-import java.text.DecimalFormat;
-import java.util.*;
-import java.util.Date;
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-
+import DBLayer.ProductDAO;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.font.PDTrueTypeFont;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
+import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.Date;
+import java.util.List;
 
 
 public class SalesAssistantUI extends javax.swing.JFrame {
@@ -51,7 +54,7 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                 if (row != -1) {
                     String productName = jTable2.getValueAt(row, 1).toString();
                     String productId = jTable2.getValueAt(row, 0).toString();
-     
+
                     nameTextField.setText(productName);
                     idTextField.setText(productId);
                 }
@@ -61,7 +64,24 @@ public class SalesAssistantUI extends javax.swing.JFrame {
 
     }
     public SalesAssistantUI() {
+
         initComponents();
+        jTable2.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int row = jTable2.getSelectedRow();
+                    if (row != -1) {
+                        String productName = jTable2.getValueAt(row, 1).toString();
+                        String productId = jTable2.getValueAt(row, 0).toString();
+
+                        nameTextField.setText(productName);
+                        idTextField.setText(productId);
+                    }
+                }
+            }
+
+        });
         if (cart == null) {
             cart = new Cart();
         }
@@ -72,6 +92,53 @@ public class SalesAssistantUI extends javax.swing.JFrame {
             product = new Product();
         }
         double overallTotal = 0.0;
+  nameTextField.addKeyListener(new KeyListener() {
+      @Override
+      public void keyTyped(KeyEvent e) {
+
+      }
+
+      @Override
+      public void keyPressed(KeyEvent e) {
+
+      }
+
+      @Override
+      public void keyReleased(KeyEvent e) {
+////here herehere
+
+          try {
+              String enteredProductName = nameTextField.getText().trim();
+              List<Product> matchingProducts = product.searchProductsByNameFromDB(enteredProductName);
+
+              if (matchingProducts != null && !matchingProducts.isEmpty()) {
+                  DefaultTableModel model = new DefaultTableModel();
+                  model.addColumn("ID");
+                  model.addColumn("Name");
+                  model.addColumn("Price");
+                  model.addColumn("Stock Quantity");
+                  model.addColumn("Quantity per pack");
+
+                  for (Product product : matchingProducts) {
+                      model.addRow(new Object[]{
+                              product.getId(),
+                              product.getName(),
+                              product.getPrice(),
+                              product.getStock_quantity(),
+                              product.getQuantity_per_pack()
+                      });
+                  }
+
+                  jTable2.setModel(model);
+              }
+          } catch (Exception ex) {
+              ex.printStackTrace();
+              JOptionPane.showMessageDialog(null, "Error retrieving products: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+          }
+
+
+      }
+  });
     }
 
   
@@ -463,21 +530,28 @@ public class SalesAssistantUI extends javax.swing.JFrame {
 
     private void addToCartButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                                 
         try {
-            int productId = Integer.parseInt(idTextField.getText());
+            ProductDAO productDAO = new ProductDAO();
 
+            int productId = Integer.parseInt(idTextField.getText());
+            product=productDAO.getProductByID(productId);
             if (product.productExists(productId)) {
-                Product retrievedProduct = product.getProductFromDB(productId);
 
                 int quantity = (int) jSpinner1.getValue();
+                System.out.println(quantity);
                 boolean isPack = packCheckBox.isSelected();
+
+                if(isPack){
+                    quantity=product.getQuantity_per_pack()*quantity;
+                    System.out.println(quantity);
+                }
 
                 if (quantity <= 0) {
                     JOptionPane.showMessageDialog(this, "Quantity should be at least 1.", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-
-                if (quantity > retrievedProduct.getStock_quantity()) {
-                    int remainingStock = retrievedProduct.getStock_quantity();
+//error block
+                if (quantity > product.getStock_quantity()) {
+                    int remainingStock = product.getStock_quantity();
                     String errorMessage;
 
                     if (remainingStock == 0) {
@@ -492,9 +566,9 @@ public class SalesAssistantUI extends javax.swing.JFrame {
 
                 Item existingItem = findItemInCart(productId);
 
+             //if it is already in cart
                 if (existingItem != null) {
-                    existingItem.setPack(isPack);
-
+            //        existingItem.setPack(isPack);
                     double originalTotal = existingItem.total(existingItem.getProduct());
                     int updatedQuantity = existingItem.getQuantityorder() + quantity;
                     existingItem.setQuantityorder(updatedQuantity);
@@ -502,23 +576,34 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                     double updatedTotal = existingItem.total(existingItem.getProduct());
                     double totalDifference = updatedTotal - originalTotal;
                     overallTotal += totalDifference;
-                } else {
-                    double productPrice = retrievedProduct.getPrice();
+                    Product updatedProduct = product;
+                    updatedProduct.setStock_quantity(updatedProduct.getStock_quantity()-quantity);
+                    productDAO.updateProduct(updatedProduct,updatedProduct.getId());
+                    updateTable();
+                }
+                else {
+
+                    double productPrice = product.getPrice();
 
                     Product newProduct = new Product(
-                            retrievedProduct.getId(),
-                            retrievedProduct.getCategory_code(),
-                            retrievedProduct.getExp(),
+                           product.getId(),
+                         product.getCategory_code(),
+                            product.getExp(),
                             productPrice,
-                            retrievedProduct.getName(),
-                            retrievedProduct.getStock_quantity(),
-                            retrievedProduct.getQuantity_per_pack(),
-                            retrievedProduct.getDescription()
+                            product.getName(),
+                            product.getStock_quantity()-quantity,
+                            product.getQuantity_per_pack(),
+                            product.getDescription()
                     );
+                    newProduct.display();
+                    System.out.println("Stock"+newProduct.getStock_quantity());
 
-                    Item item = new Item(newProduct, quantity);
-                    item.setPack(isPack);
 
+                    Product updatedProduct = product;
+                    updatedProduct.setStock_quantity(updatedProduct.getStock_quantity()-quantity);
+                    productDAO.updateProduct(updatedProduct,updatedProduct.getId());
+                    updateTable();
+                    Item item = new Item(updatedProduct, quantity);
                     cart.add(item);
                     overallTotal += item.total(newProduct);
                 }
@@ -533,14 +618,15 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                 String formattedTotal = String.format("%.2f", overallTotal);
                 totalTextField.setText(formattedTotal);
 
-            } else {
+            }
+            else {
                 JOptionPane.showMessageDialog(this, "Product not found in the database", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Invalid product ID", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }                                                
-    
+    }
+
     private Item findItemInCart(int productId) {
         for (Item item : cart.getItems()) {
             if (item.getProduct().getId() == productId) {
@@ -859,14 +945,16 @@ public class SalesAssistantUI extends javax.swing.JFrame {
         int selectedRowIndex = jTable1.getSelectedRow();
         if (selectedRowIndex != -1) {
             int productIdToRemove = (int) jTable1.getValueAt(selectedRowIndex, 0);
-
+            int quantitytoadd = (int) jTable1.getValueAt(selectedRowIndex, 2);
             Item itemToRemove = null;
             for (Item item : cart.getItems()) {
                 if (item.getProduct().getId() == productIdToRemove) {
                     itemToRemove = item;
+
                     break;
                 }
             }
+            itemToRemove.setProduct(new ProductDAO().getProductByID(productIdToRemove));
 
             if (itemToRemove != null) {
                 BigDecimal itemTotal = BigDecimal.valueOf(itemToRemove.total(itemToRemove.getProduct()));
@@ -888,7 +976,15 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                 }
 
                 totalTextField.setText(totalTextFieldData.toString());
+             Product p=   itemToRemove.getProduct();
 
+                System.out.println(p.getName());
+
+                System.out.println(p.getStock_quantity()+ "cart wali here");
+                System.out.println(p.getStock_quantity());
+           p.setStock_quantity(p.getStock_quantity()+quantitytoadd);
+                System.out.println(p.getStock_quantity());
+           new ProductDAO().updateProduct(p,p.getId());
                 updateTable();
                 idTextField.setText("");
                 nameTextField.setText("");

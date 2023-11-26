@@ -198,3 +198,9 @@ select *from Product;
 select *from Operator;
 select *from Manager;
 select *from Admin;
+
+select *from order_t_Item;
+select *
+from order_t;
+
+update Product set stock_quantity=20 where name like '%f%';

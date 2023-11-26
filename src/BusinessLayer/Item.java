@@ -67,5 +67,8 @@ public  class  Item {
      public Product getProduct() {
         return product;
     }
-     
+
+    public void setProduct(Product p) {
+          product=p;
+    }
 }
