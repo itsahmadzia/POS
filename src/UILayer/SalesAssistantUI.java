@@ -129,8 +129,12 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                 List<Product> matchingProducts = product.searchProductsByNameFromDB(enteredProductName);
 
                 if (matchingProducts != null && !matchingProducts.isEmpty()) {
-                    DefaultTableModel model = new DefaultTableModel();
-                    model.addColumn("ID");
+                    DefaultTableModel model = new DefaultTableModel() {
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false; // Make all cells non-editable
+                        }
+                    };        model.addColumn("ID");
                     model.addColumn("Name");
                     model.addColumn("Price");
                     model.addColumn("Stock Quantity");
@@ -478,9 +482,11 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                     .addComponent(jLabel7)
                     .addContainerGap(565, Short.MAX_VALUE)))
         );
-
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable2.getTableHeader().setReorderingAllowed(false);
         pack();
-    }// </editor-fold>                        
+
+    }// </editor-fold>
     
      private void cancelOrderAndCloseWindow() {
         try {
