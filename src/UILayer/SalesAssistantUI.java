@@ -706,6 +706,7 @@ public class SalesAssistantUI extends javax.swing.JFrame {
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Invalid product ID", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        updateTotalCost();
     }
 
     private Item findItemInCart(int productId) {
@@ -949,6 +950,22 @@ public class SalesAssistantUI extends javax.swing.JFrame {
         contentStream.showText(text);
         contentStream.endText();
     }
+    private void updateTotalCost() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        int rowCount = model.getRowCount();
+        double totalCost = 0.0;
+
+        for (int i = 0; i < rowCount; i++) {
+            int quantity = Integer.parseInt(model.getValueAt(i, 2).toString());
+            double price = Double.parseDouble(model.getValueAt(i, 3).toString());
+            double rowTotal = quantity * price;
+            totalCost += rowTotal;
+        }
+
+        long roundedTotalCost = Math.round(totalCost); // Round off to the nearest integer
+        totalTextField.setText(String.valueOf(roundedTotalCost));
+    }
+
 
     private void cancelButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                              
         int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure you want to cancel the order?", "Confirm Cancel", JOptionPane.YES_NO_OPTION);
@@ -1058,6 +1075,9 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                   return;
               }
               int newQuantity = Integer.parseInt(userInput);
+              if(newQuantity<=0){
+                  throw new NumberFormatException();
+              }
               if(newQuantity>updated.getStock_quantity()){
                   throw new RuntimeException();
               }
@@ -1066,9 +1086,14 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                   productDAO.updateProduct(updated, updated.getId());
               }
               Item selectedItem = findItemInCart(productId);
+            if(selectedItem==null){
+                throw new RuntimeException();
+            }
               selectedItem.setProduct(updated);
 
-              if (selectedItem != null) {
+
+
+          if(selectedItem!=null){
                   double originalTotal = selectedItem.total(selectedItem.getProduct());
                   selectedItem.setQuantityorder(newQuantity);
 
@@ -1087,6 +1112,7 @@ public class SalesAssistantUI extends javax.swing.JFrame {
         catch (RuntimeException e){
             JOptionPane.showMessageDialog(this, "this much stock not available", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        updateTotalCost();
     }                                            
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
@@ -1149,7 +1175,7 @@ public class SalesAssistantUI extends javax.swing.JFrame {
       } catch (Exception e) {
           e.printStackTrace();
       }
-
+        updateTotalCost();
     }                                            
     
     private void updateTable() {
