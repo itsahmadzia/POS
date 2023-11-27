@@ -72,6 +72,56 @@ public class SalesAssistantUI extends javax.swing.JFrame {
             }
         });
        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        nameTextField.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                ////here herehere
+                try {
+                    String enteredProductName = nameTextField.getText().trim();
+                    List<Product> matchingProducts = product.searchProductsByNameFromDB(enteredProductName);
+
+                    if (matchingProducts != null && !matchingProducts.isEmpty()) {
+                        DefaultTableModel model = new DefaultTableModel() {
+                            @Override
+                            public boolean isCellEditable(int row, int column) {
+                                return false; // Make all cells non-editable
+                            }
+                        };        model.addColumn("ID");
+                        model.addColumn("Name");
+                        model.addColumn("Price");
+                        model.addColumn("Stock Quantity");
+                        model.addColumn("Quantity per pack");
+
+                        for (Product product : matchingProducts) {
+                            model.addRow(new Object[]{
+                                    product.getId(),
+                                    product.getName(),
+                                    product.getPrice(),
+                                    product.getStock_quantity(),
+                                    product.getQuantity_per_pack()
+                            });
+                        }
+
+                        jTable2.setModel(model);
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Error retrieving products: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+
+            }
+        });
     }
     
     private void handleWindowClosing() {
@@ -802,22 +852,38 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                 }
             }
             //// use DAO here to populate each product of cart i.e item  for quantity use the tables
-           
-            order = cart.generateOrder(customerName, totalAmountDue, amountPaid, user.getUsername());
+           Cart c = new Cart();
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            int rowCount = model.getRowCount();
+            for(int i = 0 ; i < rowCount;i++){
+
+                System.out.println( ((int) model.getValueAt(i,0)));;
+                System.out.println( ((int) model.getValueAt(i,2)));;
+           int id = ((int) model.getValueAt(i,0));
+             int  quantity  =((int) model.getValueAt(i,2));
+                Item current = new Item();
+                current.setProduct(new ProductDAO().getProductByID((id)));
+                current.setQuantityorder((quantity));
+                current.setPack(false);
+                current.total(new ProductDAO().getProductByID((id)));
+                c.add(current);
+           }
+
+
+            order = c.generateOrder(customerName, totalAmountDue, amountPaid, user.getUsername());
+            System.out.println(order.getTotal());
             new OrderDAO().saveOrder(order);
 
-            for (Item item : order.items) {
-                new OrderDAO().updateStock(order.getOrder_id(), item.getProduct().getName(), item.getQuantityorder());
-            }
+
 
             //Invoice
             generateInvoicePDF();
-            
+
             order = null;
             overallTotal = 0.0;
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+          model = (DefaultTableModel) jTable1.getModel();
             model.setRowCount(0);
-            
+
             DefaultTableModel model2 = (DefaultTableModel) jTable2.getModel();
             model2.setRowCount(0);
 
