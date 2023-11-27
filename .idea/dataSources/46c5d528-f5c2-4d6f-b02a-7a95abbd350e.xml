@@ -1141,8 +1141,8 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <schema id="293" parent="1" name="randomn">
-      <IntrospectionTimestamp>2023-11-26.00:40:24</IntrospectionTimestamp>
-      <LocalIntrospectionTimestamp>2023-11-25.14:40:24</LocalIntrospectionTimestamp>
+      <IntrospectionTimestamp>2023-11-28.05:30:49</IntrospectionTimestamp>
+      <LocalIntrospectionTimestamp>2023-11-27.19:30:49</LocalIntrospectionTimestamp>
       <CollationName>utf8mb4_0900_ai_ci</CollationName>
     </schema>
     <schema id="294" parent="1" name="assignment3">
@@ -1407,6 +1407,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
     </key>
     <column id="351" parent="310" name="id">
+      <AutoIncrement>1</AutoIncrement>
       <DasType>int|0s</DasType>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -1482,19 +1483,13 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <RefColNames>name</RefColNames>
       <RefTableName>Product</RefTableName>
     </foreign-key>
-    <index id="367" parent="311" name="PRIMARY">
+    <index id="367" parent="311" name="order_t_Item_ibfk_1">
       <ColNames>order_id</ColNames>
       <Type>btree</Type>
-      <Unique>1</Unique>
     </index>
     <index id="368" parent="311" name="fk_order_item_product_name">
       <ColNames>product_name</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="369" parent="311" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <Primary>1</Primary>
-      <UnderlyingIndexName>PRIMARY</UnderlyingIndexName>
-    </key>
   </database-model>
 </dataSource>

@@ -69,14 +69,33 @@ CREATE TABLE order_t_Item (
                               FOREIGN KEY (order_id) REFERENCES order_t(id),
                               FOREIGN KEY (product_id) REFERENCES Product(id)
 );
-
+DESC order_t_Item;
 SELECT * FROM order_t_Item;
+select *
+from order_t;
+
 SHOW CREATE TABLE order_t_Item;
+ALTER TABLE order_t_Item
+    DROP PRIMARY KEY;
+
+ALTER TABLE order_t_Item
+    DROP FOREIGN KEY order_t_Item_ibfk_1;
+
+ALTER TABLE order_t
+    MODIFY id INT AUTO_INCREMENT;
+
+ALTER TABLE order_t_Item
+    ADD CONSTRAINT order_t_Item_ibfk_1
+        FOREIGN KEY (order_id) REFERENCES order_t(id);
 
 CREATE INDEX idx_product_price ON Product (price);
 
 ALTER TABLE order_t_Item DROP FOREIGN KEY order_t_Item_ibfk_2;
 ALTER TABLE order_t_Item DROP COLUMN product_id;
+ALTER TABLE order_t
+    MODIFY id INT AUTO_INCREMENT;
+
+
 
 CREATE INDEX idx_price ON Product (price);
 

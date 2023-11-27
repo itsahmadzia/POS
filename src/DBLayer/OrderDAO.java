@@ -1,9 +1,12 @@
 package DBLayer;
 
-import BusinessLayer.*;
+import BusinessLayer.Item;
+import BusinessLayer.Order;
+
+import javax.swing.*;
 import java.sql.*;
-import java.util.*;
-import javax.swing.JOptionPane;
+import java.util.List;
+import java.util.Random;
 
 
 public class OrderDAO {
@@ -16,25 +19,38 @@ public class OrderDAO {
             e.printStackTrace();
         }
     }
+    private int getLastInsertedOrderId(Connection conn) throws SQLException {
+        try (Statement statement = conn.createStatement()) {
+            ResultSet resultSet = statement.executeQuery("SELECT id FROM order_t ORDER BY id DESC LIMIT 1");
+
+            if (resultSet.next()) {
+                return resultSet.getInt("id");
+            } else {
+                throw new SQLException("Failed to retrieve the last order ID.");
+            }
+        }
+    }
+
 
     public int saveOrder(Order order) {
-        int orderId = 0;
+       int orderId=-1;
         try (Connection conn = DatabaseConnection.getConnection();  
              PreparedStatement statement = conn.prepareStatement(
-                     "INSERT INTO order_t (id, customer_name, total, order_date, operator_username) VALUES (?, ?, ?, ?, ?)")) {
+                     "INSERT INTO order_t ( customer_name, total, order_date, operator_username) VALUES ( ?, ?, ?, ?)")) {
 
-            orderId = generateRandomOrderId();
 
-            statement.setInt(1, orderId);
-            statement.setString(2, order.getCustomerName());
-            statement.setDouble(3, order.getTotal());
-            statement.setDate(4, new java.sql.Date(order.getTimestamp().getTime()));
-            statement.setString(5, order.getOperatorName());
+           statement.setString(1, order.getCustomerName());
+            statement.setDouble(2, order.getTotal());
+            statement.setDate(3, new java.sql.Date(order.getTimestamp().getTime()));
+            statement.setString(4, order.getOperatorName());
 
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
                 throw new SQLException("Creating order failed, no rows affected.");
             }
+            System.out.println(orderId);
+        orderId=getLastInsertedOrderId(DatabaseConnection.getConnection());
+            System.out.println(orderId);
             saveOrderItems(orderId, order.items);
 
         } catch (SQLException e) {

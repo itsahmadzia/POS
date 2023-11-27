@@ -34,7 +34,7 @@ public class SalesAssistantUI extends javax.swing.JFrame {
     private User user;
     Product product;
     double overallTotal;
-    
+
     public SalesAssistantUI(User currentUser) {
         initComponents();
         user = currentUser;
@@ -872,26 +872,17 @@ public class SalesAssistantUI extends javax.swing.JFrame {
 
             order = c.generateOrder(customerName, totalAmountDue, amountPaid, user.getUsername());
             System.out.println(order.getTotal());
-            new OrderDAO().saveOrder(order);
+        order.setOrder_id( new OrderDAO().saveOrder(order));   ;
+
 
 
 
             //Invoice
             generateInvoicePDF();
+resetForm();
 
-            order = null;
-            overallTotal = 0.0;
-          model = (DefaultTableModel) jTable1.getModel();
-            model.setRowCount(0);
 
-            DefaultTableModel model2 = (DefaultTableModel) jTable2.getModel();
-            model2.setRowCount(0);
 
-            idTextField.setText("");
-            nameTextField.setText("");
-            jSpinner1.setValue(1);
-            totalTextField.setText("");
-            
         } else {
             JOptionPane.showMessageDialog(this, "Please enter a valid customer name.", "Invalid Input", JOptionPane.WARNING_MESSAGE);
         }
@@ -907,7 +898,7 @@ public class SalesAssistantUI extends javax.swing.JFrame {
 
             PDPageContentStream contentStream = new PDPageContentStream(document, page);
             PDType0Font font = PDType0Font.load(document, new FileInputStream(new File("Monospace_Medium.ttf")));
-            PDType0Font boldFont = PDType0Font.load(document, new FileInputStream(new File("Monospace_Bold.ttf")));
+            PDType0Font boldFont = PDType0Font.load(document, new FileInputStream(new File("Monospace_bold.ttf")));
 
             contentStream.setFont(boldFont, 20);
             float yStart = page.getMediaBox().getHeight() - 50;
@@ -917,7 +908,7 @@ public class SalesAssistantUI extends javax.swing.JFrame {
 
             contentStream.beginText();
             contentStream.newLineAtOffset((width - boldFont.getStringWidth("Pharmacy") / 1000f) / 2f, yPosition);
-            contentStream.showText("Pharmacy");
+            contentStream.showText("Med++");
             contentStream.endText();
             yPosition -= 20;
 
@@ -1110,7 +1101,9 @@ public class SalesAssistantUI extends javax.swing.JFrame {
         if (dialogResult == JOptionPane.YES_OPTION) {
             User currentUser = user;
             Logout.logOut(currentUser);
+            handleWindowClosing();
             setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
             this.dispose();
             SwingUtilities.invokeLater(new Runnable() {
                 @Override
@@ -1291,7 +1284,22 @@ public class SalesAssistantUI extends javax.swing.JFrame {
 
         return grandTotal;
     }
-
+    private void resetForm() {
+        idTextField.setText("");
+        nameTextField.setText("");
+        jSpinner1.setValue(0);
+        packCheckBox.setSelected(false);
+      DefaultTableModel tableModel1 = (DefaultTableModel) jTable1.getModel();
+        tableModel1.setRowCount(0); // Clears the rows in the table
+     DefaultTableModel tableModel2 = (DefaultTableModel) jTable2.getModel();
+        tableModel2.setRowCount(0); // Clears the rows in another table
+   order=null;
+   product=null;
+   cart=null;
+   product=new Product();
+   cart = new Cart();
+   order = new Order();
+    }
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
