@@ -46,7 +46,7 @@ public class OrderDAO {
     public void saveOrderItems(int orderId, List<Item> items) {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement statement = conn.prepareStatement(
-                     "INSERT INTO order_t_Item (order_id, product_name, quantity_ordered, price) VALUES (?, ?, ?, ?)")) {
+                     "INSERT INTO order_t_Item (order_id, product_name, quantity_ordered, price, item_price) VALUES (?, ?, ?, ?,?)")) {
 
             for (Item item : items) {
                 double productPrice = getProductPrice(item.getProduct().getName());
@@ -54,6 +54,7 @@ public class OrderDAO {
                 statement.setString(2, item.getProduct().getName());
                 statement.setInt(3, item.getQuantityorder());
                 statement.setDouble(4, productPrice);  
+                 statement.setDouble(5, item.getPrice());  
                 statement.addBatch();
             }
             statement.executeBatch();
@@ -64,7 +65,7 @@ public class OrderDAO {
     }
    
     private double getProductPrice(String productName) {
-        double productPrice = 0.0;  
+        double productPrice = 0.0; 
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement statement = conn.prepareStatement("SELECT price FROM Product WHERE name = ?")) {
@@ -127,5 +128,6 @@ public class OrderDAO {
             e.printStackTrace();
         }
     }
+
     
 }
