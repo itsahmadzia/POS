@@ -2,7 +2,7 @@ package BusinessLayer;
 public  class  Item {
     private int quantityorder;
     private String itemname;
-    Boolean pack;
+    Boolean pack = false;
     private double price;
     private Product product;
     
