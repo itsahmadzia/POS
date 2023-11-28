@@ -8,7 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdminDAO {
+    private Connection connection;
     
+     // Constructor for testing environment
+     public AdminDAO() {
+
+    }
+    public AdminDAO(Connection connection) {
+        this.connection = connection;
+    }
     public  boolean authenticate(Admin admin, String username, String password) {
         try (Connection connection = DatabaseConnection.getConnection()) {
             String query = "SELECT * FROM Admin WHERE username=? AND password=?";

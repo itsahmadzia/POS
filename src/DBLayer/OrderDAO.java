@@ -12,13 +12,19 @@ import java.util.Random;
 public class OrderDAO {
     private Connection connection; 
     
-    public OrderDAO() {
+    // Constructor for testing environment
+    public OrderDAO(Connection connection) {
+        this.connection = connection;
+    }
+    
+     public OrderDAO() {
         try {
             this.connection = DatabaseConnection.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+    
     private int getLastInsertedOrderId(Connection conn) throws SQLException {
         try (Statement statement = conn.createStatement()) {
             ResultSet resultSet = statement.executeQuery("SELECT id FROM order_t ORDER BY id DESC LIMIT 1");
@@ -58,8 +64,8 @@ public class OrderDAO {
         }
         return orderId;
     }
-
-    public void saveOrderItems(int orderId, List<Item> items) {
+   
+  public void saveOrderItems(int orderId, List<Item> items) {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement statement = conn.prepareStatement(
                      "INSERT INTO order_t_Item (order_id, product_name, quantity_ordered, price, item_price) VALUES (?, ?, ?, ?,?)")) {
@@ -70,7 +76,7 @@ public class OrderDAO {
                 statement.setString(2, item.getProduct().getName());
                 statement.setInt(3, item.getQuantityorder());
                 statement.setDouble(4, productPrice);  
-                 statement.setDouble(5, item.getPrice());  
+                statement.setDouble(5, item.getPrice());  
                 statement.addBatch();
             }
             statement.executeBatch();
@@ -79,7 +85,8 @@ public class OrderDAO {
             e.printStackTrace();
         }
     }
-   
+    
+
     private double getProductPrice(String productName) {
         double productPrice = 0.0; 
 

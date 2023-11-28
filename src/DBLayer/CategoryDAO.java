@@ -18,6 +18,11 @@ public class CategoryDAO {
             throw new RuntimeException(e);
         }
     }
+    
+     // Constructor for testing environment
+    public CategoryDAO(Connection connection) {
+        this.connection = connection;
+    }
 
 
 
