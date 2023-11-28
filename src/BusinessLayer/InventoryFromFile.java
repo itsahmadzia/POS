@@ -36,7 +36,7 @@ public class InventoryFromFile {
         }
     }
 
-    private static List<Category> loadCategoriesFromCsv(String filePath) {
+    public static List<Category> loadCategoriesFromCsv(String filePath) {
         List<Category> categories = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -77,7 +77,7 @@ public class InventoryFromFile {
         return categories;
     }
 
-    private static List<Product> loadProductsFromCsv(String filePath, List<Category> categories) {
+    public static List<Product> loadProductsFromCsv(String filePath, List<Category> categories) {
         List<Product> products = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
@@ -133,7 +133,7 @@ public class InventoryFromFile {
         return products;
     }
 
-    private static Category findCategoryByCode(List<Category> categories, int code) {
+    public static Category findCategoryByCode(List<Category> categories, int code) {
         for (Category category : categories) {
             if (category.getCode() == code) {
                 return category;
@@ -142,7 +142,7 @@ public class InventoryFromFile {
         return null;
     }
 
-    private static void linkCategories(List<Category> categories) {
+    public static void linkCategories(List<Category> categories) {
         for (Category category : categories) {
             int parentCode = categoryParentMapping.get(category.getCode());
             if (parentCode != 0) {
@@ -154,7 +154,7 @@ public class InventoryFromFile {
         }
     }
 
-    private static void displayData(List<Category> categories, List<Product> products) {
+    public static void displayData(List<Category> categories, List<Product> products) {
         for (Category category : categories) {
             category.display();
         }
@@ -164,7 +164,7 @@ public class InventoryFromFile {
         }
     }
 
-    private static List<Product> listProductsInCategoryCode(List<Category> categories, int categoryCode) {
+    public static List<Product> listProductsInCategoryCode(List<Category> categories, int categoryCode) {
         List<Product> productsInCategory = new ArrayList<>();
 
         Category category = findCategoryByCode(categories, categoryCode);
@@ -174,7 +174,7 @@ public class InventoryFromFile {
 
         return productsInCategory;
     }
-    private static List<Product> listProductsInThisCategoryCode(List<Category> categories, int categoryCode) {
+    public static List<Product> listProductsInThisCategoryCode(List<Category> categories, int categoryCode) {
         List<Product> productsInCategory = new ArrayList<>();
 
         Category category = findCategoryByCode(categories, categoryCode);
@@ -184,7 +184,7 @@ public class InventoryFromFile {
 
         return productsInCategory;
     }
-    private static void getAllProductsInCategory(Category category, List<Product> productsInCategory) {
+    public static void getAllProductsInCategory(Category category, List<Product> productsInCategory) {
         for (Composite component : category.getChildren()) {
             if (component instanceof Product) {
                 productsInCategory.add((Product) component);
@@ -193,7 +193,7 @@ public class InventoryFromFile {
             }
         }
     }
-    private static void getAllProductsInthisCategory(Category category, List<Product> productsInCategory) {
+    public static void getAllProductsInthisCategory(Category category, List<Product> productsInCategory) {
         for (Composite component : category.getChildren()) {
             if (component instanceof Product) {
                 productsInCategory.add((Product) component);
