@@ -1254,8 +1254,8 @@ resetForm();
             row[2] = item.getQuantityorder();
             row[3] = item.getProduct().getPrice();
 
-            double total = item.total(item.getProduct());
-            row[4] = String.format("%.2f", total);
+            System.out.println("yooo"+item.getPrice() +"   "+ item.getQuantityorder());
+            row[4] = item.getProduct().getPrice() * item.getQuantityorder();
          
             
             model.addRow(row);

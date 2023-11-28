@@ -170,7 +170,11 @@ eastPanel.setPreferredSize(new Dimension(300,600));
                         productList = c.getProductsInCategorytillleaf(c.getCategoryCodebyName((String) selectedNode.getUserObject()));
                     } else {
                         System.out.println("Selected Node: " + selectedNode.getUserObject());
-                        productList = c.getProductsInCategory(c.getCategoryCodebyName((String) selectedNode.getUserObject()));
+
+
+                            productList = c.getProductsInCategory(c.getCategoryCodebyName((String) selectedNode.getUserObject()));
+                            productList = c.getProductsInCategory(c.getCategoryCodebyName((String) selectedNode.getUserObject()));
+
                     }
 tableModel.setRowCount(0);
                     for(String P:productList){

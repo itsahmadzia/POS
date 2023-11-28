@@ -9,6 +9,7 @@ import DBLayer.CategoryDAO;
 
 import javax.swing.*;
 import java.sql.SQLDataException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,10 +34,12 @@ private int categorycode;
         this.rowdata=getRowData;
 updatecomboBox();
         String []s = getRowData.split("\n");
-        if(s.length==3){
-            comboCategories.setVisible(true);
-            comboCategories.removeAllItems();
-            comboCategories.addItem("<Null>");
+        boolean isroot=false;
+        System.out.println(Arrays.toString(s));
+        if(Objects.equals(s[3], "null")){
+            System.out.println("INSIDE");
+            isroot=true;
+
         }
         tfCatName.setText(s[1]);
         tfDescription.setText(s[2]);
@@ -55,14 +58,15 @@ updatecomboBox();
             }
             comboCategories.setSelectedIndex(idx);
             comboCategories.setSelectedItem(parentname);
+            if(isroot){
+                comboCategories.removeAllItems();
+                comboCategories.addItem("<Null>");
+            }
         }
+        comboCategories.setVisible(false);
      //   String parentname= (String) new CategoryDAO().getNamebyID(Integer.parseInt(s[3]));
    //categorycode= Integer.parseInt(new CategoryDAO().getNamebyID(Integer.parseInt(s[3])));
        // System.out.println(parentname);
-
-
-
-
 
 
     }
@@ -93,7 +97,7 @@ updatecomboBox();
 
         jLabel2.setText("Name");
 
-        jLabel3.setText("Parent Category");
+        jLabel3.setText("");//parent category
 
         comboCategories.addItem("<Null>");
 
@@ -187,9 +191,9 @@ updatecomboBox();
 
                 throw new SQLDataException();
             }
-            Category a = new Category();
+            Category a = new CategoryDAO().getCategoryById(Integer.parseInt(p[0]));
             a.setName(name);
-            a.setCode(categorycode);
+
             a.setDescription(description);
             //if name changes
             boolean namechange = false;
@@ -268,9 +272,10 @@ updatecomboBox();
         comboCategories.addItem(f);
 
         String []s=rowdata.split("\n");
+
         for(String t : allcat){
             if(!(t.equals(s[1])))
-            comboCategories.addItem(t);
+                comboCategories.addItem(t);
         }
     }
 

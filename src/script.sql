@@ -222,4 +222,6 @@ select *from order_t_Item;
 select *
 from order_t;
 
+update Category set parent_category_id=null;
+
 update Product set stock_quantity=20 where name like '%f%';
