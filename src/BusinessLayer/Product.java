@@ -153,5 +153,18 @@ public class Product implements Composite{
         return ProductDAO.searchProductsById(searchId);
     
     }
-    
+     //for testing
+    @Override
+public String toString() {
+    return "Product{" +
+            "id=" + id +
+            ", categoryId=" + category_code +
+            ", expiryDate=" + exp +
+            ", price=" + price +
+            ", name='" + name + '\'' +
+            ", stockQuantity=" + stock_quantity +
+            ", quantityPerPack=" + quantity_per_pack +
+            ", description='" + description + '\'' +
+            '}';
+}
 }
