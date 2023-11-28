@@ -9,7 +9,7 @@ public class Admin {
     private String name;
     private String password;
     private boolean LoggedIn;
-    private AdminDAO AdminDAO;
+    public AdminDAO AdminDAO;
 
     public Admin(String name, String password) {
         this.name = name;
@@ -17,21 +17,26 @@ public class Admin {
         this.AdminDAO = new AdminDAO();
     }
 
-    public void addUser(String name, String username, String password, String userType) throws SQLIntegrityConstraintViolationException {
+    public boolean addUser(String name, String username, String password, String userType) throws SQLIntegrityConstraintViolationException {
+        boolean userAdded = false;
 
         if ("Manager".equals(userType)) {
             User managerUser = new User(name, username, password);
             Role managerRole = new Manager();
             managerUser.setRole(managerRole);
             AdminDAO.insertManager(managerUser);
-            
+            userAdded = true;
         } else if ("Sales Assistant".equals(userType)) {
             User salesAssistantUser = new User(name, username, password);
             Role salesAssistantRole = new SalesAssistant();
             salesAssistantUser.setRole(salesAssistantRole);
             AdminDAO.insertSalesAssistant(salesAssistantUser);
+            userAdded = true;
         }
+
+        return userAdded;
     }
+
     
     public boolean isLoggedIn() {
         return LoggedIn;
