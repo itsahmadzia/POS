@@ -1,16 +1,18 @@
 
-package BusinessTest;
+package test.BusinessTest;
 
 import BusinessLayer.Item;
 import BusinessLayer.Order;
 import BusinessLayer.Product;
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class OrderTest {
 

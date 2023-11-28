@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
  */
-package BusinessTest;
+package test.BusinessTest;
 
 import BusinessLayer.Cart;
 import BusinessLayer.Item;
@@ -10,9 +10,6 @@ import BusinessLayer.Order;
 import BusinessLayer.Product;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.*;
 

@@ -1,5 +1,5 @@
 package BusinessLayer;
 
-interface Composite {
+public interface Composite {
     void display();
 }

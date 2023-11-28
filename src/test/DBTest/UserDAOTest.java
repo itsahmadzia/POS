@@ -2,26 +2,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
  */
-package DBTest;
+package test.DBTest;
 
-import BusinessLayer.Role;
-import BusinessLayer.User;
-import BusinessTest.DatabaseConnectionTest;
 import DBLayer.DatabaseConnection;
 import DBLayer.UserDAO;
-import static org.junit.Assert.*;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import test.BusinessTest.DatabaseConnectionTest;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import DBLayer.UserDAO;
-
-
-import DBLayer.UserDAO;
+import static org.junit.Assert.*;
 
 public class UserDAOTest {
 

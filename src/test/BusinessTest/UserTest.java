@@ -1,14 +1,16 @@
 
-package BusinessTest;
+package test.BusinessTest;
 
 import BusinessLayer.Manager;
 import BusinessLayer.Role;
 import BusinessLayer.SalesAssistant;
 import BusinessLayer.User;
-import java.util.ArrayList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 /**
  *
