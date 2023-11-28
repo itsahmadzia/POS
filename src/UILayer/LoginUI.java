@@ -1,6 +1,10 @@
 package UILayer;
 import BusinessLayer.*;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 public class LoginUI extends javax.swing.JFrame {
@@ -127,18 +131,19 @@ public class LoginUI extends javax.swing.JFrame {
         String selectedRole = (String) typeComboBox.getSelectedItem();
 
         if ("Admin".equals(selectedRole)) {
-            Admin adminInstance = new Admin(enteredUsername, enteredPassword);
+    adminInstance = new Admin(enteredUsername, enteredPassword);
 
-            if (adminInstance.authenticateFromDB(enteredUsername, enteredPassword)) {
-                usernameTextField.setText("");
-                passwordField.setText("");
-                openAdminUI();
-                this.dispose();
-            } else {
-                showError("Invalid credentials. Please try again.");
-
-            }
-        } else {
+    if (adminInstance.authenticateFromDB(enteredUsername, enteredPassword)) {
+        adminInstance.setLoggedIn(true);
+        usernameTextField.setText("");
+        passwordField.setText("");
+        openAdminUI();
+        this.dispose();
+    } else {
+        showError("Invalid credentials. Please try again.");
+    }
+}
+ else {
             Role roleInstance = null;
 
             if ("Manager".equals(selectedRole)) {
@@ -154,9 +159,11 @@ public class LoginUI extends javax.swing.JFrame {
 
                 if (isAuthenticated) {
                     if (roleInstance instanceof Manager) {
+                         
                          usernameTextField.setText("");
                          passwordField.setText("");
                          userInstance = currentUser;
+                         currentUser.setLoggedIn(isAuthenticated);
                         openManagerUI();
                         this.dispose();
                         
@@ -165,6 +172,7 @@ public class LoginUI extends javax.swing.JFrame {
                          passwordField.setText("");
                          //openSalesAssistantUI();
                          userInstance = currentUser;
+                         currentUser.setLoggedIn(isAuthenticated);
                           //System.out.println("currentUser "+currentUser.getName()+" \n");
                            openSalesAssistantUI(userInstance);
                         this.dispose();
@@ -187,8 +195,9 @@ public class LoginUI extends javax.swing.JFrame {
     }
 
     public Admin getLoggedInAdmin() {
-        return adminInstance;
-    }
+    return adminInstance != null && adminInstance.isLoggedIn() ? adminInstance : null;
+}
+
 
     private void openAdminUI() {
         SwingUtilities.invokeLater(new Runnable() {
@@ -240,5 +249,6 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JComboBox<String> typeComboBox;
     private javax.swing.JTextField usernameTextField;
-    // End of variables declaration                   
+    // End of variables declaration     
+   
 }
