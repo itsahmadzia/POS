@@ -21,6 +21,11 @@ public class ProductDAO {
             throw new RuntimeException(e);
         }
     }
+      // Constructor for testing environment
+    public ProductDAO(Connection connection) {
+        this.connection = connection;
+    }
+    
     public int getIDbyName(String name) {
         try {
             String query = "SELECT id FROM Product WHERE name=?";
