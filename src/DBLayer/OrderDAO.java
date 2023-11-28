@@ -58,29 +58,29 @@ public class OrderDAO {
         }
         return orderId;
     }
-
-    public void saveOrderItems(int orderId, List<Item> items) {
+   
+  public void saveOrderItems(int orderId, List<Item> items) {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement statement = conn.prepareStatement(
-                     "INSERT INTO order_t_Item (order_id, product_id, product_name, quantity_ordered, price, item_price) VALUES (?, ?, ?, ?, ?, ?)")) {
-    
+                     "INSERT INTO order_t_Item (order_id, product_name, quantity_ordered, price, item_price) VALUES (?, ?, ?, ?,?)")) {
+
             for (Item item : items) {
                 double productPrice = getProductPrice(item.getProduct().getName());
                 statement.setInt(1, orderId);
-                statement.setInt(2, item.getProduct().getId());
-                statement.setString(3, item.getProduct().getName());
-                statement.setInt(4, item.getQuantityorder());
-                statement.setDouble(5, productPrice);
-                statement.setDouble(6, item.getPrice());
+                statement.setString(2, item.getProduct().getName());
+                statement.setInt(3, item.getQuantityorder());
+                statement.setDouble(4, productPrice);  
+                statement.setDouble(5, item.getPrice());  
                 statement.addBatch();
             }
             statement.executeBatch();
-    
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-   
+    
+
     private double getProductPrice(String productName) {
         double productPrice = 0.0; 
 
