@@ -12,13 +12,19 @@ import java.util.Random;
 public class OrderDAO {
     private Connection connection; 
     
-    public OrderDAO() {
+    // Constructor for testing environment
+    public OrderDAO(Connection connection) {
+        this.connection = connection;
+    }
+    
+     public OrderDAO() {
         try {
             this.connection = DatabaseConnection.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+    
     private int getLastInsertedOrderId(Connection conn) throws SQLException {
         try (Statement statement = conn.createStatement()) {
             ResultSet resultSet = statement.executeQuery("SELECT id FROM order_t ORDER BY id DESC LIMIT 1");
