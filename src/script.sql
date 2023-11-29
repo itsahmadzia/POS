@@ -236,3 +236,28 @@ update Category set parent_category_id=null;
 update Product set stock_quantity=20 where name like '%f%';
 
 delete from order_t_Item where randomn.order_t_Item.item_price=0
+
+
+SELECT
+    oi.product_name,
+    SUM(oi.item_price) AS total_sum
+FROM
+    order_t o
+        JOIN order_t_Item oi ON o.id = oi.order_id
+WHERE
+    o.order_date BETWEEN '2022-01-02' AND '2023-11-30'
+GROUP BY
+    oi.product_name;
+
+
+
+SELECT
+    oi.product_name,
+    SUM(oi.item_price) AS total_sum
+FROM
+    order_t o
+        JOIN order_t_Item oi ON o.id = oi.order_id
+WHERE
+        o.order_date ='2023-11-29'
+GROUP BY
+    oi.product_name;

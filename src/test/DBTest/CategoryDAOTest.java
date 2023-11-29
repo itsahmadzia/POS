@@ -2,34 +2,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
  */
-package DBTest;
+package test.DBTest;
 
 import BusinessLayer.Category;
-import BusinessTest.*;
-import BusinessTest.DatabaseConnectionTest;
 import DBLayer.CategoryDAO;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import DBLayer.ProductDAO;
-import java.util.Date;
-import java.util.List;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import test.BusinessTest.DatabaseConnectionTest;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import org.junit.After;
+import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class CategoryDAOTest {
     private Connection connection;
