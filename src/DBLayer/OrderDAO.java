@@ -76,7 +76,7 @@ public class OrderDAO {
                 statement.setString(2, item.getProduct().getName());
                 statement.setInt(3, item.getQuantityorder());
                 statement.setDouble(4, productPrice);  
-                statement.setDouble(5, item.getPrice());  
+                statement.setDouble(5, item.getQuantityorder()*productPrice);
                 statement.addBatch();
             }
             statement.executeBatch();
