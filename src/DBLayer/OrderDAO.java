@@ -8,15 +8,23 @@ import java.sql.*;
 import java.util.List;
 import java.util.Random;
 
-
+/**
+ * The OrderDAO class provides data access methods for handling orders and related operations in the database.
+ */
 public class OrderDAO {
     private Connection connection; 
     
-    // Constructor for testing environment
+    /**
+     * Constructor for creating an OrderDAO instance with a provided database connection.
+     *
+     * @param connection The database connection to be used by the OrderDAO instance.
+     */
     public OrderDAO(Connection connection) {
         this.connection = connection;
     }
-    
+    /**
+     * Default constructor for creating an OrderDAO instance with its own database connection.
+     */
      public OrderDAO() {
         try {
             this.connection = DatabaseConnection.getConnection();
@@ -24,7 +32,13 @@ public class OrderDAO {
             e.printStackTrace();
         }
     }
-    
+    /**
+     * Retrieves the last inserted order ID from the database.
+     *
+     * @param conn The database connection.
+     * @return The last inserted order ID.
+     * @throws SQLException If there is an issue retrieving the last order ID.
+     */
     private int getLastInsertedOrderId(Connection conn) throws SQLException {
         try (Statement statement = conn.createStatement()) {
             ResultSet resultSet = statement.executeQuery("SELECT id FROM order_t ORDER BY id DESC LIMIT 1");
@@ -37,7 +51,12 @@ public class OrderDAO {
         }
     }
 
-
+    /**
+     * Saves an order and its associated items to the database.
+     *
+     * @param order The Order object to be saved.
+     * @return The ID of the saved order.
+     */
     public int saveOrder(Order order) {
        int orderId=-1;
         try (Connection conn = DatabaseConnection.getConnection();  
@@ -64,8 +83,14 @@ public class OrderDAO {
         }
         return orderId;
     }
-   
-  public void saveOrderItems(int orderId, List<Item> items) {
+    
+   /**
+     * Saves the items of an order to the database.
+     *
+     * @param orderId The ID of the order.
+     * @param items   The list of items to be saved.
+     */
+    public void saveOrderItems(int orderId, List<Item> items) {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement statement = conn.prepareStatement(
                      "INSERT INTO order_t_Item (order_id, product_name, quantity_ordered, price, item_price) VALUES (?, ?, ?, ?,?)")) {
@@ -86,7 +111,12 @@ public class OrderDAO {
         }
     }
     
-
+     /**
+     * Retrieves the price of a product from the database based on its name.
+     *
+     * @param productName The name of the product.
+     * @return The price of the product.
+     */
     private double getProductPrice(String productName) {
         double productPrice = 0.0; 
 
@@ -105,7 +135,7 @@ public class OrderDAO {
         }
         return productPrice;
     }
-
+/*
     private static int generateRandomOrderId() {
         try (Connection connection = DatabaseConnection.getConnection();
              Statement statement = connection.createStatement()) {
@@ -138,7 +168,14 @@ public class OrderDAO {
         JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
-
+*/
+     /**
+     * Updates the stock quantity in the database after order is placed.
+     *
+     * @param orderId         The ID of the order.
+     * @param productName     The name of the product.
+     * @param quantityOrdered The quantity of the product ordered.
+     */
     public void updateStock(int orderId, String productName, int quantityOrdered) {
         try {
             String updateStockQuery = "UPDATE Product SET stock_quantity = stock_quantity - ? WHERE name = ?";
