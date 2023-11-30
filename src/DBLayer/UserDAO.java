@@ -6,9 +6,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import BusinessLayer.*;
-
+/**
+ * The UserDAO class provides data access methods for user-related operations in the database.
+ */
 public class UserDAO {
-  private Connection connection; 
+    
+    private Connection connection; 
+    /**
+     * Default constructor for creating a UserDAO instance with its own database connection.
+     */
     public UserDAO() {
         try {
             this.connection = DatabaseConnection.getConnection();
@@ -16,11 +22,23 @@ public class UserDAO {
             throw new RuntimeException(e);
         }
     }
-      // Constructor for testing environment
+    /**
+     * Constructor for creating a UserDAO instance with a provided database connection.
+     *
+     * @param connection The database connection to be used by the UserDAO instance.
+     */
     public UserDAO(Connection connection) {
         this.connection = connection;
     }
     
+    /**
+     * Authenticates a user based on the provided username, password, and table name.
+     *
+     * @param username   The username of the user.
+     * @param password   The password of the user.
+     * @param tableName  The table name for database operations.
+     * @return True if authentication is successful, false otherwise.
+     */
     public boolean authenticate(String username, String password, String tableName) {
     try (Connection connection = DatabaseConnection.getConnection()) {
         String query = "SELECT * FROM " + tableName + " WHERE username=? AND password=?";
@@ -41,6 +59,13 @@ public class UserDAO {
         }
     }
     
+     /**
+     * Retrieves the name of a user from the database based on the provided username and table name.
+     *
+     * @param username   The username of the user.
+     * @param tableName  The table name for database operations.
+     * @return The name of the user retrieved from the database.
+     */
     public String getNameFromDB(String username,String tableName){
     try (Connection connection = DatabaseConnection.getConnection()) {
         String query = "SELECT name FROM " + tableName + " WHERE username=?";
