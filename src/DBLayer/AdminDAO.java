@@ -6,18 +6,38 @@ import BusinessLayer.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * The AdminDAO class provides data access methods for interacting with the database
+ * related to administrator operations.
+ */
 public class AdminDAO {
+    
     private Connection connection;
     
-     // Constructor for testing environment
+     /**
+     * Constructs an AdminDAO object.
+     */
      public AdminDAO() {
 
     }
+    /**
+     * Constructs an AdminDAO object with a specified database connection.
+     *
+     * @param connection The database connection to be used by the AdminDAO.
+     */
     public AdminDAO(Connection connection) {
         this.connection = connection;
     }
-    public  boolean authenticate(Admin admin, String username, String password) {
+    
+     /**
+     * Authenticates the administrator based on the provided username and password.
+     *
+     * @param admin    The Admin object to be authenticated.
+     * @param username The username of the administrator.
+     * @param password The password of the administrator.
+     * @return true if authentication was successful, false otherwise.
+     */
+    public boolean authenticate(Admin admin, String username, String password) {
         try (Connection connection = DatabaseConnection.getConnection()) {
             String query = "SELECT * FROM Admin WHERE username=? AND password=?";
             try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -38,6 +58,12 @@ public class AdminDAO {
         }
     }
     
+     /**
+     * Inserts a new manager user into the database.
+     *
+     * @param manager The User object representing the manager to be inserted.
+     * @throws SQLIntegrityConstraintViolationException If there is a constraint violation during database insertion.
+     */
     public  void insertManager(User manager) throws SQLIntegrityConstraintViolationException {
         try (Connection connection = DatabaseConnection.getConnection()) {
             String query = "INSERT INTO Manager (username, name, password) VALUES (?, ?, ?)";
@@ -51,8 +77,14 @@ public class AdminDAO {
             throw new SQLIntegrityConstraintViolationException();
 
         }
-    }
-
+    }   
+    
+    /**
+     * Inserts a new sales assistant user into the database.
+     *
+     * @param salesAssistant The User object representing the sales assistant to be inserted.
+     * @throws SQLIntegrityConstraintViolationException If there is a constraint violation during database insertion.
+     */
     public  void insertSalesAssistant(User salesAssistant) throws SQLIntegrityConstraintViolationException{
         try (Connection connection = DatabaseConnection.getConnection()) {
             String query = "INSERT INTO Operator (username, name, password) VALUES (?, ?, ?)";
@@ -66,7 +98,11 @@ public class AdminDAO {
             throw new SQLIntegrityConstraintViolationException();
         }
     }
-    
+     /**
+     * Retrieves a list of all managers from the database.
+     *
+     * @return List of User objects representing managers.
+     */
     public List<User> getAllManagers() {
         List<User> managers = new ArrayList<>();
 
@@ -92,7 +128,11 @@ public class AdminDAO {
 
         return managers;
     }
-    
+    /**
+     * Retrieves a list of all sales assistants from the database.
+     *
+     * @return List of User objects representing sales assistants.
+     */
     public List<User> getAllSalesAssistants() {
         List<User> salesAssistants = new ArrayList<>();
 
@@ -119,7 +159,13 @@ public class AdminDAO {
         return salesAssistants;
     }
 
-    
+    /**
+     * Deletes a user from the database based on the username and role.
+     *
+     * @param username  The username of the user to be deleted.
+     * @param roleType  The role type of the user to be deleted.
+     * @return true if the user is successfully deleted, false otherwise.
+     */
     public boolean deleteUser(String username, String roleType) {
         try (Connection connection = DatabaseConnection.getConnection()) {
             String tableName = getUserTableName(roleType);
@@ -136,6 +182,13 @@ public class AdminDAO {
         }
     }
 
+    /**
+     * Gets the table name associated with a user role.
+     *
+     * @param roleType The role type of the user.
+     * @return The table name associated with the user role type.
+     * @throws IllegalArgumentException If an invalid role type is provided.
+     */
     public String getUserTableName(String roleType) {
         switch (roleType) {
             case "Manager":
