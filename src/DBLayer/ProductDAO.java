@@ -8,11 +8,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+/**
+ * The ProductDAO class provides data access methods for handling products and related operations in the database.
+ */
 public class ProductDAO {
 
     private Connection connection;
-
+/**
+     * Default constructor for creating a ProductDAO instance with its own database connection.
+     */
     public ProductDAO() {
         try {
             connection = DatabaseConnection.getConnection();
@@ -21,11 +25,21 @@ public class ProductDAO {
             throw new RuntimeException(e);
         }
     }
-      // Constructor for testing environment
+    /**
+     * Constructor for creating a ProductDAO instance with a provided database connection.
+     *
+     * @param connection The database connection to be used by the ProductDAO instance.
+     */
     public ProductDAO(Connection connection) {
         this.connection = connection;
     }
     
+    /**
+     * Retrieves the ID of a product by its name from the database.
+     *
+     * @param name The name of the product.
+     * @return The ID of the product.
+     */
     public int getIDbyName(String name) {
         try {
             String query = "SELECT id FROM Product WHERE name=?";
@@ -42,7 +56,12 @@ public class ProductDAO {
         }
          return -1;
     }
-  
+     /**
+     * Retrieves a product by its ID from the database.
+     *
+     * @param productId The ID of the product.
+     * @return The Product object.
+     */
     public Product getProductByID(int productId) {
         try {
             String query = "SELECT * FROM Product WHERE id=?";
@@ -70,7 +89,11 @@ public class ProductDAO {
     }
 
 
-
+    /**
+     * Inserts a new product into the database.
+     *
+     * @param product The Product object to be inserted.
+     */
     public void insertProduct(Product product) {
         try {
             String query = "INSERT INTO Product (id, name, price, stock_quantity, quantity_per_pack, description, category_id, expiryDate) " +
@@ -90,7 +113,11 @@ public class ProductDAO {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Retrieves all products from the database.
+     *
+     * @return A list of all products.
+     */
     public List<Product> getAllProducts() {
         List<Product> productList = new ArrayList<>();
         try {
@@ -116,7 +143,12 @@ public class ProductDAO {
         return productList;
     }
 
-
+      /**
+     * Updates an existing product in the database.
+     *
+     * @param product The updated Product object.
+     * @param iid     The ID of the product to be updated.
+     */
     public void updateProduct(Product product,int iid ) {
         try {
             String query = "UPDATE Product SET name=?, price=?, stock_quantity=?, " +
@@ -136,7 +168,12 @@ public class ProductDAO {
             e.printStackTrace();
         }
     }
-
+    
+    /**
+     * Deletes a product from the database.
+     *
+     * @param productId The ID of the product to be deleted.
+     */
     public void deleteProduct(int productId) {
         try {
             String query = "DELETE FROM Product WHERE id=?";
@@ -148,6 +185,13 @@ public class ProductDAO {
             e.printStackTrace();
         }
     }
+    
+    /**
+     * Checks if a product with the given ID exists in the database.
+     *
+     * @param productId The ID of the product.
+     * @return True if the product exists, false otherwise.
+     */
     public boolean productExists(int productId) {
         try {
             String query = "SELECT COUNT(*) FROM Product WHERE id=?";
@@ -165,7 +209,12 @@ public class ProductDAO {
         }
         return false;
     }
-
+     /**
+     * Retrieves the price of a product from the database based on its ID.
+     *
+     * @param productId The ID of the product.
+     * @return The price of the product.
+     */
     public double getProductPriceFromDB(int productId) {
         double price = 0.0;
         try {
@@ -186,7 +235,12 @@ public class ProductDAO {
         return price;
     }
     
-    
+    /**
+     * Retrieves a Product object from the database based on its ID.
+     *
+     * @param productId The ID of the product.
+     * @return The Product object.
+     */
     public Product getProductFromDatabase(int productId) {
        try {
            String query = "SELECT * FROM Product WHERE id = ?";
@@ -214,6 +268,12 @@ public class ProductDAO {
            return null;
        }
    }
+    /**
+     * Searches for products in the database based on their ID.
+     *
+     * @param searchId The ID to search for.
+     * @return A list of matching products.
+     */
     public List<Product> searchProductsById(int searchId) {
         List<Product> matchingProducts = new ArrayList<>();
         try {
@@ -240,6 +300,13 @@ public class ProductDAO {
         }
         return matchingProducts;
     }
+    
+     /**
+     * Searches for products in the database based on their name.
+     *
+     * @param searchName The name to search for.
+     * @return A list of matching products.
+     */
     public List<Product> searchProductsByName(String searchName) {
         List<Product> matchingProducts = new ArrayList<>();
         try {
