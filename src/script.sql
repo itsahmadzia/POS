@@ -219,7 +219,7 @@ VALUES ('manager1', 'Manager One', 'managerpassword1');
 INSERT INTO Operator (username, name, password)
 VALUES ('operator1', 'Operator One', 'operatorpassword1');
 
-
+select *from Operator;
 
 
 select *from Product;
@@ -261,3 +261,25 @@ WHERE
         o.order_date ='2023-11-29'
 GROUP BY
     oi.product_name;
+
+
+select *from Product;
+update Product set Product.expiryDate='2023-12-23' where id = 5;
+
+
+SELECT c.name AS category_name, COUNT(p.id) AS number_of_products
+FROM Category c
+         LEFT JOIN Product p ON c.id = p.category_id
+GROUP BY c.id, c.name;
+
+select *from order_t;
+
+
+SELECT
+    order_t.operator_username AS name,
+    COUNT(id) AS number_of_orders,
+    SUM(total) AS total_amount
+FROM
+    order_t
+GROUP BY
+    order_t.operator_username;

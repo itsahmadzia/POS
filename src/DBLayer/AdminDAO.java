@@ -166,7 +166,7 @@ public class AdminDAO {
      * @param roleType  The role type of the user to be deleted.
      * @return true if the user is successfully deleted, false otherwise.
      */
-    public boolean deleteUser(String username, String roleType) {
+    public boolean deleteUser(String username, String roleType) throws SQLIntegrityConstraintViolationException {
         try (Connection connection = DatabaseConnection.getConnection()) {
             String tableName = getUserTableName(roleType);
             String query = "DELETE FROM " + tableName + " WHERE username=?";
@@ -177,6 +177,9 @@ public class AdminDAO {
                 return affectedRows > 0;
             }
         } catch (SQLException e) {
+            if(e instanceof SQLIntegrityConstraintViolationException){
+                throw new SQLIntegrityConstraintViolationException();
+            }
             e.printStackTrace();
             return false;
         }

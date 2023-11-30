@@ -274,17 +274,23 @@ public class AdminUI extends javax.swing.JFrame {
     
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {
         int selectedRow = jTable1.getSelectedRow();
-    if (selectedRow != -1) {
-        User selectedUser = displayedUsers.get(selectedRow);
-        String roleType = (String) jTable1.getValueAt(selectedRow, 2);
+        try {
+            if (selectedRow != -1) {
+                User selectedUser = displayedUsers.get(selectedRow);
+                String roleType = (String) jTable1.getValueAt(selectedRow, 2);
+                adminInstance.deleteUser(selectedUser.getUsername(), roleType);
+                displayedUsers.remove(selectedRow);
+                tableModel.removeRow(selectedRow);
 
-        displayedUsers.remove(selectedRow);
-        tableModel.removeRow(selectedRow);
 
-        adminInstance.deleteUser(selectedUser.getUsername(), roleType);
-    } else {
-        JOptionPane.showMessageDialog(this, "Please select a row to delete");
-    }
+            } else {
+                JOptionPane.showMessageDialog(this, "Please select a row to delete");
+            }
+        }
+        catch (SQLIntegrityConstraintViolationException e){
+JOptionPane.showMessageDialog(null,"Cannot delete the user orders are associated with the user");
+        }
+
 
 }
     
