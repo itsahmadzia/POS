@@ -283,3 +283,8 @@ FROM
     order_t
 GROUP BY
     order_t.operator_username;
+
+
+create table emplyee_info(
+
+);

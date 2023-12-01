@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.*;
 
 public class OrderGraphUI extends JFrame {
-
+//MONTHLY WEEKLY AND DAILY REPORT
     private JRadioButton dailyRadioButton;
     private JRadioButton weeklyRadioButton;
     private JLabel totalsalessum;

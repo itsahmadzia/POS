@@ -18,7 +18,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class operatorGraph extends JFrame {
-
+//SHOW ORDERS DONE BY OPERATORS IN PIE CHART
     private JRadioButton dailyRadioButton;
     private JDateChooser from;
     private JLabel totalsalessum;
@@ -110,7 +110,7 @@ public class operatorGraph extends JFrame {
 
     private JFreeChart createPieChart(DefaultPieDataset dataset) {
         JFreeChart chart = ChartFactory.createPieChart(
-                "Product Acquisition of Categories",
+                "Orders done by Operators",
                 dataset,
                 true,
                 true,

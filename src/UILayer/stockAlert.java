@@ -20,8 +20,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
-public class productReport extends JFrame {
-//expiration count down
+public class stockAlert extends JFrame {
+//show those where 2 packs left
     private JRadioButton dailyRadioButton;
     private JDateChooser from;
     private JLabel totalsalessum;
@@ -38,7 +38,7 @@ public class productReport extends JFrame {
     private static final String USER = "ostechnix";
     private static final String PASSWORD = "Password123#@!";
 
-    public productReport() {
+    public stockAlert() {
         setTitle("Graph");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -70,10 +70,10 @@ public class productReport extends JFrame {
         setLayout(new BorderLayout());
         JPanel radioPanel = new JPanel();
         radioPanel.setLayout(new FlowLayout());
-     //   radioPanel.add(new JLabel("  End Date: "));
-     //   radioPanel.add(tofield);
-     //   radioPanel.add(new JLabel("  Start Date: "));
-    //    radioPanel.add(from);
+        //   radioPanel.add(new JLabel("  End Date: "));
+        //   radioPanel.add(tofield);
+        //   radioPanel.add(new JLabel("  Start Date: "));
+        //    radioPanel.add(from);
         radioPanel.add(generateButton);
 
         add(radioPanel, BorderLayout.NORTH);
@@ -100,7 +100,7 @@ public class productReport extends JFrame {
         totalsales = 0;
 
         try (Connection connection = DatabaseConnection.getConnection()) {
-            String query = "SELECT name, expiryDate FROM Product ORDER BY expiryDate ASC ";
+            String query = "SELECT name, expiryDate, stock_quantity,quantity_per_pack FROM Product where Product.stock_quantity<=Product.quantity_per_pack*2 ORDER BY expiryDate ASC ";
             try (Statement preparedStatement = connection.createStatement()) {
                 ResultSet resultSet = preparedStatement.executeQuery(query);
 
@@ -111,8 +111,10 @@ public class productReport extends JFrame {
                     }
                 });
                 ((DefaultTableModel) dataTable.getModel()).addColumn("Product Name");
+                ((DefaultTableModel) dataTable.getModel()).addColumn("Remaining Stock");
                 ((DefaultTableModel) dataTable.getModel()).addColumn("Days Left");
 
+                ((DefaultTableModel) dataTable.getModel()).addColumn("Quantity Per Pack");
                 while (resultSet.next()) {
                     String productName = resultSet.getString("name");
                     Date expiryDate = resultSet.getDate("expiryDate");
@@ -120,7 +122,7 @@ public class productReport extends JFrame {
                     // Calculate the number of days left
                     long daysLeft = calculateDaysLeft(expiryDate);
 // can add a check here to set a threshold
-                    ((DefaultTableModel) dataTable.getModel()).addRow(new Object[]{productName, daysLeft});
+                    ((DefaultTableModel) dataTable.getModel()).addRow(new Object[]{productName, resultSet.getInt(3),daysLeft,resultSet.getInt(4)});
                 }
 
                 updateSalessum();
@@ -152,7 +154,7 @@ public class productReport extends JFrame {
 
         for (int i = 0; i < rowCount; i++) {
             String date = (String) tableModel.getValueAt(i, 0); // Assuming date is in the first column
-           long total = (long) tableModel.getValueAt(i, 1); // Assuming total is in the second column
+          int total = (int) tableModel.getValueAt(i, 1); // Assuming total is in the second column
             dataset.addValue(total, "Total Sales", date);
         }
 
@@ -162,7 +164,7 @@ public class productReport extends JFrame {
     }
     private JFreeChart createChart(CategoryDataset dataset) {
         JFreeChart chart = ChartFactory.createBarChart(
-                "Expiration Date left",
+                "Stock Alerts",
                 "Name",
                 "Remaining Days",
                 dataset,
@@ -193,7 +195,7 @@ public class productReport extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                productReport orderGraphUI = new productReport();
+                stockAlert orderGraphUI = new stockAlert();
                 orderGraphUI.setVisible(true);
             }
         });

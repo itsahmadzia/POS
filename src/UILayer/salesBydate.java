@@ -34,10 +34,7 @@ public class salesBydate extends JFrame {
     private ChartPanel chartPanel;
     private JTable dataTable;
 
-    // JDBC database URL, username, and password of MySQL server
-    private static final String DB_URL = "jdbc:mysql://your_database_url:3306/your_database_name";
-    private static final String USER = "ostechnix";
-    private static final String PASSWORD = "Password123#@!";
+//reports with fields for to and from
 
     public salesBydate() {
         setTitle("Graph");
