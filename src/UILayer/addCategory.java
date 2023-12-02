@@ -220,6 +220,14 @@ public class addCategory extends javax.swing.JFrame {
 
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new Managermenu().setVisible(true);
+            }
+
+        });
+        this.dispose();
     }
     public String getDataatrow(){
         int selected=jtableCategories.getSelectedRow();

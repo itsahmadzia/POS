@@ -1,11 +1,8 @@
 package UILayer;
+
 import BusinessLayer.*;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
+
+import javax.swing.*;
 
 public class LoginUI extends javax.swing.JFrame {
     
@@ -212,7 +209,7 @@ public class LoginUI extends javax.swing.JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new addProduct().setVisible(true);
+                new Managermenu().setVisible(true);
             }
         });
     }

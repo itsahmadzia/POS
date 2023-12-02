@@ -298,6 +298,14 @@ updateCombo();
     }// </editor-fold>
 
     private void btnBackActionPerformed(ActionEvent evt) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new Managermenu().setVisible(true);
+            }
+
+        });
+        this.dispose();
     }
 
     private void btnStockActionPerformed(ActionEvent evt) {

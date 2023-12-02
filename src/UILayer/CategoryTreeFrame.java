@@ -256,6 +256,14 @@ tableModel.setRowCount(0);
     }
 
     private void goBack(ActionEvent e) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new Managermenu().setVisible(true);
+            }
+
+        });
+        this.dispose();
         // Handle the back button action if needed
         // For example, closing the current frame and returning to the previous frame
         // You may want to customize this based on your application's structure
