@@ -276,6 +276,15 @@ public class Managermenu extends javax.swing.JFrame {
 
     private void btnOperatorsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorsActionPerformed
         // TODO add your handling code here:
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new AdminUI(true).setVisible(true);
+            }
+
+        });
+        this.dispose();
+
     }//GEN-LAST:event_btnOperatorsActionPerformed
 
     private void btnReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportsActionPerformed
@@ -284,6 +293,14 @@ public class Managermenu extends javax.swing.JFrame {
 
     private void btnExpiringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExpiringActionPerformed
         // TODO add your handling code here:
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new productReport().setVisible(true);
+            }
+
+        });
+        this.dispose();
     }//GEN-LAST:event_btnExpiringActionPerformed
 
     /**

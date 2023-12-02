@@ -81,7 +81,12 @@ public class productReport extends JFrame {
         add(new JScrollPane(dataTable), BorderLayout.CENTER);
         add(ButtonPanel,BorderLayout.WEST);
 
-
+backButton.addActionListener(new ActionListener() {
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      performBack(e);
+    }
+});
 
         generateButton.addActionListener(new ActionListener() {
             @Override
@@ -91,6 +96,19 @@ public class productReport extends JFrame {
         });
 
     }
+
+    private void performBack(ActionEvent e) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new Managermenu().setVisible(true);
+            }
+
+        });
+        this.dispose();
+
+    }
+
     void updateSalessum(){
         totalsalessum.setText("TOTAL SALES "+totalsales);
     }
@@ -119,6 +137,7 @@ public class productReport extends JFrame {
 
                     // Calculate the number of days left
                     long daysLeft = calculateDaysLeft(expiryDate);
+                    System.out.println(daysLeft);
 // can add a check here to set a threshold
                     ((DefaultTableModel) dataTable.getModel()).addRow(new Object[]{productName, daysLeft});
                 }
@@ -151,8 +170,9 @@ public class productReport extends JFrame {
         int rowCount = tableModel.getRowCount();
 
         for (int i = 0; i < rowCount; i++) {
-            String date = (String) tableModel.getValueAt(i, 0); // Assuming date is in the first column
-           long total = (long) tableModel.getValueAt(i, 1); // Assuming total is in the second column
+            String date = (String) tableModel.getValueAt(i, 0);
+           long total = (long) tableModel.getValueAt(i, 1);
+            System.out.println("total graph"+total);
             dataset.addValue(total, "Total Sales", date);
         }
 

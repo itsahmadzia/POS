@@ -5,6 +5,8 @@ import BusinessLayer.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +16,38 @@ public class AdminUI extends javax.swing.JFrame {
     private DefaultTableModel tableModel;
     private List<User> displayedUsers;
     private List<Integer> displayedIndexes;
+    public AdminUI(Boolean a){
+        initComponents();
+        adminInstance = new Admin("Admin", "1234");
+        tableModel = new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Username", "Role"});
+        displayedUsers = new ArrayList<>();
+        displayedIndexes = new ArrayList<>();
+        jComboBox.removeAllItems();
+        jComboBox.addItem("Sales Assistant");
 
+        updateTableFromDatabase();
+        deleteButton.setVisible(true);
+        deleteButton.setText("Back");
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fromSecond(e);
+            }
+
+
+        });
+    }
+    private void fromSecond(ActionEvent e) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new Managermenu().setVisible(true);
+            }
+
+        });
+        this.dispose();
+
+    }
 
     public AdminUI() {
         initComponents();
@@ -23,6 +56,11 @@ public class AdminUI extends javax.swing.JFrame {
         displayedUsers = new ArrayList<>();
         displayedIndexes = new ArrayList<>();
         updateTableFromDatabase();
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
 
     }
     
@@ -223,11 +261,7 @@ public class AdminUI extends javax.swing.JFrame {
         deleteButton.setBackground(new java.awt.Color(255, 0, 51));
         deleteButton.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
         deleteButton.setText("Delete");
-        deleteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deleteButtonActionPerformed(evt);
-            }
-        });
+
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
