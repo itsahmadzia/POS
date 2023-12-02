@@ -193,6 +193,7 @@ tableModel.setRowCount(0);
 
         setSize(800, 600);
         setLocationRelativeTo(null);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setVisible(true);
     }
 

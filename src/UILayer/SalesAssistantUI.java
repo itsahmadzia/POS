@@ -123,6 +123,7 @@ public class SalesAssistantUI extends javax.swing.JFrame {
 
             }
         });
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
     
     private void handleWindowClosing() {

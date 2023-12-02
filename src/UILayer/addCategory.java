@@ -32,6 +32,7 @@ public class addCategory extends javax.swing.JFrame {
             comboCategories.addItem(p);
         }
         loadCategoriesIntoTable();
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
     /**

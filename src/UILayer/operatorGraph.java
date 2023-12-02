@@ -34,8 +34,18 @@ public class operatorGraph extends JFrame {
     private static final String DB_URL = "jdbc:mysql://your_database_url:3306/your_database_name";
     private static final String USER = "ostechnix";
     private static final String PASSWORD = "Password123#@!";
+    private void performACTION(ActionEvent e) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new graphMenu().setVisible(true);
+            }
 
+        });
+        this.dispose();
+    }
     public operatorGraph() {
+
         setTitle("Graph");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -82,13 +92,19 @@ public class operatorGraph extends JFrame {
         gapPanel.setPreferredSize(new Dimension(800, 20)); // Adjust the size as needed
 
         add(gapPanel, BorderLayout.SOUTH);
-
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                performACTION(e);
+            }
+        });
         generateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 generatePieChart();
             }
         });
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
 
     }
     private void createAndDisplayPieChart(DefaultTableModel tableModel) {

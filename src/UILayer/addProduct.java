@@ -32,6 +32,7 @@ public class addProduct extends javax.swing.JFrame {
         initComponents();
         jtableproducts.setModel(defaultTableModel);
         loadProductsIntoTable();
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
     /**

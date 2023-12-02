@@ -20,6 +20,7 @@ public class Managermenu extends javax.swing.JFrame {
      */
     public Managermenu() {
         initComponents();
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
     /**
@@ -289,6 +290,14 @@ public class Managermenu extends javax.swing.JFrame {
 
     private void btnReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportsActionPerformed
         // TODO add your handling code here:
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new graphMenu().setVisible(true);
+            }
+
+        });
+        this.dispose();
     }//GEN-LAST:event_btnReportsActionPerformed
 
     private void btnExpiringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExpiringActionPerformed

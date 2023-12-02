@@ -37,6 +37,7 @@ public class salesBydate extends JFrame {
 //reports with fields for to and from
 
     public salesBydate() {
+
         setTitle("Graph");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -79,6 +80,7 @@ public class salesBydate extends JFrame {
         add(new JScrollPane(dataTable), BorderLayout.CENTER);
         add(ButtonPanel,BorderLayout.WEST);
         add(infoPanel,BorderLayout.SOUTH);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 
         generateButton.addActionListener(new ActionListener() {
@@ -87,8 +89,26 @@ public class salesBydate extends JFrame {
                 generateGraph();
             }
         });
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                performACTION(e);
+            }
+        });
 
     }
+
+    private void performACTION(ActionEvent e) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new graphMenu().setVisible(true);
+            }
+
+        });
+        this.dispose();
+    }
+
     void updateSalessum(){
         totalsalessum.setText("TOTAL SALES "+totalsales);
     }
@@ -114,7 +134,6 @@ public class salesBydate extends JFrame {
                 java.sql.Date fromDate;
                 Date toDate;
                 if (fromDateUtil != null && toDateUtil != null )    {
-                    // Convert to java.sql.Date if the check is successful
 
                     fromDate = new java.sql.Date(fromDateUtil.getTime());
                   toDate = new java.sql.Date(toDateUtil.getTime());
@@ -140,11 +159,9 @@ public class salesBydate extends JFrame {
                         JOptionPane.showMessageDialog(this, "Invalid date range", "Date Range Error", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
-                    // Continue with your logic, for example, execute the query
-                    // ...
+
                 }
                 else {
-                    // Display an error message or take appropriate action
                     JOptionPane.showMessageDialog(this, "Invalid date range", "Date Range Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
@@ -167,7 +184,7 @@ public class salesBydate extends JFrame {
                         double totalSum = resultSet.getDouble("total_sum");
 
                         totalsales += totalSum;
-                        ((DefaultTableModel) dataTable.getModel()).addRow(new Object[]{productName, totalSum});
+                        ((DefaultTableModel) dataTable.getModel()).addRow(new Object[]{dataTable.getRowCount()+") "+productName, totalSum});
                     }
 
 

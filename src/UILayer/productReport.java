@@ -19,6 +19,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.concurrent.TimeUnit;
 
 public class productReport extends JFrame {
 //expiration count down
@@ -94,7 +95,7 @@ backButton.addActionListener(new ActionListener() {
                 generateGraph();
             }
         });
-
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
     private void performBack(ActionEvent e) {
@@ -118,7 +119,7 @@ backButton.addActionListener(new ActionListener() {
         totalsales = 0;
 
         try (Connection connection = DatabaseConnection.getConnection()) {
-            String query = "SELECT name, expiryDate FROM Product ORDER BY expiryDate ASC ";
+            String query = "SELECT  name, expiryDate FROM Product ORDER BY expiryDate ASC";
             try (Statement preparedStatement = connection.createStatement()) {
                 ResultSet resultSet = preparedStatement.executeQuery(query);
 
@@ -132,15 +133,16 @@ backButton.addActionListener(new ActionListener() {
                 ((DefaultTableModel) dataTable.getModel()).addColumn("Days Left");
 
                 while (resultSet.next()) {
+
                     String productName = resultSet.getString("name");
                     Date expiryDate = resultSet.getDate("expiryDate");
 
-                    // Calculate the number of days left
-                    long daysLeft = calculateDaysLeft(expiryDate);
+                    int daysLeft = calculateDaysLeft(expiryDate);
                     System.out.println(daysLeft);
-// can add a check here to set a threshold
-                    ((DefaultTableModel) dataTable.getModel()).addRow(new Object[]{productName, daysLeft});
+if(daysLeft!=0)
+                    ((DefaultTableModel) dataTable.getModel()).addRow(new Object[]{dataTable.getRowCount()+") "+productName, daysLeft});
                 }
+
 
                 updateSalessum();
                 createAndDisplayBarChart(((DefaultTableModel) dataTable.getModel()));
@@ -152,16 +154,15 @@ backButton.addActionListener(new ActionListener() {
         }
     }
 
-    private long calculateDaysLeft(Date expiryDate) {
+    private int calculateDaysLeft(Date expiryDate) {
         java.util.Date currentDate = new java.util.Date();
 
         long differenceInMillis = expiryDate.getTime() - currentDate.getTime();
 
-        long daysLeft = differenceInMillis / (24 * 60 * 60 * 1000);
+        int daysLeft = (int) TimeUnit.MILLISECONDS.toDays(differenceInMillis);
 
         return daysLeft;
     }
-
 
 
     private void createAndDisplayBarChart(DefaultTableModel tableModel) {
@@ -170,16 +171,20 @@ backButton.addActionListener(new ActionListener() {
         int rowCount = tableModel.getRowCount();
 
         for (int i = 0; i < rowCount; i++) {
-            String date = (String) tableModel.getValueAt(i, 0);
-           long total = (long) tableModel.getValueAt(i, 1);
-            System.out.println("total graph"+total);
-            dataset.addValue(total, "Total Sales", date);
+            String name = (String) tableModel.getValueAt(i, 0);
+            int daysLeft = (int) tableModel.getValueAt(i, 1);
+
+
+            dataset.addValue(daysLeft, "Total Days",name);
+
+            System.out.println("Days Left for " + name + ": " + daysLeft);
         }
 
         JFreeChart chart = createChart(dataset);
 
         chartPanel.setChart(chart);
     }
+
     private JFreeChart createChart(CategoryDataset dataset) {
         JFreeChart chart = ChartFactory.createBarChart(
                 "Expiration Date left",

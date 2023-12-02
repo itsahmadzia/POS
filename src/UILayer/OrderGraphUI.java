@@ -42,8 +42,9 @@ public class OrderGraphUI extends JFrame {
     private static final String DB_URL = "jdbc:mysql://your_database_url:3306/your_database_name";
     private static final String USER = "ostechnix";
     private static final String PASSWORD = "Password123#@!";
-
+  
     public OrderGraphUI() {
+
         setTitle("Order Graph");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -92,10 +93,28 @@ public class OrderGraphUI extends JFrame {
                 generateGraph();
             }
         });
-
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                performACTION( e);
+            }
+        });
         weeklyRadioButton.setSelected(true);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
-void updateSalessum(){
+
+    private void performACTION(ActionEvent e) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new graphMenu().setVisible(true);
+            }
+
+        });
+        this.dispose();
+    }
+
+    void updateSalessum(){
         totalsalessum.setText("TOTAL SALES "+totalsales);
 }
     private void generateGraph() {

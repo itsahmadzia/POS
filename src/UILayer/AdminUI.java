@@ -36,6 +36,7 @@ public class AdminUI extends javax.swing.JFrame {
 
 
         });
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
     private void fromSecond(ActionEvent e) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -61,7 +62,7 @@ public class AdminUI extends javax.swing.JFrame {
                 deleteButtonActionPerformed(evt);
             }
         });
-
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
     
     @SuppressWarnings("unchecked")
