@@ -11,6 +11,7 @@ import DBLayer.ProductDAO;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionEvent;
 import java.sql.SQLDataException;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -47,8 +48,8 @@ public class addProduct extends javax.swing.JFrame {
             tfCategory.addItem(category);
         }
     }
-    private void initComponents() {
 
+    private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -72,7 +73,9 @@ public class addProduct extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         tfPrice = new javax.swing.JTextField();
-        updateCombo();
+        btnBack = new javax.swing.JButton();
+        btnStock = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(1000, 1000));
@@ -179,6 +182,21 @@ public class addProduct extends javax.swing.JFrame {
             }
         });
 
+        btnBack.setText("Back");
+        btnBack.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBackActionPerformed(evt);
+            }
+        });
+
+        btnStock.setFont(new java.awt.Font("Andale Mono", 0, 14)); // NOI18N
+        btnStock.setText("New Stock");
+        btnStock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnStockActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -196,10 +214,9 @@ public class addProduct extends javax.swing.JFrame {
                                                 .addGap(49, 49, 49)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                         .addComponent(tfPrice, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
-                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                                .addComponent(tfID, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
-                                                                .addComponent(tfStock)
-                                                                .addComponent(tfQuantity)))
+                                                        .addComponent(tfID, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+                                                        .addComponent(tfStock)
+                                                        .addComponent(tfQuantity))
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                                         .addGroup(layout.createSequentialGroup()
                                                                 .addGap(68, 68, 68)
@@ -215,7 +232,9 @@ public class addProduct extends javax.swing.JFrame {
                                                                         .addComponent(tfName)
                                                                         .addComponent(expDate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                                         .addGroup(layout.createSequentialGroup()
-                                                                .addGap(155, 155, 155)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                                                                .addComponent(btnStock)
+                                                                .addGap(18, 18, 18)
                                                                 .addComponent(jBADD, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addGap(18, 18, 18)
                                                                 .addComponent(jbUpdate)
@@ -224,11 +243,17 @@ public class addProduct extends javax.swing.JFrame {
                                                 .addGap(6, 6, 6)))
                                 .addGap(33, 33, 33))
                         .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                                .addGap(31, 31, 31)
+                                .addComponent(btnBack)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addGap(14, 14, 14)
+                                .addComponent(btnBack)
+                                .addGap(33, 33, 33)
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -262,14 +287,34 @@ public class addProduct extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jBADD)
                                         .addComponent(jbUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jbDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jbDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btnStock, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(29, 29, 29))
         );
-
+updateCombo();
         pack();
     }// </editor-fold>
+
+    private void btnBackActionPerformed(ActionEvent evt) {
+    }
+
+    private void btnStockActionPerformed(ActionEvent evt) {
+        //stock refill button
+        if(jtableproducts.getSelectedRow()!=-1){
+
+                 updateStock u = new updateStock(getDataatrow(),this);
+                 u.setVisible(1==1);
+
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Please Select a row to refill that stock");
+
+        }
+
+
+    }
 
     private void tfIDActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
@@ -520,6 +565,10 @@ return true;
     private javax.swing.JTextField tfPrice;
     private javax.swing.JTextField tfQuantity;
     private javax.swing.JTextField tfStock;
+    private javax.swing.JButton btnStock;
+
+
+    private javax.swing.JButton btnBack;
     private DefaultTableModel defaultTableModel=new DefaultTableModel();
 
     // End of variables declaration

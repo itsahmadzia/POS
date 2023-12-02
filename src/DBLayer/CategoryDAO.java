@@ -42,12 +42,14 @@ public class CategoryDAO {
     public List<String> getProductsInCategory(int categoryId) {
         List<String> productList = new ArrayList<>();
         try {
-            String query = "SELECT name FROM Product WHERE category_id = ?";
+            String query = "SELECT id,name FROM Product WHERE category_id = ?";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, categoryId);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     while (resultSet.next()) {
-                        productList.add(resultSet.getString("name"));
+                        productList.add(resultSet.getInt(1)+"|"+resultSet.getString(2));
+                        System.out.println(productList);
+
                     }
                 }
             }
@@ -66,12 +68,12 @@ public class CategoryDAO {
     public List<String> getProductsInCategorytillleaf(int categoryId) {
         List<String> productList = new ArrayList<>();
         try {
-            String query = "CALL GetAllProductsForCategory(?)";
+            String query = "CALL GetProductsForCategoryConcat(?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setInt(1, categoryId);
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
                     while (resultSet.next()) {
-                        productList.add(resultSet.getString("product_name"));
+                        productList.add(resultSet.getString(1));
                     }
                 }
             }

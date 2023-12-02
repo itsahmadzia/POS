@@ -33,7 +33,8 @@ public class CategoryTreeFrame extends JFrame {
 
         super("Category Tree Example");
         tableP.setModel(tableModel);
-        tableModel.addColumn("Product");
+        tableModel.addColumn("ProductID");
+        tableModel.addColumn("NAME");
         add(new JScrollPane(tableP), BorderLayout.CENTER);
         tableP.setDefaultEditor(Object.class, null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -103,7 +104,8 @@ eastPanel.setPreferredSize(new Dimension(300,600));
                     }
                     tableModel.setRowCount(0);
                     for(String P:productList){
-                        tableModel.addRow(new Object[]{P});
+                       String []p= P.split("\\|");
+                        tableModel.addRow(new Object[]{p[0],p[1]});
                     }
                 }
             }
@@ -124,11 +126,14 @@ eastPanel.setPreferredSize(new Dimension(300,600));
                         productList = c.getProductsInCategorytillleaf(c.getCategoryCodebyName((String) selectedNode.getUserObject()));
                     } else {
                         System.out.println("Selected Node: " + selectedNode.getUserObject());
+
+
                         productList = c.getProductsInCategory(c.getCategoryCodebyName((String) selectedNode.getUserObject()));
                     }
                     tableModel.setRowCount(0);
                     for(String P:productList){
-                        tableModel.addRow(new Object[]{P});
+                        String []p= P.split("\\|");
+                        tableModel.addRow(new Object[]{p[0],p[1]});
                     }
                 }
 
@@ -197,7 +202,7 @@ tableModel.setRowCount(0);
         }
 
         ProductDAO d = new ProductDAO();
-        int code = d.getIDbyName(selectedProduct);
+        int code = Integer.parseInt(selectedProduct);
         Product s = d.getProductByID(code);
         list.get(0).setText("ID:" + s.getId());
         list.get(1).setText("Name:" + s.getName());
@@ -259,7 +264,7 @@ tableModel.setRowCount(0);
     JLabel calculateDateDifference(String date) {
         LocalDate inputDate = LocalDate.parse(date);
         LocalDate currentDate = LocalDate.now();
-        Period period = Period.between(inputDate, currentDate);
+        Period period = Period.between( currentDate,inputDate);
 
         int years = period.getYears();
         int months = period.getMonths();

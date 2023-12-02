@@ -121,7 +121,7 @@ updatecomboBox();
         jLabel7.setFont(new java.awt.Font("DejaVu Sans Mono", 1, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 0, 102));
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("Update Product");
+        jLabel7.setText("Update Category");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -173,7 +173,7 @@ updatecomboBox();
                     .addComponent(jButton2))
                 .addContainerGap(168, Short.MAX_VALUE))
         );
-
+comboCategories.setVisible(false);
         pack();
     }// </editor-fold>//GEN-END:initComponents
 

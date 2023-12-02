@@ -121,7 +121,7 @@ public class ProductDAO {
     public List<Product> getAllProducts() {
         List<Product> productList = new ArrayList<>();
         try {
-            String query = "SELECT * FROM Product";
+            String query = "SELECT * FROM Product order by name asc";
             try (Statement statement = connection.createStatement();
                  ResultSet resultSet = statement.executeQuery(query)) {
                 while (resultSet.next()) {
@@ -357,7 +357,22 @@ public class ProductDAO {
      *         }
      *     }
       */
-
+    public int getMaxProductId() {
+        try {
+            String query = "SELECT MAX(id) FROM Product";
+            try (Statement statement = connection.createStatement();
+                 ResultSet resultSet = statement.executeQuery(query)) {
+                if (resultSet.next()) {
+                    int maxId = resultSet.getInt(1);
+                    return maxId;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        // Return 0 if there is no maximum ID
+        return 0;
+    }
 
 
 

@@ -37,6 +37,7 @@ public class SalesAssistantUI extends javax.swing.JFrame {
 
     public SalesAssistantUI(User currentUser) {
         initComponents();
+        totalTextField.setEditable(false);
         user = currentUser;
         if (cart == null) {
             cart = new Cart();
@@ -1299,6 +1300,7 @@ resetForm();
    product=new Product();
    cart = new Cart();
    order = new Order();
+   totalTextField.setText("");
     }
 
     public static void main(String args[]) {

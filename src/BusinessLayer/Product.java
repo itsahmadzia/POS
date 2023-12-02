@@ -275,9 +275,7 @@ public class Product implements Composite{
     * @param productName The name of the product to search for.
     * @return The ID of the product with the specified name.
     */
-    public int getProductbyNameFromDB(String productName) {
-        return ProductDAO.getIDbyName(productName);
-    }
+
     
     /**
     * Searches for products in the database based on the specified product name.
