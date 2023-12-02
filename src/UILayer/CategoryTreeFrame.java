@@ -283,8 +283,7 @@ tableModel.setRowCount(0);
 
         JLabel label = new JLabel(resultText);
 
-        // Set the label color to red if the time difference is less than 15 days
-        if (period.getDays() < 15) {
+       if (period.getMonths()==0&&period.getYears()==0&&period.getDays() < 15) {
             label.setForeground(Color.RED);
         }
 
