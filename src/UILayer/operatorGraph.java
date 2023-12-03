@@ -16,7 +16,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+/**
+ * The operatorGraph class represents the user interface for displaying pie charts of orders done by operators (sales assistants).
+ */
 public class operatorGraph extends JFrame {
 //SHOW ORDERS DONE BY OPERATORS IN PIE CHART
     private JRadioButton dailyRadioButton;
@@ -34,6 +36,12 @@ public class operatorGraph extends JFrame {
     private static final String DB_URL = "jdbc:mysql://your_database_url:3306/your_database_name";
     private static final String USER = "ostechnix";
     private static final String PASSWORD = "Password123#@!";
+    
+    /**
+     * Handles the action when the Back button is clicked.
+     *
+     * @param e The action event.
+     */
     private void performACTION(ActionEvent e) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -44,6 +52,9 @@ public class operatorGraph extends JFrame {
         });
         this.dispose();
     }
+    /**
+     * Creates a new instance of the operatorGraph class.
+     */
     public operatorGraph() {
 
         setTitle("Graph");
@@ -107,6 +118,12 @@ public class operatorGraph extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
     }
+    
+     /**
+     * Creates and displays a pie chart based on the given table model.
+     *
+     * @param tableModel The table model containing data.
+     */
     private void createAndDisplayPieChart(DefaultTableModel tableModel) {
         DefaultPieDataset dataset = new DefaultPieDataset();
 
@@ -123,7 +140,14 @@ public class operatorGraph extends JFrame {
 
         chartPanel.setChart(chart);
     }
-
+    
+    /**
+     * Creates a JFreeChart pie chart based on the given data set.
+     *
+     * @param dataset The data set for the pie chart.
+     * @return The created JFreeChart object.
+     */
+    
     private JFreeChart createPieChart(DefaultPieDataset dataset) {
         JFreeChart chart = ChartFactory.createPieChart(
                 "Orders done by Operators",
@@ -135,7 +159,10 @@ public class operatorGraph extends JFrame {
 
         return chart;
     }
-
+    
+    /**
+     * Generates and displays a pie chart of orders done by operators.
+     */
     private void generatePieChart() {
         totalsales = 0;
 
@@ -179,7 +206,12 @@ public class operatorGraph extends JFrame {
             ex.printStackTrace();
         }
     }
-
+    
+     /**
+     * Main method.
+     *
+     * @param args The command line arguments.
+     */
     public static void main(String[] args) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
