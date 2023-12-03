@@ -1,9 +1,5 @@
 package BusinessLayer;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -11,19 +7,24 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- *
- * @author malik
+ * The employeeFrame class represents the GUI for managing employee information.
+ * It includes functionality for adding, updating, and deleting employee records.
  */
 public class employeeFrame extends javax.swing.JFrame {
 
     /**
-     * Creates new form employeeFrame
+     * Constructs a new employeeFrame.
+     * @throws SQLException If a SQL exception occurs.
      */
     public employeeFrame() throws SQLException {
         initComponents();
         loadDetainEmployee(new employeeDAO().getAllEmployees());
     }
-
+    
+    /**
+     * Loads employee details into the table.
+     * @param e The list of Employee objects to be displayed in the table.
+     */
     private void loadDetainEmployee(List<Employee> e ){
       DefaultTableModel tableModel= (DefaultTableModel) jTableEmployess.getModel();
       tableModel.setRowCount(0);
@@ -183,7 +184,12 @@ public class employeeFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>
-
+    
+    /**
+     * Deletes the selected employee record from the database and updates the table.
+     * If no record is selected, a message dialog is displayed.
+     * @param evt The ActionEvent triggered by the delete button.
+     */
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {
         DefaultTableModel defaultTableModel = (DefaultTableModel) jTableEmployess.getModel();
 
@@ -204,7 +210,13 @@ public class employeeFrame extends javax.swing.JFrame {
         }
 
     }
-
+    
+     /**
+     * Adds a new employee record to the database and updates the table.
+     * Employee details are obtained from the input fields.
+     * If any input is invalid, a run time exception is thrown.
+     * @param evt The ActionEvent triggered by the add button.
+     */
     private void btnADDActionPerformed(java.awt.event.ActionEvent evt) {
        int id= Integer.parseInt(tfID.getText());
        double salary= Double.parseDouble(tfSalary.getText());
@@ -230,7 +242,14 @@ tfID.setText("");
         tfSalary.setText("");
 
     }
-
+    
+    /**
+     * Updates the selected employee record in the database and updates the table.
+     * If no record is selected, a message dialog is displayed.
+     * Employee details are obtained from the input fields.
+     * If any input is invalid, a run time exception is thrown.
+     * @param evt The ActionEvent triggered by the update button.
+     */
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {
         DefaultTableModel defaultTableModel = (DefaultTableModel) jTableEmployess.getModel();
 
@@ -272,6 +291,7 @@ tfID.setText("");
     /**
      * @param args the command line arguments
      */
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -324,4 +344,3 @@ tfID.setText("");
     private javax.swing.JTextField tfSalary;
     // End of variables declaration
 }
-
