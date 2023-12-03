@@ -1,33 +1,27 @@
-package DBTest;
+package test.DBTest;
 
 import BusinessLayer.*;
-import BusinessTest.*;
-import BusinessTest.DatabaseConnectionTest;
-import DBLayer.*;
-import java.sql.*; 
+import DBLayer.AdminDAO;
+import DBLayer.OrderDAO;
+import DBLayer.ProductDAO;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import test.BusinessTest.DatabaseConnectionTest;
 
-import java.util.Date;
-import java.util.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import org.junit.After;
-import java.sql.Statement;
-import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
-
-
-import org.junit.Before;
-import org.junit.Test;
 
 public class OrderDAOTest {
     private Connection connection;
 
     public static final String TESTING_JDBC_URL = "jdbc:mysql://localhost:3306/test_randomn";
-    public static final String TESTING_USER = "root";
-    public static final String TESTING_PASSWORD = "r13Bne3@7";
+    public static final String TESTING_USER = "ostechnix";
+    public static final String TESTING_PASSWORD = "Password123#@!";
     private ProductDAO productDAO;
     private OrderDAO orderDAO;
     private AdminDAO adminDAO;
@@ -38,7 +32,7 @@ public class OrderDAOTest {
         DatabaseConnectionTest.init(TESTING_JDBC_URL, TESTING_USER, TESTING_PASSWORD);
 
         try {
-            connection = DBTest.DatabaseConnection.getConnectionToTest();  
+            connection = test.BusinessTest.DatabaseConnectionTest.getConnection();
             productDAO = new ProductDAO(connection);
             orderDAO = new OrderDAO(connection);
             adminDAO = new AdminDAO(connection);

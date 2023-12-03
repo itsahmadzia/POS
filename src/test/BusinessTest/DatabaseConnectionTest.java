@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class DatabaseConnectionTest {
     private static  String JDBC_URL = "jdbc:mysql://localhost:3306/test_randomn";
-    private static  String USER = "rostechnixoot"; 
+    private static  String USER = "ostechnix";
     private static  String PASSWORD = "Password123#@!";
     
     public static void init(String jdbcUrl, String user, String password) {

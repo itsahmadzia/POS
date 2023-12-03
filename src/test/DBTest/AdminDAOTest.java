@@ -1,19 +1,18 @@
-package DBTest;
+package test.DBTest;
+
 import BusinessLayer.Admin;
 import BusinessLayer.User;
 import DBLayer.AdminDAO;
-import static org.junit.Assert.*;
-
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.List;
-import java.sql.SQLException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import test.BusinessTest.DatabaseConnectionTest;
+
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class AdminDAOTest {
 
@@ -24,7 +23,7 @@ public class AdminDAOTest {
         
          try {
 
-            adminDAO = new AdminDAO(DBTest.DatabaseConnection.getConnectionToTest());
+            adminDAO = new AdminDAO(DatabaseConnectionTest.getConnection());
            
         clearTestData();
         insertInitialData();
