@@ -27,6 +27,10 @@ import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * SalesAssistantUI class represents the user interface for the sales assistant (operator) functionality.
+ * It allows the user to interact with the system, add items to the cart, process orders, and generate invoices.
+ */
 
 public class SalesAssistantUI extends javax.swing.JFrame {
     private static Cart cart;
@@ -34,10 +38,16 @@ public class SalesAssistantUI extends javax.swing.JFrame {
     private User user;
     Product product;
     double overallTotal;
-
+  
+     /**
+     * Initializes the SalesAssistantUI with the provided user.
+     *
+     * @param currentUser The user associated with the SalesAssistantUI.
+     */
     public SalesAssistantUI(User currentUser) {
         initComponents();
         totalTextField.setEditable(false);
+
         user = currentUser;
         if (cart == null) {
             cart = new Cart();
@@ -125,14 +135,20 @@ public class SalesAssistantUI extends javax.swing.JFrame {
         });
         setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
-    
+   
+   /**
+    * Handles the window closing event, prompting the user to confirm cancellation of the order and logout.
+    */
     private void handleWindowClosing() {
-        int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure you want to cancel the order and close the window?", "Confirm Cancel", JOptionPane.YES_NO_OPTION);
+        int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure you want to cancel the order and logout?", "Confirm Cancel", JOptionPane.YES_NO_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
             cancelOrderAndCloseWindow();
         }
     }
-
+    
+    /**
+    * Initializes the SalesAssistantUI by setting up components and event listeners.
+    */
     public SalesAssistantUI() {
 
         initComponents();
@@ -208,7 +224,6 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Error retrieving products: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-
 
         }
     });
@@ -540,7 +555,10 @@ public class SalesAssistantUI extends javax.swing.JFrame {
 
     }// </editor-fold>
     
-     private void cancelOrderAndCloseWindow() {
+    /**
+    * Handles the window closing event, prompting the user to confirm cancellation of the order and logout.
+    */
+    private void cancelOrderAndCloseWindow() {
         try {
             DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
             int rowCount = model.getRowCount();
@@ -594,14 +612,23 @@ public class SalesAssistantUI extends javax.swing.JFrame {
             jSpinner1.setValue(1);
             totalTextField.setText("");
             overallTotal = 0;
+            
+            User currentUser = user;
+            Logout.logOut(currentUser);
             dispose();
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error canceling order: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-     
-    private void totalTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                               
+    
+   /**
+    * This method is called when the totalTextField is acted upon. It sets the totalTextField to be non-editable
+    * and rounds the totalTextField.
+    *
+    * @param evt The ActionEvent that triggered this method.
+    */
+      private void totalTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                               
         totalTextField.setEditable(false);
         totalTextField.addFocusListener(new FocusAdapter() {
             
@@ -610,8 +637,12 @@ public class SalesAssistantUI extends javax.swing.JFrame {
             roundTotalTextField();
         }
     });
-    }                                              
+    }  
     
+     /**
+    * Rounds the value in the totalTextField to two decimal places.
+    * If the value is not a valid number, sets the totalTextField to "0.00" and displays an error message.
+    */
     private void roundTotalTextField() {
         try {
             double value = Double.parseDouble(totalTextField.getText());
@@ -623,6 +654,13 @@ public class SalesAssistantUI extends javax.swing.JFrame {
         }
     }
     
+    /**
+    * Performs an action when the idTextField loses focus.
+    * Retrieves the entered product ID, searches for matching products, and updates the table.
+    * Displays an error message if the ID is invalid or no matching products are found.
+    *
+    * @param evt The ActionEvent triggering the method.
+    */
     private void idTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                            
         String enteredIdText = idTextField.getText().trim();
           if (!enteredIdText.isEmpty()) {
@@ -663,7 +701,15 @@ public class SalesAssistantUI extends javax.swing.JFrame {
               JOptionPane.showMessageDialog(null, "Please enter a product ID", "Error", JOptionPane.ERROR_MESSAGE);
           }
     }                                           
-
+    
+ 
+   /**
+    * Performs an action when the addToCartButton is clicked.
+    * Adds the product to the cart, and updates the table and total cost.
+    * Displays error messages for invalid input or insufficient stock.
+    *
+    * @param evt The ActionEvent triggering the method.
+    */
     private void addToCartButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                                 
         try {
             ProductDAO productDAO = new ProductDAO();
@@ -766,7 +812,13 @@ public class SalesAssistantUI extends javax.swing.JFrame {
         }
         updateTotalCost();
     }
-
+    
+  /**
+    * Finds an item with the given product ID in the cart.
+    *
+    * @param productId The ID of the product to search for.
+    * @return The Item in the cart with the specified product ID, or null if not found.
+    */
     private Item findItemInCart(int productId) {
         for (Item item : cart.getItems()) {
             if (item.getProduct().getId() == productId) {
@@ -775,7 +827,14 @@ public class SalesAssistantUI extends javax.swing.JFrame {
         }
         return null;
     }
-
+    
+     /**
+    * Performs an action when the nameTextField loses focus.
+    * Retrieves the entered product name, searches for matching products, and updates the table.
+    * Displays an error message if no matching products are found.
+    *
+    * @param evt The ActionEvent triggering the method.
+    */
     private void nameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {                                              
         try {
                 String enteredProductName = nameTextField.getText().trim();
@@ -808,7 +867,13 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Error retrieving products: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }                                             
-
+    
+   /**
+    * Performs the checkout operation, generating an order and invoice based on the items in the cart.
+    * Displays dialog boxes to input customer information and payment details.
+    *
+    * @param evt The ActionEvent triggering the method.
+    */
     private void checkoutButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                                
 
         if (cart.isEmpty()) {
@@ -871,25 +936,23 @@ public class SalesAssistantUI extends javax.swing.JFrame {
                 c.add(current);
            }
 
-
             order = c.generateOrder(customerName, totalAmountDue, amountPaid, user.getUsername());
             System.out.println(order.getTotal());
-        order.setOrder_id( new OrderDAO().saveOrder(order));   ;
-
-
-
-
-            //Invoice
+            order.setOrder_id( new OrderDAO().saveOrder(order));   ;
+    
+             //Invoice
             generateInvoicePDF();
-resetForm();
-
-
-
+            resetForm();
+    
         } else {
             JOptionPane.showMessageDialog(this, "Please enter a valid customer name.", "Invalid Input", JOptionPane.WARNING_MESSAGE);
         }
     }                                               
-    
+  
+    /**
+    * Generates a PDF invoice for the current order, including customer information, purchased items and payment details.
+    * Uses Apache PDFBox for PDF generation.
+    */
     private void generateInvoicePDF() {
         try {
             PDDocument document = new PDDocument();
@@ -989,11 +1052,27 @@ resetForm();
         }
     }
     
+   /**
+    * Formats a decimal value to a string with two decimal places.
+    *
+    * @param value The decimal value to be formatted.
+    * @return A formatted string representation of the decimal value with two decimal places.
+    */
     private String formatDecimal(double value) {
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         return decimalFormat.format(value);
     }
-
+    
+     /**
+    * Writes the contents of a JTable representing Cart to a PDF document.
+    *
+    * @param table         The JTable containing the cart items to be written to the PDF.
+    * @param contentStream The PDPageContentStream of the PDF document.
+    * @param margin        The left margin of the page.
+    * @param yPosition     The current y-coordinate position on the page.
+    * @param width         The width of the page.
+    * @throws IOException If an error occurs during PDF writing.
+    */
     private void writeTableToPDF(JTable table, PDPageContentStream contentStream, float margin, float yPosition, float width) throws IOException {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         int rowCount = model.getRowCount();
@@ -1008,13 +1087,28 @@ resetForm();
             }
         }
     }
-
+    
+    
+   /**
+     * Writes text to a specific position on the PDF document.
+     *
+     * @param contentStream The PDPageContentStream of the PDF document.
+     * @param text          The text to be written.
+     * @param x             The x-coordinate position on the page.
+     * @param y             The y-coordinate position on the page.
+     * @param width         The width of the page.
+     * @throws IOException If an error occurs during PDF writing.
+     */
     private void writeText(PDPageContentStream contentStream, String text, float x, float y, float width) throws IOException {
         contentStream.beginText();
         contentStream.newLineAtOffset(x, y);
         contentStream.showText(text);
         contentStream.endText();
     }
+   
+   /**
+    * Updates the total cost displayed in the totalTextField based on the items in the jTable (representing the Cart).
+    */
     private void updateTotalCost() {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         int rowCount = model.getRowCount();
@@ -1027,11 +1121,15 @@ resetForm();
             totalCost += rowTotal;
         }
 
-        long roundedTotalCost = Math.round(totalCost); // Round off to the nearest integer
+        long roundedTotalCost = Math.round(totalCost); 
         totalTextField.setText(String.valueOf(roundedTotalCost));
     }
 
-
+    /**
+     * Handles the cancellation of the order. Restores the stock quantities of canceled items and updates the UI.
+     *
+     * @param evt The ActionEvent triggered by the cancel button.
+     */
     private void cancelButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                              
         int dialogResult = JOptionPane.showConfirmDialog(this, "Are you sure you want to cancel the order?", "Confirm Cancel", JOptionPane.YES_NO_OPTION);
     if (dialogResult == JOptionPane.YES_OPTION) {
@@ -1097,6 +1195,11 @@ resetForm();
     }
     }                                             
 
+  /**
+    * Handles the logout process, prompting the user for confirmation and logging out if confirmed.
+    *
+    * @param evt The ActionEvent triggered by the logout button.
+    */
     private void logoutButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
        int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to log out?", "Confirmation", JOptionPane.YES_NO_OPTION);
         
@@ -1115,7 +1218,12 @@ resetForm();
             });
         }
     }                                            
-
+    
+   /**
+    * Handles the update of the quantity for a selected item in the jTable1 (representing the Cart). Updates stock quantities and the UI.
+    *
+    * @param evt The ActionEvent triggered by the update button.
+    */
     private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
         try {
               int selectedRow = jTable1.getSelectedRow();
@@ -1181,7 +1289,12 @@ resetForm();
         }
         updateTotalCost();
     }                                            
-
+    
+    /**
+    * Handles the removal of a selected item from the cart. Updates stock quantities and the UI.
+    *
+    * @param evt The ActionEvent triggered by the remove button.
+    */
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
         try {
           int selectedRowIndex = jTable1.getSelectedRow();
@@ -1245,6 +1358,9 @@ resetForm();
         updateTotalCost();
     }                                            
     
+   /**
+    * Updates the jTable1 (representing the Cart) with the current items in the cart.
+    */
     private void updateTable() {
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
@@ -1264,6 +1380,11 @@ resetForm();
         }
     }
 
+   /**
+    * Listens for changes in the state of the JSpinner and ensures the quantity is always at least 1.
+    *
+    * @param evt The ChangeEvent triggered by the JSpinner.
+    */
     private void jSpinner1StateChanged(javax.swing.event.ChangeEvent evt) {                                       
         int currentValue = (int) jSpinner1.getValue();
         if (currentValue <= 0) {
@@ -1276,6 +1397,11 @@ resetForm();
         
     }               
    
+   /**
+    * Calculates and returns the total cost of items in the cart.
+    *
+    * @return The total cost of items in the cart.
+    */
     private double updateTotal() {
         double grandTotal = 0.0;
 
@@ -1286,24 +1412,36 @@ resetForm();
 
         return grandTotal;
     }
+    
+   /**
+    * Resets the form by clearing input fields, setting default values, and clearing tables.
+    */
     private void resetForm() {
         idTextField.setText("");
         nameTextField.setText("");
         jSpinner1.setValue(0);
         packCheckBox.setSelected(false);
-      DefaultTableModel tableModel1 = (DefaultTableModel) jTable1.getModel();
+       
+        DefaultTableModel tableModel1 = (DefaultTableModel) jTable1.getModel();
         tableModel1.setRowCount(0); // Clears the rows in the table
-     DefaultTableModel tableModel2 = (DefaultTableModel) jTable2.getModel();
+        DefaultTableModel tableModel2 = (DefaultTableModel) jTable2.getModel();
         tableModel2.setRowCount(0); // Clears the rows in another table
-   order=null;
-   product=null;
-   cart=null;
-   product=new Product();
-   cart = new Cart();
-   order = new Order();
-   totalTextField.setText("");
-    }
+        
+        order=null;
+        product=null;
+        cart=null;
+        product=new Product();
+        cart = new Cart();
+        order = new Order();
+        totalTextField.setText("");
 
+    }
+    
+   /**
+    * The main entry point for the Sales Assistant UI.
+    * Initializes the application's graphical user interface (GUI).
+    * @param args The command-line arguments.
+    */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
