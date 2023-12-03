@@ -7,7 +7,6 @@ import DBLayer.ProductDAO;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import test.BusinessTest.DatabaseConnectionTest;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -29,7 +28,6 @@ public class OrderDAOTest {
 
     @Before
     public void setUp() {
-        DatabaseConnectionTest.init(TESTING_JDBC_URL, TESTING_USER, TESTING_PASSWORD);
 
         try {
             connection = test.BusinessTest.DatabaseConnectionTest.getConnection();
@@ -135,6 +133,7 @@ public class OrderDAOTest {
             testProduct.setDescription("TestProductDescription");
             testProduct.setCategory_code(1); 
             testProduct.setExp(java.sql.Date.valueOf("2023-12-31"));
+            testProduct.setId(978962);
 
             productDAO.insertProduct(testProduct);
 
@@ -146,7 +145,7 @@ public class OrderDAOTest {
             
         //order
         String customerName="TestCusotmer";
-        User user = new User("TestOperator1","TestOperatorone","pass1");
+        User user = new User("TestOperator1","k","pass1");
         try {
             adminDAO.insertSalesAssistant(user);
         }

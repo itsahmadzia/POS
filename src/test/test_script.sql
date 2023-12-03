@@ -165,6 +165,12 @@ CALL GetAllProductsForCategory(4);
 select *from Admin;
 select *from Product;
 select *from Category;
+select *from Manager;
+select *
+from Operator;
+
+
+use randomn;
 
 ALTER TABLE Admin
 DROP COLUMN name;
@@ -205,3 +211,19 @@ BEGIN
              LEFT JOIN Product p ON CategoryTree.id = p.category_id;
 END //
 DELIMITER ;
+
+use test_randomn;
+delete from test_randomn.Operator;
+delete from test_randomn.Manager;
+delete from Product;
+select
+select *
+from test_randomn.Product;
+
+
+ALTER TABLE order_t_Item
+    DROP FOREIGN KEY fk_order_item_product;
+
+-- Add the foreign key constraint with updated options
+ALTER TABLE order_t_Item
+    ADD CONSTRAINT fk_order_item_product FOREIGN KEY (price) REFERENCES Product (price) ON UPDATE NO ACTION ON DELETE NO ACTION;
