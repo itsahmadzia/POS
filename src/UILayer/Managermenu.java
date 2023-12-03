@@ -1,7 +1,8 @@
 package UILayer;
 
-import BusinessLayer.Logout;
-import BusinessLayer.User;
+import DBLayer.CategoryDAO;
+import DBLayer.ProductDAO;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -224,6 +225,9 @@ public class Managermenu extends javax.swing.JFrame {
                                 .addComponent(btnReports, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+        totalCategories.setText("Total "+new CategoryDAO().getTotalCategories()+" categories are in the inventory.");
+        labelTotalproducts.setText(new ProductDAO().getProductCount()+ " products in the inventory.");
+        expireSummary.setText("Current value of inventory is "+new ProductDAO().getTotalWorthOfProducts()+" PKR.");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

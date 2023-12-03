@@ -316,6 +316,19 @@ GROUP BY
     order_t.operator_username;
 
 
-create table emplyee_info(
+select *from order_t_Item;
 
-);
+SHOW CREATE TABLE order_t_Item;
+drop table order_t_Item;
+
+CREATE TABLE `order_t_Item` (
+                                `order_id` int NOT NULL,
+                                `quantity_ordered` int NOT NULL,
+                                `price` decimal(10,2) NOT NULL,
+                                `product_name` varchar(255) DEFAULT NULL,
+                                `item_price` decimal(10,2) DEFAULT NULL,
+                                KEY `fk_order_item_product_name` (`product_name`),
+                                KEY `order_t_Item_ibfk_1` (`order_id`),
+                                CONSTRAINT `fk_order_item_product_name` FOREIGN KEY (`product_name`) REFERENCES `Product` (`name`) on UPDATE no action  on delete no action,
+                                CONSTRAINT `order_t_Item_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `order_t` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci

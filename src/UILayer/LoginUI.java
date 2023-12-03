@@ -1,5 +1,8 @@
 package UILayer;
+
 import BusinessLayer.*;
+import DBLayer.ProductDAO;
+
 import javax.swing.*;
 /**
  * The LoginUI class represents the user interface for user authentication.
@@ -181,6 +184,7 @@ public class LoginUI extends javax.swing.JFrame {
                          userInstance = currentUser;
                          currentUser.setLoggedIn(isAuthenticated);
                           //System.out.println("currentUser "+currentUser.getName()+" \n");
+                        new ProductDAO().deleteExpiredProducts();
                            openSalesAssistantUI(userInstance);
                         this.dispose();
                         

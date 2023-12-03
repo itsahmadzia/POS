@@ -2,7 +2,7 @@ package DBLayer;
 
 
 import BusinessLayer.Product;
-
+import java.util.Date;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -384,4 +384,59 @@ public class ProductDAO {
         // Return 0 if there is no maximum ID
         return 0;
     }
+    /**
+     * Retrieves the total number of products in the database.
+     *
+     * @return The total number of products.
+     */
+    public int getProductCount() {
+        try {
+            String query = "SELECT COUNT(*) FROM Product";
+            try (Statement statement = connection.createStatement();
+                 ResultSet resultSet = statement.executeQuery(query)) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    /**
+     * Calculates the total worth of all products by multiplying the price with quantity
+     * and summing up those values.
+     *
+     * @return The total worth of all products.
+     */
+    public double getTotalWorthOfProducts() {
+        try {
+            String query = "SELECT SUM(price * stock_quantity) AS totalWorth FROM Product";
+            try (Statement statement = connection.createStatement();
+                 ResultSet resultSet = statement.executeQuery(query)) {
+                if (resultSet.next()) {
+                    return resultSet.getDouble("totalWorth");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+       return 0.0;
+    }
+    /**
+     * Deletes products with expiry dates less than the current date from the database.
+     */
+    public void deleteExpiredProducts() {
+        try {
+            String query = "DELETE FROM Product WHERE expiryDate < CURDATE()";
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+               int r= preparedStatement.executeUpdate();
+                System.out.println(r);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

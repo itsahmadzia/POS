@@ -337,5 +337,25 @@ public class CategoryDAO {
         }
         return null;
     }
-    
+    /**
+     * Retrieves the total number of categories in the database.
+     *
+     * @return The total number of categories.
+     */
+    public int getTotalCategories() {
+        try {
+            String query = "SELECT COUNT(*) FROM Category";
+            try (Statement statement = connection.createStatement();
+                 ResultSet resultSet = statement.executeQuery(query)) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        // Return 0 if there is an error or no categories found
+        return 0;
+    }
+
 }

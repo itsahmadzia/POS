@@ -369,13 +369,16 @@ if(addDatainDB()) {
             double parsedPrice = Double.parseDouble(price);
             int parsedQuantity = Integer.parseInt(quantity);
             int parsedStock = Integer.parseInt(stock);
+            if(id<0||parsedStock<0||parsedQuantity<0||parsedPrice<0){
+                throw new NumberFormatException();
+            }
 
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String formattedExpDate = dateFormat.format(expirationDate);
                defaultTableModel.addRow(new Object[]{id, name, description, parsedPrice, parsedQuantity, formattedExpDate, parsedStock, category});
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Please enter valid numeric values for ID, Price, Quantity, Stock, and Category.");
+            JOptionPane.showMessageDialog(null, "Please enter valid numeric values for ID, Price, Quantity, Stock, Date and Category.");
         }
 
     }
@@ -426,11 +429,15 @@ throw new SQLDataException();
             String  categoryname = ((String) tfCategory.getSelectedItem());
             int category = new CategoryDAO().getCategoryCodebyName(categoryname);
             java.util.Date expirationDate = expDate.getDate();
-
+            if(expirationDate==null){
+                throw new NumberFormatException();
+            }
             double parsedPrice = Double.parseDouble(price);
             int parsedQuantity = Integer.parseInt(quantity);
             int parsedStock = Integer.parseInt(stock);
-
+            if(id<0||parsedStock<0||parsedQuantity<0||parsedPrice<0){
+                throw new NumberFormatException();
+            }
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String formattedExpDate = dateFormat.format(expirationDate);
 
@@ -452,7 +459,7 @@ throw new SQLDataException();
             }
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Please enter valid numeric values for ID, Price, Quantity, Stock, and Category.");
+            JOptionPane.showMessageDialog(null, "Please enter valid numeric values for ID, Price, Quantity, Stock, Date and Category.");
             return false;
         }
         catch (SQLDataException e) {
