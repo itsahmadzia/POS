@@ -20,7 +20,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.Calendar;
-
+/**
+ * The salesBydate class represents a user interface for displaying bar charts of sales based on date range.
+ */
 public class salesBydate extends JFrame {
 
     private JRadioButton dailyRadioButton;
@@ -35,7 +37,9 @@ public class salesBydate extends JFrame {
     private JTable dataTable;
 
 //reports with fields for to and from
-
+    /**
+     * Creates a new instance of the salesBydate class.
+     */
     public salesBydate() {
 
         setTitle("Graph");
@@ -97,7 +101,12 @@ public class salesBydate extends JFrame {
         });
 
     }
-
+    
+    /**
+     * Handles the action when the Back button is clicked.
+     *
+     * @param e The action event.
+     */
     private void performACTION(ActionEvent e) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -108,10 +117,16 @@ public class salesBydate extends JFrame {
         });
         this.dispose();
     }
-
+    
+    /**
+     * Updates the total sales label.
+     */
     void updateSalessum(){
         totalsalessum.setText("TOTAL SALES "+totalsales);
     }
+    /**
+     * Generates a bar chart based on sales within the specified date range.
+     */
     private void generateGraph() {
         totalsales=0;
 
@@ -200,7 +215,12 @@ public class salesBydate extends JFrame {
 
         }
     }
-
+    
+    /**
+     * Creates and displays a bar chart based on the given table model.
+     *
+     * @param tableModel The table model containing data.
+     */
     private void createAndDisplayBarChart(DefaultTableModel tableModel) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
@@ -216,6 +236,13 @@ public class salesBydate extends JFrame {
 
         chartPanel.setChart(chart);
     }
+    
+    /**
+     * Creates a JFreeChart bar chart based on the given data set.
+     *
+     * @param dataset The data set for the bar chart.
+     * @return The created JFreeChart object.
+     */
     private JFreeChart createChart(CategoryDataset dataset) {
         JFreeChart chart = ChartFactory.createBarChart(
                 "Sales Chart",
@@ -238,7 +265,12 @@ public class salesBydate extends JFrame {
 
         return chart;
     }
-
+    
+    /**
+     * Main method.
+     *
+     * @param args The command line arguments.
+     */
     public static void main(String[] args) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
