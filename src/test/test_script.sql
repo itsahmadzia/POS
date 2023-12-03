@@ -1,13 +1,12 @@
 create database test_randomn;
 use test_randomn;
-create TABLE Category (
+CREATE TABLE Category (
                           id INT PRIMARY KEY,
                           name VARCHAR(255) NOT NULL,
                           parent_category_id INT,
                           FOREIGN KEY (parent_category_id) REFERENCES Category(id)
 );
 
-DELETE FROM Category WHERE parent_category_id IS NOT NULL AND parent_category_id NOT IN (SELECT id FROM Category);
 update Category set parent_category_id=null where parent_category_id is not null;
 
 ALTER TABLE Category
@@ -40,12 +39,11 @@ ALTER TABLE Category
 
 ALTER TABLE Product DROP FOREIGN KEY Product_ibfk_1;
 ALTER TABLE Category DROP FOREIGN KEY Category_ibfk_1;
-
-
 ALTER TABLE Category add column Description varchar(500);
 
     ALTER TABLE Product
     ADD COLUMN expiryDate DATE;
+    
 CREATE TABLE order_t (
                          id INT PRIMARY KEY,
                          customer_name VARCHAR(255) NOT NULL,
@@ -68,7 +66,7 @@ ALTER TABLE order_t_Item
     
 ALTER TABLE order_t_Item
     DROP PRIMARY KEY;
-    
+
 ALTER TABLE order_t
     MODIFY id INT AUTO_INCREMENT;
 
@@ -109,9 +107,14 @@ ALTER TABLE order_t_Item
 CHANGE COLUMN product_price item_price DECIMAL(10,2) DEFAULT NULL;
 -- price is product price, price_item is ordered item price
 
+SELECT * FROM Category;
+SELECT * FROM Product;
+SELECT * FROM order_t;
+
+SELECT * FROM order_t_Item;
+                                                        
 CREATE TABLE Admin (
                        username VARCHAR(255) PRIMARY KEY,
-                       name VARCHAR(255) NOT NULL,
                        password VARCHAR(255) NOT NULL
 );
 
@@ -130,7 +133,6 @@ CREATE TABLE Operator (
 ALTER TABLE order_t
     ADD COLUMN operator_username VARCHAR(255),
     ADD FOREIGN KEY (operator_username) REFERENCES Operator(username);
-
 
 
 DELIMITER //
@@ -160,21 +162,49 @@ BEGIN
 END //
 DELIMITER ;
 
-CALL GetAllProductsForCategory(4);
+
+drop PROCEDURE GetProductsForCategoryConcat;
+
+DELIMITER //
+CREATE PROCEDURE GetProductsForCategoryConcat(IN category_id INT)
+BEGIN
+    WITH RECURSIVE CategoryTree AS (
+        SELECT
+            c.id,
+            c.name AS category_name,
+            c.parent_category_id,
+            0 AS level
+        FROM Category c
+        WHERE c.id = category_id
+        UNION ALL
+        SELECT
+            c.id,
+            c.name AS category_name,
+            c.parent_category_id,
+            ct.level + 1
+        FROM CategoryTree ct
+                 JOIN Category c ON ct.id = c.parent_category_id
+    )
+    SELECT
+        CONCAT_WS('|', p.id, p.name) AS product_info
+    FROM CategoryTree
+             LEFT JOIN Product p ON CategoryTree.id = p.category_id;
+END //
+DELIMITER ;
+
+update Category set parent_category_id=null;
+
+INSERT INTO Admin (username, password)
+VALUES ('admin1', 'adminpassword1');
 
 select *from Admin;
-select *from Product;
-select *from Category;
-
-ALTER TABLE Admin
-DROP COLUMN name;
-
-
-select *from Category;
-select *from Product;
 select *from Operator;
-select *from order_t_Item;
-select *from Admin;
-SHOW CREATE TABLE order_t_Item;
-select *from order_t_Item;
+select *from Manager;
+
+select *from Category;
+select *from Product;
+
 select *from order_t;
+select *from order_t_Item;
+show create table order_t_Item;
+
