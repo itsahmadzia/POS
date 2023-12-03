@@ -962,8 +962,8 @@ public class SalesAssistantUI extends javax.swing.JFrame {
             String fileName = "invoice_" + new Date().getTime() + ".pdf";
 
             PDPageContentStream contentStream = new PDPageContentStream(document, page);
-            PDType0Font font = PDType0Font.load(document, new FileInputStream(new File("src/Monospace_Medium.ttf")));
-            PDType0Font boldFont = PDType0Font.load(document, new FileInputStream(new File("src/Monospace_bold.ttf")));
+            PDType0Font font = PDType0Font.load(document, new FileInputStream(new File("Monospace_Medium.ttf")));
+            PDType0Font boldFont = PDType0Font.load(document, new FileInputStream(new File("Monospace_bold.ttf")));
 
             contentStream.setFont(boldFont, 20);
             float yStart = page.getMediaBox().getHeight() - 50;
