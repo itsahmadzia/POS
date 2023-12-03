@@ -178,3 +178,30 @@ select *from Admin;
 SHOW CREATE TABLE order_t_Item;
 select *from order_t_Item;
 select *from order_t;
+
+DELIMITER //
+CREATE PROCEDURE GetProductsForCategoryConcat(IN category_id INT)
+BEGIN
+    WITH RECURSIVE CategoryTree AS (
+        SELECT
+            c.id,
+            c.name AS category_name,
+            c.parent_category_id,
+            0 AS level
+        FROM Category c
+        WHERE c.id = category_id
+        UNION ALL
+        SELECT
+            c.id,
+            c.name AS category_name,
+            c.parent_category_id,
+            ct.level + 1
+        FROM CategoryTree ct
+                 JOIN Category c ON ct.id = c.parent_category_id
+    )
+    SELECT
+        CONCAT_WS('|', p.id, p.name) AS product_info
+    FROM CategoryTree
+             LEFT JOIN Product p ON CategoryTree.id = p.category_id;
+END //
+DELIMITER ;

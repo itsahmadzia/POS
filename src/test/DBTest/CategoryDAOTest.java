@@ -1,12 +1,12 @@
 
-package DBTest;
+package test.DBTest;
 
 import BusinessLayer.Category;
 import DBLayer.CategoryDAO;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import BusinessTest.DatabaseConnectionTest;
+import test.BusinessTest.DatabaseConnectionTest;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
