@@ -20,7 +20,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.concurrent.TimeUnit;
-
+/**
+ * The productReport class represents a JFrame for displaying bar charts of product expiration dates.
+ */
 public class productReport extends JFrame {
 //expiration count down
     private JRadioButton dailyRadioButton;
@@ -38,7 +40,10 @@ public class productReport extends JFrame {
     private static final String DB_URL = "jdbc:mysql://your_database_url:3306/your_database_name";
     private static final String USER = "ostechnix";
     private static final String PASSWORD = "Password123#@!";
-
+    
+    /**
+     * Creates a new instance of the productReport class.
+     */
     public productReport() {
         setTitle("Graph");
         setSize(800, 600);
@@ -97,7 +102,12 @@ backButton.addActionListener(new ActionListener() {
         });
         setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
-
+    
+    /**
+     * Handles the action when the Back button is clicked.
+     *
+     * @param e The action event.
+     */
     private void performBack(ActionEvent e) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -109,12 +119,16 @@ backButton.addActionListener(new ActionListener() {
         this.dispose();
 
     }
-
+    /**
+     * Updates the total sales label.
+     */
     void updateSalessum(){
         totalsalessum.setText("TOTAL SALES "+totalsales);
     }
-    // ...
-
+    
+    /**
+     * Generates a bar chart based on product expiration dates.
+     */
     private void generateGraph() {
         totalsales = 0;
 
@@ -153,7 +167,13 @@ if(daysLeft!=0)
             ex.printStackTrace();
         }
     }
-
+    
+    /**
+     * Calculates the number of days left until the specified expiration date.
+     *
+     * @param expiryDate The expiration date of the product.
+     * @return The number of days left till expiration date.
+     */
     private int calculateDaysLeft(Date expiryDate) {
         java.util.Date currentDate = new java.util.Date();
 
@@ -164,7 +184,11 @@ if(daysLeft!=0)
         return daysLeft;
     }
 
-
+    /**
+     * Creates and displays a bar chart based on the given table model.
+     *
+     * @param tableModel The table model containing data.
+     */
     private void createAndDisplayBarChart(DefaultTableModel tableModel) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
@@ -184,7 +208,13 @@ if(daysLeft!=0)
 
         chartPanel.setChart(chart);
     }
-
+    
+    /**
+     * Creates a JFreeChart bar chart based on the given data set.
+     *
+     * @param dataset The data set for the bar chart.
+     * @return The created JFreeChart object.
+     */
     private JFreeChart createChart(CategoryDataset dataset) {
         JFreeChart chart = ChartFactory.createBarChart(
                 "Expiration Date left",
@@ -207,7 +237,12 @@ if(daysLeft!=0)
 
         return chart;
     }
-
+    
+     /**
+     * Main method.
+     *
+     * @param args The command line arguments.
+     */
     public static void main(String[] args) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
