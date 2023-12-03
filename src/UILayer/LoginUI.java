@@ -266,7 +266,9 @@ public class LoginUI extends javax.swing.JFrame {
       
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LoginUI().setVisible(true);
+                LoginUI loginUI = new LoginUI();
+                loginUI.setLocationRelativeTo(null); 
+                loginUI.setVisible(true);
             }
         });
     }                                            
