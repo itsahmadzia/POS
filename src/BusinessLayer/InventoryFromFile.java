@@ -6,7 +6,11 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
+/**
+ * The InventoryFromFile class is responsible for loading categories and products from CSV files,
+ * associating products with categories, and providing methods to list and display information about
+ * categories and products.
+ */
 public class InventoryFromFile {
 
     private static Map<Integer, Integer> categoryParentMapping = new HashMap<>();
@@ -35,7 +39,13 @@ public class InventoryFromFile {
             product.display();
         }
     }
-
+    
+    /**
+     * Load categories from a CSV file and populate the category list.
+     *
+     * @param filePath The file path of the CSV containing category information.
+     * @return A list of Category objects loaded from the CSV file.
+     */
     public static List<Category> loadCategoriesFromCsv(String filePath) {
         List<Category> categories = new ArrayList<>();
 
@@ -76,7 +86,14 @@ public class InventoryFromFile {
 
         return categories;
     }
-
+    
+    /**
+     * Load products from a CSV file, associate them with categories, and populate the product list.
+     *
+     * @param filePath   The file path of the CSV containing product information.
+     * @param categories The list of categories to associate with the loaded products.
+     * @return A list of Product objects loaded from the CSV file.
+     */
     public static List<Product> loadProductsFromCsv(String filePath, List<Category> categories) {
         List<Product> products = new ArrayList<>();
 
@@ -132,7 +149,14 @@ public class InventoryFromFile {
 
         return products;
     }
-
+    
+     /**
+     * Find a category by its code in the provided list of categories.
+     *
+     * @param categories The list of categories to search.
+     * @param code       The code of the category to find.
+     * @return The Category object with the specified code, or null if not found.
+     */
     public static Category findCategoryByCode(List<Category> categories, int code) {
         for (Category category : categories) {
             if (category.getCode() == code) {
@@ -141,7 +165,12 @@ public class InventoryFromFile {
         }
         return null;
     }
-
+    
+    /**
+     * Link categories based on parent codes to establish hierarchical relationships.
+     *
+     * @param categories The list of categories to link.
+     */
     public static void linkCategories(List<Category> categories) {
         for (Category category : categories) {
             int parentCode = categoryParentMapping.get(category.getCode());
@@ -153,7 +182,12 @@ public class InventoryFromFile {
             }
         }
     }
-
+    /**
+     * Display information about categories and products in the console.
+     *
+     * @param categories The list of categories to display.
+     * @param products   The list of products to display.
+     */
     public static void displayData(List<Category> categories, List<Product> products) {
         for (Category category : categories) {
             category.display();
@@ -163,7 +197,14 @@ public class InventoryFromFile {
             product.display();
         }
     }
-
+    
+    /**
+     * List all products in the specified category code, including products in subcategories.
+     *
+     * @param categories   The list of categories containing the target category.
+     * @param categoryCode The code of the target category.
+     * @return A list of Product objects in the specified category and its subcategories.
+     */
     public static List<Product> listProductsInCategoryCode(List<Category> categories, int categoryCode) {
         List<Product> productsInCategory = new ArrayList<>();
 
@@ -174,6 +215,14 @@ public class InventoryFromFile {
 
         return productsInCategory;
     }
+    
+    /**
+     * List products only in the specified category code, excluding products in subcategories.
+     *
+     * @param categories   The list of categories containing the target category.
+     * @param categoryCode The code of the target category.
+     * @return A list of Product objects in the specified category only.
+     */
     public static List<Product> listProductsInThisCategoryCode(List<Category> categories, int categoryCode) {
         List<Product> productsInCategory = new ArrayList<>();
 
@@ -184,6 +233,13 @@ public class InventoryFromFile {
 
         return productsInCategory;
     }
+    
+    /**
+     * Recursively get all products in the specified category and its subcategories.
+     *
+     * @param category            The target category.
+     * @param productsInCategory A list to store products in the category and its subcategories.
+     */
     public static void getAllProductsInCategory(Category category, List<Product> productsInCategory) {
         for (Composite component : category.getChildren()) {
             if (component instanceof Product) {
@@ -193,6 +249,13 @@ public class InventoryFromFile {
             }
         }
     }
+    
+    /**
+     * Get all products only in the specified category, excluding products in subcategories.
+     *
+     * @param category            The target category.
+     * @param productsInCategory A list to store products only in the specified category.
+     */
     public static void getAllProductsInthisCategory(Category category, List<Product> productsInCategory) {
         for (Composite component : category.getChildren()) {
             if (component instanceof Product) {
