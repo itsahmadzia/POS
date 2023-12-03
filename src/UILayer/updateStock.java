@@ -1,10 +1,5 @@
 package UILayer;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
 import BusinessLayer.Product;
 import DBLayer.CategoryDAO;
 import DBLayer.ProductDAO;
@@ -14,13 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- *
- * @author malik
+ * The updateStock class represents a user interface for updating stock information.
  */
 public class updateStock extends javax.swing.JFrame {
 
     /**
-     * Creates new form updateStock
+     * Creates a new form updateStock.
      */
     public updateStock() {
         initComponents();
@@ -31,6 +25,13 @@ public class updateStock extends javax.swing.JFrame {
     }
     Product p = null;
     addProduct pre;
+    
+    /**
+     * Creates a new instance of the `updateStock` class with the given row data and a reference to the previous screen.
+     *
+     * @param rowData   The row data representing product information.
+     * @param previous  The reference to the previous screen.
+     */
     public updateStock(String rowData,addProduct previous) {
         initComponents();
        pre=previous;
@@ -221,31 +222,37 @@ public class updateStock extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>
-
+    
+     /**
+     * Handles the action when the "Update" button is pressed.
+     * Performs the update operation for stock information based on user input.
+     *
+     * @param e The ActionEvent representing the button press event.
+     */
     private void jbtnUpdate(ActionEvent e) {
         //update button goes here
         System.out.println("Pressed");
-  try{
-      java.util.Date expirationDate = expDate.getDate();
-      if(expirationDate==null){
-          throw new NumberFormatException();
-      }
-      double price = Double.parseDouble(tfPrice.getText());
-int stock = Integer.parseInt(tfStock.getText());
-  p.setPrice(price);
-  p.setStock_quantity(stock);
-  p.setExp(expirationDate);
-  p.setId(new ProductDAO().getMaxProductId()+1);
+        try{
+            java.util.Date expirationDate = expDate.getDate();
+            if(expirationDate==null){
+                throw new NumberFormatException();
+            }
+            double price = Double.parseDouble(tfPrice.getText());
+      int stock = Integer.parseInt(tfStock.getText());
+        p.setPrice(price);
+        p.setStock_quantity(stock);
+        p.setExp(expirationDate);
+        p.setId(new ProductDAO().getMaxProductId()+1);
 
-  new ProductDAO().insertProduct(p);
-  pre.loadProductsIntoTable();
-  this.dispose();
+        new ProductDAO().insertProduct(p);
+        pre.loadProductsIntoTable();
+        this.dispose();
 
 
-  }
-  catch (NumberFormatException f){
-      JOptionPane.showMessageDialog(null,"INVALID FORMAT");
-  }
+        }
+        catch (NumberFormatException f){
+            JOptionPane.showMessageDialog(null,"INVALID FORMAT");
+        }
 
     }
 
@@ -256,7 +263,13 @@ int stock = Integer.parseInt(tfStock.getText());
     private void tfPriceActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
-
+    
+    /**
+     * Handles the action when the state of the check box changes.
+     * Sets the price field editable to false or true based on the selected state of the check box.
+     *
+     * @param evt The ActionEvent representing the state change event.
+     */
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         //set proce editable to false
@@ -266,7 +279,9 @@ int stock = Integer.parseInt(tfStock.getText());
     }
 
     /**
-     * @param args the command line arguments
+     * The main method to launch the updateStock window.
+     *
+     * @param args The command line arguments.
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
