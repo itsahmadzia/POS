@@ -109,6 +109,7 @@ public class Admin {
      * @param username  The username of the user to be deleted.
      * @param roleType  The role type of the user to be deleted.
      * @return true if the user is successfully deleted, false otherwise.
+     * @throws SQLIntegrityConstraintViolationException If there is a constraint violation during database deletion.
      */
     public boolean deleteUser(String username ,String roleType) throws SQLIntegrityConstraintViolationException {
         boolean deleted = AdminDAO.deleteUser(username,roleType);
