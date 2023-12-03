@@ -1,11 +1,17 @@
 package UILayer;
-
 import BusinessLayer.*;
-
 import javax.swing.*;
-
+/**
+ * The LoginUI class represents the user interface for user authentication.
+ * It provides a login form with fields for username, password, and user type.
+ * Users can log in as Admin, Manager, or Sales Assistant based on their selected role.
+ */
 public class LoginUI extends javax.swing.JFrame {
     
+    /**
+     * Default constructor for LoginUI.
+     * Initializes the components of the UI.
+     */
     public LoginUI() {
         initComponents();
     }
@@ -114,8 +120,12 @@ public class LoginUI extends javax.swing.JFrame {
 
     private void typeComboBoxActionPerformed(java.awt.event.ActionEvent evt) {                                             
 
-            }
+    }
     
+    /**
+     * Performs the login action based on the entered username, password, and selected role.
+     * Opens the corresponding UI for the authenticated user.
+     */
     private void performLogin() {
         String enteredUsername = usernameTextField.getText();
         char[] enteredPasswordChars = passwordField.getPassword();
@@ -134,7 +144,7 @@ public class LoginUI extends javax.swing.JFrame {
         adminInstance.setLoggedIn(true);
         usernameTextField.setText("");
         passwordField.setText("");
-        openAdminUI();
+        openAdminUI(adminInstance);
         this.dispose();
     } else {
         showError("Invalid credentials. Please try again.");
@@ -185,35 +195,55 @@ public class LoginUI extends javax.swing.JFrame {
             }
         }
     }
-
+     /**
+     * Displays an error message in a dialog box.
+     *
+     * @param message The error message to be displayed.
+     */
     private void showError(String message) {
         JOptionPane.showMessageDialog(this, message, "Login Failed", JOptionPane.ERROR_MESSAGE);
 
     }
-
+    
+    /**
+     * Retrieves the logged-in Admin instance, if any.
+     *
+     * @return The logged-in Admin instance or null if no Admin is logged in.
+     */
     public Admin getLoggedInAdmin() {
     return adminInstance != null && adminInstance.isLoggedIn() ? adminInstance : null;
 }
 
-
-    private void openAdminUI() {
+    /**
+     * Opens the AdminUI with the provided Admin instance.
+     *
+     * @param admin The logged-in Admin instance.
+     */
+    private void openAdminUI(Admin admin) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new AdminUI().setVisible(true);
+                new AdminUI(adminInstance).setVisible(true);
             }
         });
     }
-    
+    /**
+     * Opens the Manager UI.
+     */
     private void openManagerUI() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
-            public void run() {
+            public void run() { 
                 new Managermenu().setVisible(true);
+
             }
         });
     }
-    
+     /**
+     * Opens the Sales Assistant UI with the provided User instance.
+     *
+     * @param user The logged-in User instance.
+     */
     private void openSalesAssistantUI(User user) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -223,7 +253,11 @@ public class LoginUI extends javax.swing.JFrame {
             }
         });
     }
-
+    /**
+     * The main method to launch the LoginUI.
+     *
+     * @param args The command-line arguments.
+     */
     public static void main(String args[]) {
       
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -233,9 +267,24 @@ public class LoginUI extends javax.swing.JFrame {
         });
     }                                            
 
-
+    /**
+     * Retrieves the User instance.
+     *
+     * @param user The User instance to be retrieved.
+     * @return The User instance.
+     */    
     public User getUserInstance(User user){
         return userInstance;
+    }
+    
+    /**
+     * Retrieves the Admin instance.
+     *
+     * @param admin The Admin instance to be retrieved.
+     * @return The Admin instance.
+     */
+     public Admin getAdminInstance(Admin admin){
+        return adminInstance;
     }
 
     // Variables declaration - do not modify                     
@@ -247,5 +296,6 @@ public class LoginUI extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> typeComboBox;
     private javax.swing.JTextField usernameTextField;
     // End of variables declaration     
+    
    
 }
