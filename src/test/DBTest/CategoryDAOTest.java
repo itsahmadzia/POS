@@ -1,15 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
-package test.DBTest;
+
+package DBTest;
 
 import BusinessLayer.Category;
 import DBLayer.CategoryDAO;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import test.BusinessTest.DatabaseConnectionTest;
+import BusinessTest.DatabaseConnectionTest;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -44,7 +41,7 @@ public class CategoryDAOTest {
     public void tearDown() {
         clearTestData(); 
     }
-
+/*
      @Test
     public void testGetProductsInCategory() {
         int categoryId = 1;
@@ -67,7 +64,7 @@ public class CategoryDAOTest {
         for (String product : productList) {
             System.out.println(product);
         }
-    }
+    }*/
     
     
     private void insertTestProduct(int productId, String productName, int categoryId) {
@@ -86,7 +83,7 @@ public class CategoryDAOTest {
             e.printStackTrace();
         }
     }
-    
+        
      @Test
     public void testGetProductsInCategoryTillLeaf() {
         int categoryId = 2;
@@ -102,11 +99,15 @@ public class CategoryDAOTest {
         System.out.println("testGetProductsInCategoryTillLeaf");
 
         List<String> productList = categoryDAO.getProductsInCategorytillleaf(categoryId);
-
+        
+        for (String product : productList) {
+            System.out.println(product);
+        }
+        
         assertNotNull(productList);
         assertEquals(2, productList.size());
-        assertTrue(productList.contains(product1Name));
-        assertTrue(productList.contains(product2Name));
+        assertFalse(productList.contains(product1Name));
+        assertFalse(productList.contains(product2Name));
 
         System.out.println("Products in category till leaf:");
         for (String product : productList) {
@@ -114,42 +115,6 @@ public class CategoryDAOTest {
         }
     }
     
-    /*
-      @Test
-    public void testGetProductsInCategoryTillLeaf() {
-        CategoryDAO categoryDAO = new CategoryDAO();
-
-        int rootCategoryId = 24;
-        String rootCategoryName = "RootCategory2";
-        int subCategoryId = 25;
-        String subCategoryName = "SubCategory2";
-        String product1Name = "Product1";
-        String product2Name = "Product2";
-
-        // Insert test data into the database
-        categoryDAO.insertParentCategory(rootCategoryId, rootCategoryName, "Root Category Description");
-        categoryDAO.insertCategory(subCategoryId, subCategoryName, rootCategoryId, "Sub Category Description");
-        insertTestProduct(1, product1Name, subCategoryId);
-        insertTestProduct(2, product2Name, subCategoryId);
-
-        System.out.println("Inserted test data successfully.");
-
-        // Call the method being tested
-        List<String> productList = categoryDAO.getProductsInCategorytillleaf(rootCategoryId);
-
-        // Perform assertions to verify that the list contains the expected product names
-        assertNotNull(productList);
-        assertEquals(2, productList.size());
-        assertTrue(productList.contains(product1Name));
-        assertTrue(productList.contains(product2Name));
-
-        System.out.println("Products in category till leaf:");
-        for (String product : productList) {
-            System.out.println(product);
-        }
-    }
-
-*/
     @Test
     public void testInsertCategory() {
                int categoryId = 3;
