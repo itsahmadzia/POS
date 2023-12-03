@@ -336,7 +336,11 @@ public class ProductDAO {
         }
         return matchingProducts;
     }
-
+    
+    /**
+    * Loads products into a JTable by retrieving all products from the database.
+    * This method is not currently in use.
+    */
     /***
      *
      *     public void loadProductsIntoTable() {
@@ -357,6 +361,13 @@ public class ProductDAO {
      *         }
      *     }
       */
+    
+    /**
+    * Retrieves the maximum product ID from the Product table.
+    *
+    * @return The maximum product ID, or 0 if there is no maximum ID.
+    */
+
     public int getMaxProductId() {
         try {
             String query = "SELECT MAX(id) FROM Product";
@@ -373,7 +384,4 @@ public class ProductDAO {
         // Return 0 if there is no maximum ID
         return 0;
     }
-
-
-
 }
