@@ -1,22 +1,20 @@
 package UILayer;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
+import BusinessLayer.Logout;
+import BusinessLayer.User;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- *
- * @author malik
+ * The Manager menu class represents the  user interface for the manager's menu.
+ * It provides options for managing products, categories, operators, and generating reports.
  */
 public class Managermenu extends javax.swing.JFrame {
 
     /**
-     * Creates new form Managermenu
+     * Default constructor.
+     * Initializes the components of the UI and sets it to the maximized state.
      */
     public Managermenu() {
         initComponents();
@@ -229,13 +227,35 @@ public class Managermenu extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    /**
+    * Handles the action performed when the logout button is clicked.
+    * Displays a confirmation dialog and logs the user out if confirmed.
+    *
+    * @param e The ActionEvent triggered by the button click.
+    */
+    private void btnLogoutActionPerformed(ActionEvent e) {        
+        int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to log out?", "Confirmation", JOptionPane.YES_NO_OPTION);
+        
+        if (dialogResult == JOptionPane.YES_OPTION) {          
+            setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-    private void btnLogoutActionPerformed(ActionEvent e) {
-        this.dispose();
-        LoginUI ui = new LoginUI();
-        ui.setVisible(true);
+            this.dispose();
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    new LoginUI().setVisible(true);
+                }
+            });
+        }
     }
-
+    
+    
+     /**
+     * Opens the Add Product UI when the "Manage Product" button is clicked.
+     *
+     * @param evt The ActionEvent representing the button click.
+     */
     private void btnProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductActionPerformed
         // TODO add your handling code here:
 
@@ -248,7 +268,12 @@ public class Managermenu extends javax.swing.JFrame {
         });
         this.dispose();
     }//GEN-LAST:event_btnProductActionPerformed
-
+    
+    /**
+     * Opens the Add Category UI when the "Manage Category" button is clicked.
+     *
+     * @param evt The ActionEvent representing the button click.
+     */
     private void btnCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoryActionPerformed
         // TODO add your handling code here:
         SwingUtilities.invokeLater(new Runnable() {
@@ -260,7 +285,12 @@ public class Managermenu extends javax.swing.JFrame {
         });
         this.dispose();
     }//GEN-LAST:event_btnCategoryActionPerformed
-
+    
+    /**
+     * Opens the CategoryTreeFrame UI when the "Show products by Category" button is clicked.
+     *
+     * @param evt The ActionEvent representing the button click.
+     */
     private void btnCattreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCattreeActionPerformed
         // TODO add your handling code here:
 
@@ -274,7 +304,12 @@ public class Managermenu extends javax.swing.JFrame {
         });
         this.dispose();
     }//GEN-LAST:event_btnCattreeActionPerformed
-
+    
+    /**
+     * Opens the AdminUI when the "Manage Operators" button is clicked.
+     *
+     * @param evt The ActionEvent representing the button click.
+     */
     private void btnOperatorsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOperatorsActionPerformed
         // TODO add your handling code here:
         SwingUtilities.invokeLater(new Runnable() {
@@ -287,7 +322,12 @@ public class Managermenu extends javax.swing.JFrame {
         this.dispose();
 
     }//GEN-LAST:event_btnOperatorsActionPerformed
-
+    
+    /**
+     * Opens the GraphMenu UI when the "Generate Reports" button is clicked.
+     *
+     * @param evt The ActionEvent representing the button click.
+     */
     private void btnReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportsActionPerformed
         // TODO add your handling code here:
         SwingUtilities.invokeLater(new Runnable() {
@@ -299,7 +339,12 @@ public class Managermenu extends javax.swing.JFrame {
         });
         this.dispose();
     }//GEN-LAST:event_btnReportsActionPerformed
-
+    
+     /**
+     * Opens the ProductReport UI when the "Freshness Countdown" button is clicked.
+     *
+     * @param evt The ActionEvent representing the button click.
+     */
     private void btnExpiringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExpiringActionPerformed
         // TODO add your handling code here:
         SwingUtilities.invokeLater(new Runnable() {
@@ -312,6 +357,7 @@ public class Managermenu extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnExpiringActionPerformed
 
+    
     /**
      * @param args the command line arguments
      */
