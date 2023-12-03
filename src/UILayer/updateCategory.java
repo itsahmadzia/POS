@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package UILayer;
 
 import BusinessLayer.Category;
@@ -14,9 +10,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- *
- * @author malik
+ * The updateCategory class represents a user interface for updating category information.
  */
+
 public class updateCategory extends javax.swing.JFrame {
 private int categorycode;
 
@@ -28,11 +24,17 @@ private int categorycode;
     public updateCategory() {
         initComponents();
     }
+    /**
+     * Creates a new instance of the updateCategory class with specified row data and a reference to the previous window.
+     *
+     * @param getRowData The row data for the category.
+     * @param u           The reference to the previous window.
+     */
     public updateCategory(String getRowData,addCategory u) {
         initComponents();
         previous=u;
         this.rowdata=getRowData;
-updatecomboBox();
+        updatecomboBox();
         String []s = getRowData.split("\n");
         boolean isroot=false;
         System.out.println(Arrays.toString(s));
@@ -176,7 +178,12 @@ updatecomboBox();
 comboCategories.setVisible(false);
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    /**
+     * Handles the update button action performed event.
+     *
+     * @param evt The action event.
+     */
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         // TODO add your handling code here:
         String name = null;
@@ -225,15 +232,22 @@ comboCategories.setVisible(false);
 
 
     }//GEN-LAST:event_btnUpdateActionPerformed
-
+    
+     /**
+     * Handles the back button action performed event.
+     *
+     * @param evt The action event.
+     */
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
 
+    /**
+     * The main method to launch the updateCategory window.
+     *
+     * @param args The command line arguments.
+     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -265,6 +279,11 @@ comboCategories.setVisible(false);
             }
         });
     }
+    
+    /**
+     * Updates the combo box with category names.
+     */
+    
     void updatecomboBox(){
         List<String> allcat= new CategoryDAO().getAllCategoriesName();
         String f= comboCategories.getItemAt(0);
