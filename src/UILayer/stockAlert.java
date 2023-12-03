@@ -19,7 +19,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
-
+/**
+ * The stockAlert class represents a user interface for displaying bar charts of stock alerts.
+ */
 public class stockAlert extends JFrame {
 //show those where 2 packs left
     private JRadioButton dailyRadioButton;
@@ -37,6 +39,8 @@ public class stockAlert extends JFrame {
     private static final String DB_URL = "jdbc:mysql://your_database_url:3306/your_database_name";
     private static final String USER = "ostechnix";
     private static final String PASSWORD = "Password123#@!";
+   
+    
     private void performACTION(ActionEvent e) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -47,6 +51,9 @@ public class stockAlert extends JFrame {
         });
         this.dispose();
     }
+    /**
+     * Creates a new instance of the `stockAlert` class.
+     */
     public stockAlert() {
 
         setTitle("Graph");
@@ -107,11 +114,17 @@ public class stockAlert extends JFrame {
         });
         setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
+    
+    /**
+     * Updates the total sales label.
+     */
     void updateSalessum(){
         totalsalessum.setText("TOTAL SALES "+totalsales);
     }
-    // ...
 
+    /**
+     * Generates a bar chart based on stock alerts.
+     */
     private void generateGraph() {
         totalsales = 0;
 
@@ -150,7 +163,13 @@ public class stockAlert extends JFrame {
             ex.printStackTrace();
         }
     }
-
+    
+   /**
+    * Calculates the number of days left until the given expiry date.
+    *
+    * @param expiryDate The expiry date of the product.
+    * @return The number of days left.
+    */
     private long calculateDaysLeft(Date expiryDate) {
         java.util.Date currentDate = new java.util.Date();
 
@@ -162,7 +181,11 @@ public class stockAlert extends JFrame {
     }
 
 
-
+    /**
+     * Creates and displays a bar chart based on the given table model.
+     *
+     * @param tableModel The table model containing data.
+     */
     private void createAndDisplayBarChart(DefaultTableModel tableModel) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
@@ -178,6 +201,13 @@ public class stockAlert extends JFrame {
 
         chartPanel.setChart(chart);
     }
+    
+    /**
+     * Creates a JFreeChart bar chart based on the given data set.
+     *
+     * @param dataset The data set for the bar chart.
+     * @return The created JFreeChart object.
+     */ 
     private JFreeChart createChart(CategoryDataset dataset) {
         JFreeChart chart = ChartFactory.createBarChart(
                 "Stock Alerts",
@@ -200,7 +230,12 @@ public class stockAlert extends JFrame {
 
         return chart;
     }
-
+    /**
+    * The main entry point for the Stock Alert application.
+    * This method initializes the MySQL JDBC driver and launches the Stock Alert UI.
+    *
+    * @param args The command-line arguments (not used in this application).
+    */
     public static void main(String[] args) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
