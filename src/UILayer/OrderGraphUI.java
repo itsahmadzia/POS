@@ -24,7 +24,10 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
-
+/**
+ * The OrderGraphUI class represents the user interface for displaying order graphs.
+ * It provides options to generate and display daily, weekly, or monthly sales reports.
+ */
 public class OrderGraphUI extends JFrame {
 //MONTHLY WEEKLY AND DAILY REPORT
     private JRadioButton dailyRadioButton;
@@ -42,7 +45,11 @@ public class OrderGraphUI extends JFrame {
     private static final String DB_URL = "jdbc:mysql://your_database_url:3306/your_database_name";
     private static final String USER = "ostechnix";
     private static final String PASSWORD = "Password123#@!";
-  
+   
+    /**
+     * Default constructor for OrderGraphUI.
+     * Initializes the components of the UI and sets it to the maximized state.
+     */
     public OrderGraphUI() {
 
         setTitle("Order Graph");
@@ -102,7 +109,12 @@ public class OrderGraphUI extends JFrame {
         weeklyRadioButton.setSelected(true);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
-
+    
+    /**
+    * Performs the action to navigate to the "graphMenu" UI and disposes the current UI.
+    *
+    * @param e  The ActionEvent triggering the action.
+    */
     private void performACTION(ActionEvent e) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -113,12 +125,18 @@ public class OrderGraphUI extends JFrame {
         });
         this.dispose();
     }
-
+    /**
+     * Updates the total sales sum label with the current total sales value.
+     */
     void updateSalessum(){
         totalsalessum.setText("TOTAL SALES "+totalsales);
-}
+    }
+    
+    /**
+     * Generates and displays the sales graph based on the selected time interval (daily, weekly, or monthly).
+     */
     private void generateGraph() {
-totalsales=0;
+    totalsales=0;
         if (weeklyRadioButton.isSelected()) {
 
             try (Connection connection = DatabaseConnection.getConnection()) {
@@ -282,7 +300,12 @@ totalsales=0;
 
         }
     }
-
+    
+    /**
+     * Creates and displays a bar chart based on the provided data set.
+     *
+     * @param tableModel The table model containing data for the bar chart.
+     */
     private void createAndDisplayBarChart(DefaultTableModel tableModel) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
@@ -298,6 +321,13 @@ totalsales=0;
 
         chartPanel.setChart(chart);
     }
+    
+    /**
+     * Creates a JFreeChart bar chart based on the provided data set.
+     *
+     * @param dataset The data set containing data for the bar chart.
+     * @return The created JFreeChart bar chart.
+     */
     private JFreeChart createChart(CategoryDataset dataset) {
         JFreeChart chart = ChartFactory.createBarChart(
                 "Sales Chart",
@@ -320,7 +350,12 @@ totalsales=0;
 
         return chart;
     }
-
+    
+     /**
+     * The main method to launch the OrderGraphUI.
+     *
+     * @param args The command line arguments.
+     */
     public static void main(String[] args) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
