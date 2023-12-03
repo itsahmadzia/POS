@@ -1,8 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
 package UILayer;
 
 import BusinessLayer.Product;
@@ -17,12 +12,11 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
- *
- * @author malik
+ * This class represents the user interface for adding products.
  */
 public class addProduct extends javax.swing.JFrame {
 
-    /**
+     /**
      * Creates new form addProduct
      */
     public addProduct() {
@@ -298,6 +292,11 @@ updateCombo();
         pack();
     }// </editor-fold>
 
+    /**
+     * Handles the Back button action.
+     *
+     * @param evt The action event.
+     */
     private void btnBackActionPerformed(ActionEvent evt) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -308,7 +307,11 @@ updateCombo();
         });
         this.dispose();
     }
-
+     /**
+     * Handles the Stock button action.
+     *
+     * @param evt The action event.
+     */
     private void btnStockActionPerformed(ActionEvent evt) {
         //stock refill button
         if(jtableproducts.getSelectedRow()!=-1){
@@ -324,22 +327,36 @@ updateCombo();
 
 
     }
-
+     /**
+     * Handles the ID text field action.
+     *
+     * @param evt The action event.
+     */
     private void tfIDActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
-
+    /**
+     * Handles the Quantity text field action.
+     *
+     * @param evt The action event.
+     */
     private void tfQuantityActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
-
+    /**
+     * Handles the focus gained on the scroll pane.
+     *
+     * @param evt The focus event.
+     */
     private void jScrollPane2FocusGained(java.awt.event.FocusEvent evt) {
         // TODO add your handling code here:
     }
-
+     /**
+     * Handles the ADD button action.
+     *
+     * @param evt The action event.
+     */
     private void jBADDActionPerformed(java.awt.event.ActionEvent evt) {
-//add button code
-//
         if(tfCategory.getItemCount()==0){
             JOptionPane.showMessageDialog(null,"No categories exists to add product Add category first","ERROR",JOptionPane.ERROR_MESSAGE);
             return;
@@ -353,7 +370,9 @@ if(addDatainDB()) {
 
         // TODO add your handling code here:
     }
-
+    /**
+     * Adds data to the GUI.
+     */
     public void addDatainGUI() {
         try {
 
@@ -382,7 +401,9 @@ if(addDatainDB()) {
         }
 
     }
-
+ /**
+     * Clears all input fields.
+ */   
 private void clearallfields(){
     tfID.setText("");
     tfName.setText("");
@@ -394,6 +415,9 @@ private void clearallfields(){
     expDate.setDate(null);
 
 }
+    /**
+     * Loads products into the table.
+     */
     public void loadProductsIntoTable() {
          List<Product> productList = new ProductDAO().getAllProducts();
    defaultTableModel.setRowCount(0);
@@ -411,7 +435,11 @@ private void clearallfields(){
             defaultTableModel.addRow(rowData);
         }
     }
-
+ /**
+     * Adds data to the database.
+     *
+     * @return True if data was added successfully, false otherwise.
+     */
     private Boolean addDatainDB() {
         try {
 
@@ -468,7 +496,9 @@ throw new SQLDataException();
         }
 return true;
     }
-
+ /**
+    * Removes the selected row from the table and deletes the corresponding product from the database.
+    */
     private void removeSelectedRow() {
         int selectedRowIndex = jtableproducts.getSelectedRow();
 
@@ -480,7 +510,11 @@ return true;
             JOptionPane.showMessageDialog(null, "Please select a row to delete.");
         }
     }
-
+    /**
+     * Handles the Update button action. Opens a new window for updating the selected product.
+     *
+     * @param evt The action event.
+     */
     private void jbUpdateActionPerformed(java.awt.event.ActionEvent evt) {
 //update button event
         if(jtableproducts.getSelectedRow()!=-1) {
@@ -494,6 +528,11 @@ return true;
         // TODO add your handling code here:
     }
 
+     /**
+    * Handles the Delete button action. Calls the method to remove the selected row.
+    *
+    * @param evt The action event.
+    */
     private void jbDeleteActionPerformed(java.awt.event.ActionEvent evt) {
 ///delete button event
         removeSelectedRow();
@@ -503,16 +542,11 @@ return true;
     private void tfPriceActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
-
-    /**
-     * @param args the command line arguments
+ /**
+     * Main method to run the application.
      *
-     *
+     * @param args The command line arguments.
      */
-
-
-
-
     public static void main(String args[]) {
 
         /* Set the Nimbus look and feel */
@@ -545,7 +579,11 @@ return true;
             }
         });
     }
-
+ /**
+     * Gets data at the selected row.
+     *
+     * @return The data at the selected row.
+     */
   public String getDataatrow(){
         int selected=jtableproducts.getSelectedRow();
         StringBuilder s = new StringBuilder();
