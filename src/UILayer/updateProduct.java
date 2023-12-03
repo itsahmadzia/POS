@@ -1,9 +1,4 @@
 package UILayer;
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
 
 import BusinessLayer.Product;
 import DBLayer.CategoryDAO;
@@ -14,19 +9,22 @@ import java.sql.SQLDataException;
 import java.util.List;
 
 /**
- *
- * @author malik
+ * The updateProduct class represents a user interface for updating product information.
  */
 public class updateProduct extends javax.swing.JFrame {
 
     /**
-     * Creates new form updateProduct
+     * Creates a new instance of the updateProduct class.
      */
     private int id;
 
     public updateProduct() {
         initComponents();
     }
+    
+    /**
+     * Updates the category combo box with available categories.
+     */
     void updateCombo(){
         combCat.removeAllItems();
         List<String> categories = new CategoryDAO().getAllCategoriesName(); // Assuming you have a method in CategoryDAO to get category names
@@ -35,6 +33,12 @@ public class updateProduct extends javax.swing.JFrame {
         }
     }
     addProduct previous_screen;
+    
+    /**
+     * Creates a new instance of the `updateProduct` class with a reference to the previous screen.
+     *
+     * @param p The reference to the previous screen.
+     */
     public updateProduct(addProduct p){
         initComponents();
         updateCombo();
@@ -224,7 +228,12 @@ public class updateProduct extends javax.swing.JFrame {
     private void tfQuantityActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
     }
-
+    
+     /**
+     * Handles the update button action performed event.
+     *
+     * @param evt The action event.
+     */
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         try {
@@ -232,9 +241,9 @@ public class updateProduct extends javax.swing.JFrame {
             List <Product> all = productDAO.getAllProducts();
 
             Product n=productDAO.getProductByID(id);
-if(n==null){
-    return ;
-}
+                if(n==null){
+                    return ;
+                }
 
             n.setCategory_code(new CategoryDAO().getCategoryCodebyName((String) combCat.getSelectedItem()));
             n.setName(tfName.getText());
@@ -269,15 +278,22 @@ if(n==null){
 
 
     }
-
+    
+    /**
+     * Handles the cancel button action performed event.
+     *
+     * @param evt The action event.
+     */
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         //go back to previous screen
         this.dispose();
     }
 
-    /**
-     * @param args the command line arguments
+     /**
+     * The main method to launch the updateProduct window.
+     *
+     * @param args The command line arguments.
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
