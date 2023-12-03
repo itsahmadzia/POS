@@ -191,7 +191,8 @@ eastPanel.setPreferredSize(new Dimension(300,600));
                     }
 tableModel.setRowCount(0);
                     for(String P:productList){
-                        tableModel.addRow(new Object[]{P});
+                        String[]parts=P.split("\\|");
+                        tableModel.addRow(new Object[]{parts[0],parts[1]});
                     }
                 } else {
                     System.out.println("Please select a node.");

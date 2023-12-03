@@ -199,7 +199,7 @@ public class addCategory extends javax.swing.JFrame {
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(29, 29, 29))
         );
-
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         pack();
     }// </editor-fold>
 

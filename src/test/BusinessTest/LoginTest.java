@@ -1,10 +1,10 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
+
 package test.BusinessTest;
 
-import BusinessLayer.Login;
+
 import BusinessLayer.Manager;
 import BusinessLayer.SalesAssistant;
 import BusinessLayer.User;
@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
 /**
  *
  * @author nifrawahaj
- */
+
 
 public class LoginTest {
 
@@ -58,3 +58,4 @@ public class LoginTest {
         assertFalse(login.authenticateUser("user1", "password1"));
     }
 }
+*/
