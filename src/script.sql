@@ -331,10 +331,23 @@ CREATE TABLE `order_t_Item` (
                                 `item_price` decimal(10,2) DEFAULT NULL,
                                 KEY `fk_order_item_product_name` (`product_name`),
                                 KEY `order_t_Item_ibfk_1` (`order_id`),
-                                CONSTRAINT `fk_order_item_product_name` FOREIGN KEY (`product_name`) REFERENCES `Product` (`name`) on UPDATE no action  on delete no action,
+                           --     CONSTRAINT `fk_order_item_product_name` FOREIGN KEY (`product_name`) REFERENCES `Product` (`name`) on UPDATE no action  on delete no action,
                                 CONSTRAINT `order_t_Item_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `order_t` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
 
 select *from Admin;
 select *
 from Manager;
+
+
+CREATE TABLE `order_t_Item` (
+                                `order_id` int NOT NULL,
+                                `quantity_ordered` int NOT NULL,
+                                `price` decimal(10,2) NOT NULL,
+                                `product_name` varchar(255) DEFAULT NULL,
+                                `item_price` decimal(10,2) DEFAULT NULL,
+                                KEY `fk_order_item_product_name` (`product_name`),
+                                KEY `order_t_Item_ibfk_1` (`order_id`),
+                                CONSTRAINT `fk_order_item_product_name` FOREIGN KEY (`product_name`) REFERENCES `Product` (`name`) ON UPDATE NO ACTION ON DELETE NO ACTION,
+                                CONSTRAINT `order_t_Item_ibfk_2` FOREIGN KEY (`order_id`) REFERENCES `order_t` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

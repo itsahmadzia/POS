@@ -17,6 +17,7 @@ public class LoginUI extends javax.swing.JFrame {
      */
     public LoginUI() {
         initComponents();
+        setLocationRelativeTo(null);
     }
     Admin adminInstance; 
     User userInstance;
