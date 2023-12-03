@@ -1,6 +1,7 @@
 package UILayer;
 
 import BusinessLayer.Admin;
+import BusinessLayer.Logout;
 import BusinessLayer.User;
 
 import javax.swing.*;
@@ -11,11 +12,23 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The AdminUI class represents the user interface for the admin functionality.
+ * Admins can add, delete, and manage users through this interface.
+ */
+
 public class AdminUI extends javax.swing.JFrame {
     Admin adminInstance;
     private DefaultTableModel tableModel;
     private List<User> displayedUsers;
     private List<Integer> displayedIndexes;
+    
+    /**
+    * Constructs an instance of the AdminUI class.
+    * Initializes the graphical user interface components and sets up the initial state of the AdminUI.
+    *
+    * @param a A Boolean value indicating whether the user is an administrator (true) or not (false).
+    */
     public AdminUI(Boolean a){
         initComponents();
         adminInstance = new Admin("Admin", "1234");
@@ -38,6 +51,7 @@ public class AdminUI extends javax.swing.JFrame {
         });
         setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
+    
     private void fromSecond(ActionEvent e) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -49,10 +63,15 @@ public class AdminUI extends javax.swing.JFrame {
         this.dispose();
 
     }
-
-    public AdminUI() {
+    /**
+     * Constructs an instance of the AdminUI class.
+     * Initializes the components of the admin user interface and updates the table displaying users.
+     * @param admin The admin instance associated with this UI.
+     */
+    
+    public AdminUI(Admin admin) {
+        adminInstance = admin;
         initComponents();
-        adminInstance = new Admin("Admin", "1234");
         tableModel = new DefaultTableModel(new Object[][]{}, new String[]{"Name", "Username", "Role"});
         displayedUsers = new ArrayList<>();
         displayedIndexes = new ArrayList<>();
@@ -63,7 +82,13 @@ public class AdminUI extends javax.swing.JFrame {
             }
         });
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+
     }
+    
+     /**
+     * Default constructor for the AdminUI class.
+     */
+    public AdminUI(){}
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
@@ -262,7 +287,7 @@ public class AdminUI extends javax.swing.JFrame {
         deleteButton.setBackground(new java.awt.Color(255, 0, 51));
         deleteButton.setFont(new java.awt.Font("sansserif", 0, 18)); // NOI18N
         deleteButton.setText("Delete");
-
+ 
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -307,6 +332,11 @@ public class AdminUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>    
     
+    /**
+     * Performs the delete user action when the delete button is clicked.
+     * Deletes the selected user from the table and database.
+     * @param evt The action event.
+     */ 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {
         int selectedRow = jTable1.getSelectedRow();
         try {
@@ -346,10 +376,16 @@ JOptionPane.showMessageDialog(null,"Cannot delete the user orders are associated
         // TODO add your handling code here:
     }                                             
 
+    /**
+        * Handles the action when the logout button is clicked.
+        * Displays a confirmation dialog and logs out admin if confirms.
+        * @param evt The action event.
+       */
     private void logoutButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                              
         int dialogResult = JOptionPane.showConfirmDialog(null, "Are you sure you want to log out?", "Confirmation", JOptionPane.YES_NO_OPTION);
         
         if (dialogResult == JOptionPane.YES_OPTION) {
+            Logout.logOutAdmin(adminInstance);
             setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
             this.dispose();
             SwingUtilities.invokeLater(new Runnable() {
@@ -361,7 +397,12 @@ JOptionPane.showMessageDialog(null,"Cannot delete the user orders are associated
 
         }
     }                                      
-
+    
+    /**
+     * Handles the action when the add button is clicked.
+     * Adds a new user with the entered details to the table and database.
+     * @param evt The action event.
+     */
     private void addButton1ActionPerformed(java.awt.event.ActionEvent evt) {                                           
        try{
            String username = usernameTextField.getText();
@@ -388,12 +429,18 @@ JOptionPane.showMessageDialog(null,"Cannot delete the user orders are associated
 
        
     }
+    /**
+     * Clears the input fields (username, name, password).
+     */
     void clearFields(){
         usernameTextField.setText("");
         nameTextField.setText("");
         passwordTextField.setText("");
     }
-   
+     
+    /**
+     * Updates the table with user data retrieved from the database.
+     */
     public void updateTableFromDatabase() {
 
         List<User> users = adminInstance.getUserManagersFromDB();
@@ -405,28 +452,32 @@ JOptionPane.showMessageDialog(null,"Cannot delete the user orders are associated
         displayedUsers.clear(); 
         displayedIndexes.clear();
 
-    for (int i = 0; i < users.size(); i++) {
-        User user = users.get(i);
-        //System.out.println("Adding user to table: " + user.getName());
-        displayedUsers.add(user);
-        displayedIndexes.add(i);
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            //System.out.println("Adding user to table: " + user.getName());
+            displayedUsers.add(user);
+            displayedIndexes.add(i);
 
-        tableModel.addRow(new Object[]{user.getName(), user.getUsername(), user.getRole().getRoleType()});
+            tableModel.addRow(new Object[]{user.getName(), user.getUsername(), user.getRole().getRoleType()});
+        }
+
+        for (int i = 0; i < users2.size(); i++) {
+            User user = users2.get(i);
+            //System.out.println("Adding user to table: " + user.getName());
+            displayedUsers.add(user);
+            displayedIndexes.add(i);
+
+            tableModel.addRow(new Object[]{user.getName(), user.getUsername(), user.getRole().getRoleType()});
+        }
+
+
+        tableModel.fireTableDataChanged();
     }
-
-    for (int i = 0; i < users2.size(); i++) {
-        User user = users2.get(i);
-        //System.out.println("Adding user to table: " + user.getName());
-        displayedUsers.add(user);
-        displayedIndexes.add(i);
-
-        tableModel.addRow(new Object[]{user.getName(), user.getUsername(), user.getRole().getRoleType()});
-    }
-
-
-    tableModel.fireTableDataChanged();
-}
-
+    
+   /**
+     * Main method to launch the AdminUI.
+     * @param args Command-line arguments (not used).
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -435,8 +486,8 @@ JOptionPane.showMessageDialog(null,"Cannot delete the user orders are associated
             }
         });
     }
-
-
+    
+ 
     // Variables declaration - do not modify                     
     private javax.swing.JButton addButton1;
     private javax.swing.JButton deleteButton;
@@ -456,4 +507,5 @@ JOptionPane.showMessageDialog(null,"Cannot delete the user orders are associated
     private javax.swing.JTextField passwordTextField;
     private javax.swing.JTextField usernameTextField;
     // End of variables declaration                   
+
 }
