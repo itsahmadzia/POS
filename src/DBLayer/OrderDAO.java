@@ -136,6 +136,9 @@ public class OrderDAO {
         return productPrice;
     }
 /*
+    // This method is no longer in use and has been deprecated.
+    // It was responsible for generating a random order ID, but a different approach is now used.
+    @Deprecated
     private static int generateRandomOrderId() {
         try (Connection connection = DatabaseConnection.getConnection();
              Statement statement = connection.createStatement()) {
@@ -167,7 +170,6 @@ public class OrderDAO {
     private static void showErrorDialog(String message) {
         JOptionPane.showMessageDialog(null, message, "Error", JOptionPane.ERROR_MESSAGE);
     }
-
 */
      /**
      * Updates the stock quantity in the database after order is placed.
