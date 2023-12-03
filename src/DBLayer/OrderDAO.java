@@ -3,10 +3,8 @@ package DBLayer;
 import BusinessLayer.Item;
 import BusinessLayer.Order;
 
-import javax.swing.*;
 import java.sql.*;
 import java.util.List;
-import java.util.Random;
 
 /**
  * The OrderDAO class provides data access methods for handling orders and related operations in the database.
@@ -96,7 +94,7 @@ public class OrderDAO {
                      "INSERT INTO order_t_Item (order_id, product_name, quantity_ordered, price, item_price) VALUES (?, ?, ?, ?,?)")) {
 
             for (Item item : items) {
-                double productPrice = getProductPrice(item.getProduct().getName());
+                double productPrice = getProductPrice(item.getProduct().getId());
                 statement.setInt(1, orderId);
                 statement.setString(2, item.getProduct().getName());
                 statement.setInt(3, item.getQuantityorder());
@@ -117,12 +115,12 @@ public class OrderDAO {
      * @param productName The name of the product.
      * @return The price of the product.
      */
-    private double getProductPrice(String productName) {
+    private double getProductPrice(int productName) {
         double productPrice = 0.0; 
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement statement = conn.prepareStatement("SELECT price FROM Product WHERE name = ?")) {
-             statement.setString(1, productName);
+             PreparedStatement statement = conn.prepareStatement("SELECT price FROM Product WHERE id = ?")) {
+             statement.setInt(1, productName);
 
              try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {

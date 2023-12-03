@@ -219,7 +219,6 @@ public class updateStock extends javax.swing.JFrame {
                                                         .addComponent(btnCancel))
                                                 .addGap(21, 21, 21))))
         );
-
         pack();
     }// </editor-fold>
     

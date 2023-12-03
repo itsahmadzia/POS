@@ -317,6 +317,8 @@ GROUP BY
 
 
 select *from order_t_Item;
+select *
+from order_t;
 
 SHOW CREATE TABLE order_t_Item;
 drop table order_t_Item;
@@ -332,3 +334,7 @@ CREATE TABLE `order_t_Item` (
                                 CONSTRAINT `fk_order_item_product_name` FOREIGN KEY (`product_name`) REFERENCES `Product` (`name`) on UPDATE no action  on delete no action,
                                 CONSTRAINT `order_t_Item_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `order_t` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+select *from Admin;
+select *
+from Manager;

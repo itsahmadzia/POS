@@ -134,7 +134,8 @@ public class salesBydate extends JFrame {
     {
             try (Connection connection = DatabaseConnection.getConnection()) {
                 String query = "SELECT " +
-                        "    oi.product_name, " +
+                        "    oi.order_id, " +
+                        "    MAX(oi.product_name) AS product_name, " +
                         "    SUM(oi.item_price) AS total_sum " +
                         "FROM " +
                         "    order_t o " +
@@ -142,7 +143,8 @@ public class salesBydate extends JFrame {
                         "WHERE " +
                         "        o.order_date BETWEEN ? AND ? " +
                         "GROUP BY " +
-                        "    oi.product_name";
+                        "    oi.order_id";
+
                 PreparedStatement preparedStatement = connection.prepareStatement(query);
                 java.util.Date fromDateUtil = from.getDate();
                 java.util.Date toDateUtil = tofield.getDate();
