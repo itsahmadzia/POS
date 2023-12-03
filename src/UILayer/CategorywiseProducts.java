@@ -16,7 +16,11 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+/**
+ * The CategorywiseProducts class represents the user interface for generating and displaying
+ * pie charts representing product acquisition across different categories. It retrieves data from the
+ * database, creates a pie chart, and displays it along with a data table.
+ */
 public class CategorywiseProducts extends JFrame {
 
     private JRadioButton dailyRadioButton;
@@ -34,6 +38,11 @@ public class CategorywiseProducts extends JFrame {
     private static final String DB_URL = "jdbc:mysql://your_database_url:3306/your_database_name";
     private static final String USER = "ostechnix";
     private static final String PASSWORD = "Password123#@!";
+    /**
+     * Performs the action to switch to the graph menu when the "Back" button is clicked.
+     *
+     * @param e The ActionEvent triggered by the button click.
+     */
     private void performACTION(ActionEvent e) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -44,6 +53,9 @@ public class CategorywiseProducts extends JFrame {
         });
         this.dispose();
     }
+    /**
+     * Constructs a CategorywiseProducts frame with the necessary components and initializes the UI.
+     */
     public CategorywiseProducts() {
 
         setTitle("Graph");
@@ -104,6 +116,12 @@ public class CategorywiseProducts extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
     }
+    
+     /**
+     * Creates and displays a pie chart using the provided table model data.
+     *
+     * @param tableModel The table model containing data for the pie chart.
+     */
     private void createAndDisplayPieChart(DefaultTableModel tableModel) {
         DefaultPieDataset dataset = new DefaultPieDataset();
 
@@ -120,7 +138,12 @@ public class CategorywiseProducts extends JFrame {
 
         chartPanel.setChart(chart);
     }
-
+    
+    /**
+     * Creates and displays a pie chart using the provided table model data.
+     *
+     * @param tableModel The table model containing data for the pie chart.
+     */
     private JFreeChart createPieChart(DefaultPieDataset dataset) {
         JFreeChart chart = ChartFactory.createPieChart(
                 "Product Acquisition of Categories",
@@ -132,7 +155,9 @@ public class CategorywiseProducts extends JFrame {
 
         return chart;
     }
-
+    /**
+     * Generates and displays a pie chart based on the product acquisition data retrieved from the database.
+     */
     private void generatePieChart() {
         totalsales = 0;
 
@@ -170,7 +195,12 @@ public class CategorywiseProducts extends JFrame {
             ex.printStackTrace();
         }
     }
-
+    
+    /**
+     * Main method to launch the CategorywiseProducts frame.
+     *
+     * @param args Command-line arguments (not used).
+     */
     public static void main(String[] args) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
