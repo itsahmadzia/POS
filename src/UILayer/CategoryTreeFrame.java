@@ -21,7 +21,11 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * The CategoryTreeFrame class represents the user interface for displaying a category tree
+ * and related product information. It provides functionalities such as showing products at leaf nodes,
+ * displaying detailed product information, and navigating back to the manager menu.
+ */
 public class CategoryTreeFrame extends JFrame {
     private JTree categoryTree;
     private JCheckBox showProductsCheckBox;
@@ -29,6 +33,10 @@ public class CategoryTreeFrame extends JFrame {
     private DefaultTableModel tableModel=new DefaultTableModel();
 
     private        List<JLabel> list = new ArrayList<>();
+    
+    /**
+     * Constructs a CategoryTreeFrame with the necessary components and initializes the UI.
+     */
     public CategoryTreeFrame() {
 
         super("Category Tree Example");
@@ -196,7 +204,12 @@ tableModel.setRowCount(0);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setVisible(true);
     }
-
+    
+    /**
+     * Updates the JLabels in the east panel with information about the selected product.
+     *
+     * @param selectedProduct The ID of the selected product.
+     */
     private void updateLabels(String selectedProduct) {
          for (int i = 0; i < 7; i++) {
             list.get(i).setText("");
@@ -217,12 +230,22 @@ tableModel.setRowCount(0);
         list.get(6).setForeground(dateLabel.getForeground());
     }
 
-
+    
+    /**
+     * Creates a JTree representing the category tree based on the data retrieved from the database.
+     *
+     * @return The constructed JTree.
+     */
     private JTree createCategoryTree() {
         DefaultMutableTreeNode root = buildCategoryTreeFromDatabase();
         return new JTree(root);
     }
-
+    
+     /**
+     * Builds the category tree structure from the database and returns the root node.
+     *
+     * @return The root node of the constructed category tree.
+     */
     private DefaultMutableTreeNode buildCategoryTreeFromDatabase() {
         DefaultMutableTreeNode commonRoot = new DefaultMutableTreeNode("Categories");
 
@@ -255,7 +278,12 @@ tableModel.setRowCount(0);
     private void showProductsButtonClicked(ActionEvent e) {
         // This method remains the same as in your original code
     }
-
+    
+    /**
+     * Handles the action when the "Back" button is clicked.
+     *
+     * @param e The ActionEvent triggered by the button click.
+     */
     private void goBack(ActionEvent e) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -269,7 +297,12 @@ tableModel.setRowCount(0);
         // For example, closing the current frame and returning to the previous frame
         // You may want to customize this based on your application's structure
     }
-
+    /**
+     * Calculates the date difference between the input date and the current date.
+     *
+     * @param date The expiration date of the product.
+     * @return JLabel displaying the remaining duration with appropriate formatting.
+     */
     JLabel calculateDateDifference(String date) {
         LocalDate inputDate = LocalDate.parse(date);
         LocalDate currentDate = LocalDate.now();
@@ -291,7 +324,11 @@ tableModel.setRowCount(0);
     }
 
 
-
+    /**
+     * Main method to launch the CategoryTreeFrame.
+     *
+     * @param args Command-line arguments (not used).
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(CategoryTreeFrame::new);
     }
