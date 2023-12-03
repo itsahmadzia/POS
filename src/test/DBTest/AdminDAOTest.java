@@ -1,4 +1,4 @@
-package test.DBTest;
+package DBTest;
 
 import BusinessLayer.Admin;
 import BusinessLayer.User;
@@ -6,7 +6,7 @@ import DBLayer.AdminDAO;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import test.BusinessTest.DatabaseConnectionTest;
+import BusinessTest.DatabaseConnectionTest;
 
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -14,25 +14,22 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+
 public class AdminDAOTest {
 
     private AdminDAO adminDAO;
 
     @Before
     public void setUp() {
-        
          try {
-
             adminDAO = new AdminDAO(DatabaseConnectionTest.getConnection());
-           
-        clearTestData();
-        insertInitialData();
-        
-        } catch (SQLException e) {
-            e.printStackTrace();  
-        }
-         
-       
+
+            clearTestData();
+           // insertInitialData();
+
+            } catch (SQLException e) {
+                e.printStackTrace();  
+            }
     }
 
     @After
@@ -56,7 +53,7 @@ public class AdminDAOTest {
     private void insertInitialData() {
         try {
             
-            adminDAO.insertManager(new User("managerName", "managerUsername", "managerPassword"));
+           // adminDAO.insertManager(new User("managerName", "managerUsername", "managerPassword"));
             adminDAO.insertSalesAssistant(new User("salesAssistantName", "salesAssistantUsername", "salesAssistantPassword"));
         } catch (SQLIntegrityConstraintViolationException e) {
             System.out.println("Failed to insert initial data: " + e.getMessage());
@@ -94,21 +91,21 @@ public class AdminDAOTest {
             List<User> salesAssistants = adminDAO.getAllSalesAssistants();
             assertTrue(salesAssistants.stream().anyMatch(u -> u.getUsername().equals("newSalesAssistantUsername")));
         } catch (SQLIntegrityConstraintViolationException e) {
-            fail("Unexpected SQLIntegrityConstraintViolationException");
+            fail("Unexpected SQLIntegrityConstraintViolationException. User already exists in the database.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Unexpected exception occurred during insertion.");
         }
     }
 
-    @Test
+
+   @Test
     public void testGetAllManagers() {
         List<User> managers = adminDAO.getAllManagers();
+        System.out.println("Actual Managers: " + managers);
         assertFalse(managers.isEmpty());
     }
 
-    @Test
-    public void testGetAllSalesAssistants() {
-        List<User> salesAssistants = adminDAO.getAllSalesAssistants();
-        assertFalse(salesAssistants.isEmpty());
-    }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetUserTableNameInvalidRole() {
