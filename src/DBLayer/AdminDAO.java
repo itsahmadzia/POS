@@ -64,8 +64,12 @@ public class AdminDAO {
      * @param manager The User object representing the manager to be inserted.
      * @throws SQLIntegrityConstraintViolationException If there is a constraint violation during database insertion.
      */
-    public  void insertManager(User manager) throws SQLIntegrityConstraintViolationException {
+    public void insertManager(User manager) throws SQLIntegrityConstraintViolationException {
         try (Connection connection = DatabaseConnection.getConnection()) {
+            if (usernameExists(connection, manager.getUsername(), "Manager")) {
+                throw new SQLIntegrityConstraintViolationException("Duplicate username");
+            }
+
             String query = "INSERT INTO Manager (username, name, password) VALUES (?, ?, ?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, manager.getUsername());
@@ -74,19 +78,45 @@ public class AdminDAO {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new SQLIntegrityConstraintViolationException();
-
+            e.printStackTrace();
+            throw new RuntimeException("Error: Unable to insert Manager. Please try again later.");
         }
-    }   
+    }
     
+    /**
+    * Checks if a username already exists in a specific table within the database.
+    *
+    * @param connection The database connection.
+    * @param username   The username to check for existence.
+    * @param tableName  The name of the table in which to check for the username.
+    * @return true if the username exists in the specified table, false otherwise.
+    * @throws SQLException If a database access error occurs or the SQL execution fails.
+    */
+    private boolean usernameExists(Connection connection, String username, String tableName) throws SQLException {
+        String query = "SELECT COUNT(*) FROM " + tableName + " WHERE username = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, username);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                resultSet.next();
+                int count = resultSet.getInt(1);
+                return count > 0;
+            }
+        }
+    }
+
     /**
      * Inserts a new sales assistant user into the database.
      *
      * @param salesAssistant The User object representing the sales assistant to be inserted.
      * @throws SQLIntegrityConstraintViolationException If there is a constraint violation during database insertion.
      */
-    public  void insertSalesAssistant(User salesAssistant) throws SQLIntegrityConstraintViolationException{
+    
+    public void insertSalesAssistant(User salesAssistant) throws SQLIntegrityConstraintViolationException {
         try (Connection connection = DatabaseConnection.getConnection()) {
+            if (usernameExists(connection, salesAssistant.getUsername(),"Operator")) {
+                throw new SQLIntegrityConstraintViolationException("Duplicate username");
+            }
+
             String query = "INSERT INTO Operator (username, name, password) VALUES (?, ?, ?)";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 preparedStatement.setString(1, salesAssistant.getUsername());
@@ -95,9 +125,12 @@ public class AdminDAO {
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
-            throw new SQLIntegrityConstraintViolationException();
+            // Handle other SQL exceptions
+            e.printStackTrace();
+            throw new RuntimeException("Error: Unable to insert Sales Assistant. Please try again later.");
         }
     }
+
      /**
      * Retrieves a list of all managers from the database.
      *
