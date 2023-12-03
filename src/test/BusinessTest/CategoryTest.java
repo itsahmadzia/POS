@@ -18,7 +18,7 @@ public class CategoryTest {
 
     @Before
     public void setUp() {
-        category = new Category(1, "C1", "Description for C1");
+        category = new Category(1, "C1",  "Description for C1");
     }
 
     @Test
