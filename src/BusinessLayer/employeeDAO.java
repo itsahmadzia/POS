@@ -6,13 +6,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * The employeeDAO class provides data access methods for Employee objects in the database.
+ */
 public class employeeDAO {
 
     Connection connection ;
+    /**
+     * Constructs an EmployeeDAO object and initializes the database connection.
+     *
+     * @throws SQLException If there is an error establishing the database connection.
+     */
     employeeDAO() throws SQLException {
         this.connection=DatabaseConnectivity.getConnection();
     }
+
+     /**
+     * Inserts an Employee object into the database.
+     *
+     * @param emp The Employee object to be inserted.
+     */
     public void insertEmployee(Employee emp) {
         try {
             String query = "INSERT INTO employee_management.Employee (id, name,salary,role ) " +
@@ -28,6 +41,12 @@ public class employeeDAO {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Retrieves a list of all employees from the database.
+     *
+     * @return List of Employee objects representing all employees in the database.
+     */
     public List<Employee> getAllEmployees() {
         List<Employee>  allemployees= new ArrayList<>();
         try {
@@ -54,6 +73,11 @@ public class employeeDAO {
         return allemployees;
     }
 
+    /**
+     * Deletes an employee from the database based on the provided ID.
+     *
+     * @param employeeId The ID of the employee to be deleted.
+     */
     public void deleteEmployee(int rowdata) {
         try {
             String query = "DELETE FROM employee_management.Employee WHERE ID =?";
