@@ -1,20 +1,13 @@
 package UILayer;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
 import javax.swing.*;
-
 /**
- *
- * @author malik
+ * The graphMenu class represents the graphical user interface for accessing reports.
  */
 public class graphMenu extends javax.swing.JFrame {
 
-    /**
-     * Creates new form graphMenu
+     /**
+     * Creates a new instance of the graphMenu class.
      */
     public graphMenu() {
         initComponents();
@@ -161,7 +154,12 @@ public class graphMenu extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>
-
+   
+    /**
+     * Handles the action when the Back button is clicked.
+     *
+     * @param evt The action event.
+     */
     private void btnBackActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         SwingUtilities.invokeLater(new Runnable() {
@@ -174,7 +172,11 @@ public class graphMenu extends javax.swing.JFrame {
         this.dispose();
 
     }
-
+    /**
+     * Handles the action when the Sales by Date button is clicked.
+     *
+     * @param evt The action event.
+     */
     private void btnSalesbyDateActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         SwingUtilities.invokeLater(new Runnable() {
@@ -186,7 +188,11 @@ public class graphMenu extends javax.swing.JFrame {
         });
         this.dispose();
     }
-
+    /**
+     * Handles the action when the Stock Alert button is clicked.
+     *
+     * @param evt The action event.
+     */
     private void btnStockAlertActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         SwingUtilities.invokeLater(new Runnable() {
@@ -198,7 +204,11 @@ public class graphMenu extends javax.swing.JFrame {
         });
         this.dispose();
     }
-
+    /**
+     * Handles the action when the Orders button is clicked.
+     *
+     * @param evt The action event.
+     */
     private void btnOrdersActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         SwingUtilities.invokeLater(new Runnable() {
@@ -210,7 +220,11 @@ public class graphMenu extends javax.swing.JFrame {
         });
         this.dispose();
     }
-
+    /**
+     * Handles the action when the Operator Reports button is clicked.
+     *
+     * @param evt The action event.
+     */
     private void btnOperatorActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         SwingUtilities.invokeLater(new Runnable() {
@@ -222,7 +236,11 @@ public class graphMenu extends javax.swing.JFrame {
         });
         this.dispose();
     }
-
+    /**
+     * Handles the action when the Category Wise Products button is clicked.
+     *
+     * @param evt The action event.
+     */
     private void btnCatProActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         SwingUtilities.invokeLater(new Runnable() {
